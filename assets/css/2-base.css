@@ -1,0 +1,72 @@
+/* ════════════════════════════════════════════════════════════
+   2. 全站共用：基本排版、頂欄、內頁版型、頁尾
+   ════════════════════════════════════════════════════════════ */
+
+/* ── 基本排版 ── */
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);margin:0;
+  font:var(--fs-body)/1.8 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+.serif{font-family:"Noto Serif TC","Songti TC","PMingLiU",serif}
+.lede{font-size:var(--fs-lede);line-height:1.95;margin:0 0 30px;max-width:40em}
+
+/* ── 頂欄 ── */
+.top{position:sticky;top:0;z-index:30;background:var(--bg);border-top:4px solid var(--topbar);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:6px 18px;min-height:60px;padding-block:8px}
+.brand{text-decoration:none;color:var(--ink);line-height:1.25}
+.brand b{display:block;font-family:"Noto Serif TC",serif;font-size:var(--fs-xl);font-weight:700}
+.brand small{display:block;font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;font-size:var(--fs-mono);letter-spacing:.12em;color:var(--muted)}
+.top nav{display:flex;gap:4px;margin-left:auto}
+.top nav a{font-size:var(--fs-nav);text-decoration:none;padding:6px 11px;color:var(--muted)}
+.top nav a:hover{color:var(--ink)}
+.top nav a.on{color:var(--ink);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}   /* 目前所在的頁 */
+.hsearch{display:flex;align-items:center;margin-left:18px;border:1px solid var(--line);border-radius:20px;background:var(--panel);padding:2px 4px 2px 14px}
+.hsearch input{border:0;background:none;color:var(--ink);font:inherit;font-size:var(--fs-sm);width:200px;outline:none}
+.hsearch button,.theme-t{display:grid;place-items:center;width:30px;height:30px;border:0;background:none;color:var(--muted);cursor:pointer;border-radius:50%;padding:0}
+.hsearch button:hover,.theme-t:hover{color:var(--ink);background:var(--unkbg)}
+.hsearch svg,.theme-t svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.theme-t{margin-left:6px;width:34px;height:34px}
+/* 淺色顯示月亮、深色顯示太陽 */
+.ic-sun{display:none}
+:root[data-theme="dark"] .ic-sun{display:block}
+:root[data-theme="dark"] .ic-moon{display:none}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .ic-sun{display:block}
+  :root:not([data-theme="light"]) .ic-moon{display:none}
+}
+
+/* ── 內頁版型（技術全景、研究領域、公司與供應鏈）── */
+.page{padding:48px 0 72px}
+.crumb{font-size:var(--fs-xs);color:var(--muted)}
+.crumb a{color:var(--muted)}
+.page h1{font-size:clamp(30px,3.4vw,40px);line-height:1.25;margin:8px 0 18px}
+/* 佔位框：還沒有內容的區塊 */
+.ph{border:1px dashed var(--line);border-radius:var(--r);background:var(--panel);color:var(--muted);font-size:var(--fs-sm);padding:28px 20px;margin:18px 0;text-align:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.grid .ph{margin:0;min-height:130px;display:grid;place-items:center}
+
+/* ── 頁尾 ── */
+.sitefoot{border-top:1px solid var(--line);background:var(--panel)}
+.sitefoot .wrap{padding-block:22px 34px;display:grid;gap:10px;font-size:var(--fs-sm);color:var(--muted)}
+.sitefoot b{color:var(--ink)}
+.stamp{font-size:var(--fs-xs)}
+.legendk{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.legendk>span{display:inline-flex;align-items:center;gap:6px}
+/* 來源標籤 */
+.mk{display:inline-block;font-size:var(--fs-pill);font-weight:700;line-height:1.5;padding:0 7px;border-radius:20px}
+.mk-acad,.mk-ind{background:none;color:var(--muted);font-weight:500;padding:0;border-radius:0;letter-spacing:.02em}
+.mk-vendor{background:var(--warnbg);color:var(--warn)}
+.mk-inf{background:var(--unkbg);color:var(--muted);border:1px dashed var(--unk)}
+
+/* ── 手機 ── */
+@media (max-width:860px){
+  .hsearch{display:none}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  .top .wrap{flex-direction:column;align-items:flex-start;gap:2px;padding-block:8px 0;position:relative}
+  .top nav{width:100%;margin-left:-11px;overflow-x:auto;scrollbar-width:none}
+  .top nav a{flex:none}
+  .theme-t{position:absolute;top:10px;right:12px}
+}

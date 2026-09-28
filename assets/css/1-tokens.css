@@ -1,0 +1,54 @@
+/* ════════════════════════════════════════════════════════════
+   1. 設計變數：顏色、字級、圓角、版面寬度
+   想換整站配色或字級，只改這一檔。
+   深色模式的顏色寫兩次（手動切換、跟隨系統），兩處要一起改。
+   ════════════════════════════════════════════════════════════ */
+:root{
+  /* 字級 */
+  --fs-mono:11.5px;   /* 等寬英文小字（網站副標） */
+  --fs-pill:12px;     /* 標籤 */
+  --fs-xs:13px;       /* 註記、說明小字 */
+  --fs-sm:14px;
+  --fs-md:15px;
+  --fs-body:16.5px;   /* 內文 */
+  --fs-lede:18px;     /* 引言、入口標題 */
+  --fs-nav:14.5px;    /* 導覽 */
+  --fs-input:16px;    /* 輸入框（手機 16 以下會自動放大） */
+  --fs-xl:20px;       /* 網站名稱、欄位標題 */
+  --fs-hero:clamp(34px,4.6vw,56px);  /* 首頁大標題 */
+
+  /* 淺色 */
+  --bg:#f6f6f3;       /* 頁面底色 */
+  --panel:#fcfcfa;    /* 卡片、輸入框底色 */
+  --ink:#252826;      /* 主要文字 */
+  --muted:#626865;    /* 次要文字 */
+  --line:#daddd9;     /* 分隔線、外框 */
+  --accent:#416f6b;   /* 品牌色：連結、導覽、按鈕 */
+  --accbg:#e6eeec;
+  --mist:#6f9997;     /* 霧青：只做裝飾 */
+  --mistbg:#e2eeeb;
+  --warn:#8f5f28;     /* 「廠商宣稱」標籤 */
+  --warnbg:#f5ebdd;
+  --unk:#646a67;
+  --unkbg:#eaecea;
+  --topbar:#7a1f1f;   /* 頂欄最上方的深紅細線 */
+
+  /* 其他 */
+  --r:3px;            /* 圓角 */
+  --maxw:1180px;      /* 內容最大寬度 */
+}
+
+/* 深色（讀者按了月亮按鈕） */
+:root[data-theme="dark"]{
+  --bg:#151816;--panel:#1e2220;--ink:#e5e7e4;--muted:#a0a6a2;--line:#343a36;
+  --accent:#86aea8;--accbg:#1f2b29;--mist:#8fb5b0;--mistbg:#1f2c2a;
+  --warn:#c78f59;--warnbg:#36291c;--unk:#9aa09c;--unkbg:#252a27;--topbar:#5a1a1a;
+}
+/* 深色（讀者沒選過、系統是深色）— 顏色和上面相同 */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#151816;--panel:#1e2220;--ink:#e5e7e4;--muted:#a0a6a2;--line:#343a36;
+    --accent:#86aea8;--accbg:#1f2b29;--mist:#8fb5b0;--mistbg:#1f2c2a;
+    --warn:#c78f59;--warnbg:#36291c;--unk:#9aa09c;--unkbg:#252a27;--topbar:#5a1a1a;
+  }
+}
