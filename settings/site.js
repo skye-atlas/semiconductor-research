@@ -11,9 +11,9 @@ window.SITE = {
   // ── 頂欄導覽：順序就是顯示順序 ──
   //   id   ：對應頁面 <body data-page="…"> 的值，用來標出「目前在哪一頁」
   //   label：顯示的文字
-  //   href ：從網站最外層算起的路徑
+  //   href ：從網站最外層算起的路徑（首頁寫空字串）
   nav: [
-    { id: "home",      label: "首頁",         href: "index.html" },
+    { id: "home",      label: "首頁",         href: "" },   // 空字串＝網站最外層，網址不帶 index.html
     { id: "landscape", label: "技術全景",     href: "pages/landscape.html" },
     { id: "domains",   label: "研究領域",     href: "pages/domains.html" },
     { id: "companies", label: "公司與供應鏈", href: "pages/companies.html" }

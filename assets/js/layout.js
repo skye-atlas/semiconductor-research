@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
     header.className = 'top';
     header.innerHTML =
       '<div class="wrap">' +
-        '<a class="brand" href="' + root + 'index.html"><b>' + S.name + '</b><small>' + S.subtitle + '</small></a>' +
+        '<a class="brand" href="' + root + '"><b>' + S.name + '</b><small>' + S.subtitle + '</small></a>' +
         '<nav>' + nav + '</nav>' +
         '<form class="hsearch" role="search" onsubmit="return false">' +
           '<input type="search" placeholder="' + (S.searchPlaceholder || '') + '" aria-label="搜尋">' +
