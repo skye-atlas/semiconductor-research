@@ -1,93 +1,155 @@
 /* ════════════════════════════════════════════════════════════
-   公司與供應鏈頁的分類設定
-   地圖的五欄、領域按鈕、每個下拉篩選的選項都從這裡產生。
-   新增或改名一個選項：改這裡就好，不用碰 HTML。
-   每一項的 id 是給程式辨認的代號（英文、不要重複），label 是畫面上的文字。
+   公司與供應鏈頁的用詞設定
+   公司檔（content/01-Companies/）裡的 role、status、nature、mark、market、type 都要用這裡的 id；
+   tools/update_stats.py 也用這裡檢查公司檔有沒有填錯。
+   研究領域與主題不在這裡：直接用 settings/landscape-frame.js，兩頁共用同一份。
+
+   格式注意：每個清單一項一行，寫成 { id: "…", label: "…" }，清單用獨立一行的 ] 結尾（檢查程式靠這個讀）。
    ════════════════════════════════════════════════════════════ */
 window.SUPPLY_CHAIN = {
 
-  // ── 五段價值鏈（地圖的五欄，由左到右）──
-  //   desc：欄位標題下方的小字說明
-  stages: [
-    { id: "materials",     label: "01 材料與關鍵元件",
-      desc: "提供後續製造所需的材料或關鍵元件 — 含光學引擎、雷射光源、光纖陣列這類還要再被整合進封裝或系統的元件" },
-    { id: "process",       label: "02 製程、設備與控制",
-      desc: "提供加工、量測、檢測、製程控制的工具與服務" },
-    { id: "manufacturing", label: "03 製造與封裝",
-      desc: "實際製造晶圓、晶片、基板、封裝或相關的中間產品" },
-    { id: "systems",       label: "04 產品與系統整合",
-      desc: "提供可被系統或平台直接採用的產品：晶片設計、光模組、網通設備與整合系統 — 「產品」包含 IC 設計，不只指整合這個動作；光學引擎要再被共同封裝進去，所以在 01" },
-    { id: "demand",        label: "05 平台與應用需求",
-      desc: "使用上述產品建構平台、資料中心或終端系統，形成最終需求" }
+  // ── 頁首一句話 ──
+  intro: "依研究領域查找公司，查看其產品、產業角色與公開證據。",
+
+  // ── 還沒有任何公司資料時的說明（有資料後就不顯示）──
+  empty: {
+    title: "目前還沒有整理公司資料。",
+    text: "整理後，這一頁可以依研究領域、研究主題、產業角色與掛牌市場篩選公司，" +
+          "在清單上直接比較各家提供的具體產品與最新公開進展；點開一家公司，" +
+          "可以看每項說法的證據、證據邊界、來源與公司之間的關係。"
+  },
+
+  // ── 角色分組（角色概覽用；沒有先後順序）──
+  roleGroups: [
+    { id: "matcomp",  label: "材料與零組件" },
+    { id: "tools",    label: "設備與檢測" },
+    { id: "make",     label: "設計與製造" },
+    { id: "products", label: "產品與系統" },
+    { id: "services", label: "服務與建置" },
+    { id: "buyers",   label: "採購與部署" }
   ],
 
-  // ── 領域按鈕 ──
-  domains: [
-    { id: "d1", label: "晶片製造與封裝整合" },
-    { id: "d2", label: "記憶體與儲存" },
-    { id: "d3", label: "高速互連與網路" },
-    { id: "d4", label: "供電與電力基礎設施" },
-    { id: "d5", label: "散熱與熱管理" }
+  // ── 產業角色：只回答「做什麼」；「在哪個領域的哪一塊」由公司檔的 section 回答 ──
+  roles: [
+    { id: "material",     label: "材料",               group: "matcomp" },
+    { id: "component",    label: "零組件與中間產品",   group: "matcomp" },
+    { id: "equipment",    label: "製程設備",           group: "tools" },
+    { id: "inspection",   label: "檢測與量測設備",     group: "tools" },
+    { id: "test",         label: "測試設備與測試介面", group: "tools" },
+    { id: "chip",         label: "晶片設計",           group: "make" },
+    { id: "foundry",      label: "晶圓製造",           group: "make" },
+    { id: "packaging",    label: "封裝與測試服務",     group: "make" },
+    { id: "system",       label: "模組與整機系統",     group: "products" },
+    { id: "service",      label: "分析、驗證與工程服務", group: "services" },
+    { id: "construction", label: "資料中心與機電建置", group: "services" },
+    { id: "customer",     label: "雲端、平台與採購部署者", group: "buyers" }
   ],
 
-  // ── 下拉篩選：順序就是畫面上的順序 ──
-  //   multi: true  可以複選；false 只能單選
-  //   options 空的（[]）：選項要等有公司資料才會出現
-  filters: [
-    { id: "role", label: "角色", multi: true, options: [
-      { id: "material",   label: "材料" },
-      { id: "component",  label: "零組件" },
-      { id: "equipment",  label: "製程設備" },
-      { id: "inspection", label: "檢測與量測" },
-      { id: "test",       label: "電性與光學測試、測試介面" },
-      { id: "substrate",  label: "基板與中介層" },
-      { id: "foundry",    label: "晶圓代工與 IDM" },
-      { id: "packaging",  label: "封裝與測試服務" },
-      { id: "service",    label: "分析與驗證服務" },
-      { id: "chip",       label: "晶片設計" },
-      { id: "system",     label: "模組與系統" },
-      { id: "power",      label: "電源與電力設備" },
-      { id: "cooling",    label: "冷卻設備" },
-      { id: "customer",   label: "雲端與平台業者" }
-    ]},
-    { id: "cap", label: "能力", multi: true, options: [] },
-    { id: "use", label: "應用", multi: true, options: [] },
-    { id: "stage", label: "商業階段", multi: true, options: [
-      { id: "research",      label: "研發" },
-      { id: "prototype",     label: "展示或試作" },
-      { id: "launch",        label: "產品發表" },
-      { id: "sampling",      label: "送樣" },
-      { id: "qualification", label: "驗證" },
-      { id: "pilot",         label: "試產" },
-      { id: "shipping",      label: "出貨" },
-      { id: "volume",        label: "量產" },
-      { id: "deployed",      label: "部署" },
-      { id: "none",          label: "出處沒寫階段" }
-    ]},
-    { id: "mkt", label: "掛牌市場", multi: true, options: [
-      { id: "tw",    label: "台股" },
-      { id: "us",    label: "美股" },
-      { id: "cn",    label: "中國 A 股" },
-      { id: "hk",    label: "港股" },
-      { id: "jp",    label: "日股" },
-      { id: "kr",    label: "韓股" },
-      { id: "eu",    label: "歐洲" },
-      { id: "other", label: "其他" },
-      { id: "none",  label: "掛牌資訊未登記" }
-    ]},
-    { id: "conf", label: "證據", multi: false, options: [
-      { id: "1", label: "已有產品/用途證據" },
-      { id: "0", label: "開發中、階段或用途待確認" }
-    ]},
-    { id: "rel", label: "關係", multi: false, options: [
-      { id: "supply",  label: "供應與代理" },
-      { id: "adopt",   label: "第三方採用" },
-      { id: "collab",  label: "合作" },
-      { id: "capital", label: "資本" },
-      { id: "compete", label: "競爭與替代" }
-    ]}
+  // ── 公開進展：彼此不排順序、不合成進度 ──
+  status: [
+    { id: "research",   label: "研發中" },
+    { id: "capability", label: "具備能力" },
+    { id: "demo",       label: "技術展示" },
+    { id: "sampling",   label: "送樣" },
+    { id: "customer",   label: "客戶驗證" },
+    { id: "shipping",   label: "商業出貨" },
+    { id: "revenue",    label: "相關收入" },
+    { id: "profit",     label: "獲利與現金流" }
   ],
 
-  // ── 說明文字裡的關係圖例（外框樣式在 assets/css/4-supply-chain.css 的 .rel-*）──
-  relationLegend: ["supply", "adopt", "collab", "capital"]
+  // ── 來源性質：這是什麼來源（證據的 nature 用這裡的 id）。它不代表「證實到哪」，證實程度看下面的 marks ──
+  //   推論不是來源，只寫在研究判讀裡
+  nature: [
+    { id: "academic",  label: "學術" },
+    { id: "industry",  label: "產業" },
+    { id: "vendor",    label: "廠商宣稱" }
+  ],
+
+  // ── 證據狀態：這件事證實到哪（角色的 state.mark 與 progress.mark 用這裡的 id）──
+  //   label 是說明，tag 是畫面上的短標記；樣式在 assets/css/2-base.css 的 .ev-<style>
+  //   fact：已有獨立或客觀可驗證的證據（正式公告的設備採購、實際揭露的營收、客戶端確認）
+  //   said：被描述為已發生，但主要證據仍來自公司自己
+  //   plan：還沒發生的時程或目標（只用在進度）
+  //   inferred：研究者從幾筆證據推出來的（只用在現況）
+  marks: [
+    { id: "fact",     label: "已確認",       tag: "已確認",   style: "fact" },
+    { id: "said",     label: "公司說法",     tag: "公司說法", style: "said" },
+    { id: "plan",     label: "已宣布或計畫中", tag: "計畫",   style: "plan" },
+    { id: "inferred", label: "研究者推論",   tag: "推論",     style: "inf" }
+  ],
+
+  // ── 來源類型：來源筆記開頭的 kind 用這裡的 id；voice 是「誰說的」，會顯示在每條證據旁；hint 是來源庫說明裡的「適合拿來確認什麼」──
+  //   例：公司說法 · 法說會逐字稿 · 2026-09-24
+  sourceKinds: [
+    { id: "transcript", label: "法說會逐字稿", voice: "公司說法", hint: "管理層當天怎麼說、怎麼回答問題" },
+    { id: "slides",     label: "法說會簡報",   voice: "公司說法", hint: "公司揭露的財務數字與官方說法" },
+    { id: "filing",     label: "財報與年報",   voice: "公司申報", hint: "正式申報的事實與目標" },
+    { id: "press",      label: "公司新聞稿",   voice: "公司說法", hint: "公司宣布的里程碑；未經第三方驗證" },
+    { id: "web",        label: "公司官網",     voice: "公司說法", hint: "擷取當時的產品定位；內容會更新" },
+    { id: "product",    label: "產品文件",     voice: "公司說法", hint: "產品規格與架構；不代表出貨量" },
+    { id: "customer",   label: "客戶文件",     voice: "客戶說法", hint: "採用方的確認" },
+    { id: "broker",     label: "券商報告",     voice: "券商轉述", hint: "轉述的公司資訊與券商自己的假設" },
+    { id: "news",       label: "媒體報導",     voice: "媒體轉述", hint: "事件的時間點；說法以原始出處為準" },
+    { id: "industry",   label: "產業報告",     voice: "產業分析", hint: "市場定義、分類與研究機構的估計" },
+    { id: "paper",      label: "學術論文",     voice: "學術研究", hint: "原理、作者的試算與結論；注意年代" },
+    { id: "standard",   label: "標準文件",     voice: "標準組織", hint: "定義、要求與架構選項；不代表有產品採用" },
+    { id: "patent",     label: "專利",         voice: "專利文件", hint: "技術方向；不代表量產" },
+    { id: "teardown",   label: "產品拆解",     voice: "實物驗證", hint: "產品實際用了什麼" },
+    { id: "other",      label: "其他",         voice: "其他來源", hint: "" }
+  ],
+
+  // ── 來源筆記「關鍵陳述」的性質類別：每一條說法這份來源怎麼說的（定義見 content/04-Sources/_說明.md）──
+  //   筆記裡寫 label（可加「（補充）」）；style 決定來源頁上的標記樣式（2-base.css 的 .ev-<style>）
+  //   綠＝已發生；橘＝公司自己說；橘虛線＝未來；灰＝定義、規格以外的第三方或學術；灰虛線＝模型與分析
+  claimKinds: [
+    { id: "done",      label: "已實現",         style: "fact" },
+    { id: "spec",      label: "產品規格",       style: "said" },
+    { id: "standard",  label: "標準／框架定義", style: "unknown" },
+    { id: "stated",    label: "公司陳述",       style: "said" },
+    { id: "target",    label: "目標與預測",     style: "plan" },
+    { id: "model",     label: "試算與假設",     style: "inf" },
+    { id: "judgment",  label: "作者判斷",       style: "unknown" },
+    { id: "relay",     label: "轉述",           style: "unknown" },
+    { id: "analysis",  label: "外部分析",       style: "inf" }
+  ],
+
+  // ── 量產狀態的固定五格（公司檔角色裡 commercial 的 group 用這裡的 id；順序就是畫面順序）──
+  commercialGroups: [
+    { id: "invest",   label: "投入", hint: "資本支出、設備、廠房、產線" },
+    { id: "qualify",  label: "驗證", hint: "送樣、客戶驗證" },
+    { id: "capacity", label: "產能", hint: "月產能、設備數、良率" },
+    { id: "ship",     label: "出貨", hint: "首批出貨、量產時間" },
+    { id: "scale",    label: "規模", hint: "這項業務的營收、客戶數與客戶類型" }
+  ],
+
+  // ── 掛牌市場 ──
+  markets: [
+    { id: "tw",    label: "台股" },
+    { id: "us",    label: "美股" },
+    { id: "cn",    label: "中國 A 股" },
+    { id: "hk",    label: "港股" },
+    { id: "jp",    label: "日股" },
+    { id: "kr",    label: "韓股" },
+    { id: "eu",    label: "歐洲市場" },
+    { id: "other", label: "其他市場" }
+  ],
+
+  // ── 關係的證實狀態：這段關係本身被證實到哪（和來源品質無關；來源類型由來源筆記帶出）──
+  //   confirmed：對方或採用方官方具名確認　stated：只有本公司自己公開表示　reported：券商、媒體等第三方指向，雙方都沒具名
+  //   再可信的券商寫得再明確，仍然是 reported；推論出來的關係不記成關係，寫在研究判讀
+  relationStatus: [
+    { id: "confirmed", label: "對方官方具名", style: "fact" },
+    { id: "stated",    label: "公司自述",     style: "said" },
+    { id: "reported",  label: "第三方指向",   style: "unknown" }
+  ],
+
+  // ── 公司關係：一律從公司檔本身的角度寫 ──
+  relations: [
+    { id: "supply",     label: "供應" },
+    { id: "distribute", label: "代理" },
+    { id: "adopt",      label: "採用" },
+    { id: "collab",     label: "合作" },
+    { id: "capital",    label: "資本" },
+    { id: "compete",    label: "競爭與替代" }
+  ]
 };

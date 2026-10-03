@@ -36,7 +36,7 @@ a{color:var(--accent)}
   :root:not([data-theme="light"]) .ic-moon{display:none}
 }
 
-/* ── 內頁版型（技術全景、研究領域、公司與供應鏈）── */
+/* ── 內頁版型（研究領域、公司與供應鏈）── */
 .page{padding:48px 0 72px}
 .crumb{font-size:var(--fs-xs);color:var(--muted)}
 .crumb a{color:var(--muted)}
@@ -45,6 +45,58 @@ a{color:var(--accent)}
 .ph{border:1px dashed var(--line);border-radius:var(--r);background:var(--panel);color:var(--muted);font-size:var(--fs-sm);padding:28px 20px;margin:18px 0;text-align:center}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
 .grid .ph{margin:0;min-height:130px;display:grid;place-items:center}
+
+/* ── 互動外觀：每一種只用在一個用途 ── */
+/* 鍵盤焦點：一律可見 */
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--r)}
+/* 文章連結：重點色＋底線 */
+.art{color:var(--accent);font-weight:600;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.art:hover{text-decoration-thickness:2px}
+/* 靜態標籤：低對比、沒有外框，不可點 */
+.tag{display:inline-block;font-size:var(--fs-pill);line-height:1.6;color:var(--muted);background:var(--unkbg);border-radius:var(--r);padding:0 6px;white-space:nowrap}
+/* 證據標記：全站用同一套語意，靠文字＋形狀區分，不只靠顏色
+   fact 已確認（實心深綠）／said 公司說法（橘底）／plan 計畫中（虛線框）／unknown 未知（灰）／inf 研究者推論（虛線灰框） */
+.ev{display:inline-flex;align-items:center;font-size:var(--fs-pill);line-height:1.6;border-radius:var(--r);padding:0 6px;white-space:nowrap;border:1px solid transparent}
+.ev b{font-weight:700}
+.ev-fact{background:var(--accent);color:var(--panel)}
+.ev-said{background:var(--warnbg);color:var(--warn)}
+.ev-plan{border:1px dashed var(--warn);color:var(--warn)}
+.ev-unknown{background:var(--unkbg);color:var(--muted)}
+.ev-inf{border:1px dashed var(--unk);color:var(--muted)}
+/* 內文寬度：長篇說明不要一行跨整個畫面 */
+.measure{max-width:40em}
+
+/* ── 來源抽屜（assets/js/drawer.js）：點出處時從右邊滑出，貼在頂欄下方 ── */
+.cp-srcbtn,.sc-srcbtn{cursor:pointer}
+.cp-srcbtn[aria-expanded="true"],.sc-srcbtn[aria-expanded="true"]{color:var(--accent);font-weight:700}
+.dr{position:fixed;right:0;bottom:0;z-index:25;width:min(460px,100vw);background:var(--panel);border-left:1px solid var(--line);
+  box-shadow:-12px 0 28px rgba(0,0,0,.08);transform:translateX(100%);transition:transform .18s ease-out;display:flex;flex-direction:column}
+.dr[hidden]{display:none}
+.dr.on{transform:none}
+@media (prefers-reduced-motion:reduce){ .dr{transition:none} }
+.dr-close{position:absolute;top:8px;right:10px;width:36px;height:36px;border:0;background:none;color:var(--muted);font-size:24px;line-height:1;cursor:pointer;border-radius:50%}
+.dr-close:hover{color:var(--ink);background:var(--unkbg)}
+.dr-body{overflow-y:auto;padding:22px 24px 40px;font-size:var(--fs-sm);line-height:1.75;outline:none}
+.dr-prov{margin:0 40px 2px 0;font-size:var(--fs-xs);color:var(--muted)}
+.dr-prov b{color:var(--ink);font-weight:600}
+.dr-title{margin:0 40px 4px 0;font-size:var(--fs-lede);line-height:1.45;font-weight:700}
+.dr-go{margin:0 0 6px;text-align:right}
+.dr section{padding:14px 0 4px;border-top:1px solid var(--line);margin-top:10px}
+.dr h3{margin:0 0 8px;font-size:var(--fs-xs);font-weight:700;color:var(--muted);letter-spacing:.06em;display:flex;gap:8px;align-items:center}
+.dr-kv{margin:0}
+.dr-kv div{display:grid;grid-template-columns:5em minmax(0,1fr);gap:10px;padding:4px 0}
+.dr-kv dt{color:var(--muted);font-size:var(--fs-xs);padding-top:2px}
+.dr-kv dd{margin:0}
+.dr-proves h4{margin:8px 0 2px;font-size:var(--fs-xs);color:var(--muted)}
+.dr-proves ul{margin:0 0 6px;padding-left:1.1em;font-size:var(--fs-xs);line-height:1.7}
+.dr-proves table{border-collapse:collapse;width:100%}
+.dr-proves thead{display:none}
+.dr-proves td{vertical-align:top;padding:6px 8px 6px 0;border-bottom:1px dashed var(--line);font-size:var(--fs-xs);line-height:1.7}
+.dr-proves td:first-child{white-space:nowrap}
+.dr-uses{list-style:none;margin:0;padding:0}
+.dr-uses button{display:flex;gap:8px;align-items:baseline;width:100%;text-align:left;font:inherit;font-size:var(--fs-xs);color:var(--ink);background:none;border:0;border-bottom:1px dashed var(--line);padding:6px 0;cursor:pointer}
+.dr-uses button:hover{color:var(--accent)}
+/* 抽屜開著時，內文左緣不動、右邊被蓋到才往內縮：位置由 assets/js/drawer.js 量好後設定 */
 
 /* ── 頁尾 ── */
 .sitefoot{border-top:1px solid var(--line);background:var(--panel)}
@@ -69,4 +121,6 @@ a{color:var(--accent)}
   .top nav{width:100%;margin-left:-11px;overflow-x:auto;scrollbar-width:none}
   .top nav a{flex:none}
   .theme-t{position:absolute;top:10px;right:12px}
+  .brand{padding-right:44px}                                  /* 讓出右上角深淺色按鈕的位置 */
+  .brand small{letter-spacing:.04em;text-wrap:balance}        /* 副標太長時字距收一點；要換行就兩行平均 */
 }

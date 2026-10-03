@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>來源庫｜天空研究室</title>
+<link rel="stylesheet" href="../assets/css/1-tokens.css">
+<link rel="stylesheet" href="../assets/css/2-base.css">
+<link rel="stylesheet" href="../assets/css/9-sources.css">
+<!-- 用詞（來源類型）→ 來源清單與公司資料（由 tools/update_stats.py 產生）→ 畫面程式 -->
+<script src="../settings/site.js"></script>
+<script src="../settings/supply-chain.js"></script>
+<script src="../generated/stats.js"></script>
+<script src="../generated/sources.js"></script>
+<script src="../generated/companies.js"></script>
+<script src="../assets/js/layout.js"></script>
+<script src="../assets/js/sources.js"></script>
+</head>
+<body data-page="sources" data-root="..">
+
+<header id="site-header"></header>
+
+<main class="wrap">
+<section class="page">
+  <div class="crumb"><a href="../index.html">首頁</a> · 來源庫</div>
+  <h1 class="serif">來源庫</h1>
+  <p class="lede">網站上每一條證據最後都連到這裡的一份來源筆記：這是什麼來源、它能支持什麼、原始依據在哪一條哪一頁。原始檔只保存在本機，不放上網站。</p>
+
+  <!-- ════ 篩選與清單（由 assets/js/sources.js 產生）════ -->
+  <div class="so-tools" id="so-tools" hidden></div>
+  <div id="so-list" aria-live="polite"></div>
+  <details class="so-help" id="so-help"></details>
+</section>
+</main>
+
+<footer id="site-footer"></footer>
+</body>
+</html>

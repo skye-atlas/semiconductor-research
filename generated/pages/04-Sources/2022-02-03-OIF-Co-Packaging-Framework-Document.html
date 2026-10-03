@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 由 tools/build_pages.py（來源頁版型：tools/source_page.py）自動產生，不要手改；要改內容請改 content/04-Sources/ -->
+<title>OIF Co-Packaging Framework Document（2022-02-03）｜來源庫｜天空研究室</title>
+<link rel="stylesheet" href="../../../assets/css/1-tokens.css">
+<link rel="stylesheet" href="../../../assets/css/2-base.css">
+<link rel="stylesheet" href="../../../assets/css/6-article.css">
+<link rel="stylesheet" href="../../../assets/css/10-source.css">
+<script src="../../../settings/site.js"></script>
+<script src="../../../generated/stats.js"></script>
+<script src="../../../assets/js/layout.js"></script>
+<script src="../../../assets/js/source.js"></script>
+</head>
+<body data-page="sources" data-root="../../..">
+
+<header id="site-header"></header>
+
+<main class="wrap">
+<div class="sp">
+  <article class="sp-main">
+    <div class="sp-head"><div class="crumb"><a href="../../../index.html">首頁</a> · <a href="../../../pages/sources.html">來源庫</a> · OIF · 2022-02-03</div><p class="sp-chips"><b>標準組織</b><span>標準文件</span><span>2022-02-03</span><span>OIF</span></p><h1 class="serif">OIF Co-Packaging Framework Document（2022-02-03）</h1><p class="sp-summary">OIF 定義 co-packaging：光學引擎與主晶片同一基板；雷射可在引擎內或外部，外部可更換但損耗較高。</p></div>
+    <section class="sp-sec" id="boundary"><h2>證據界線</h2><div class="sp-bound"><div class="sp-can"><h3>可以支持</h3><ul><li>產業組織對 co-packaging 的定義：重點是「與主晶片同一個基板」（O1）</li><li>產業組織認為雷射可以整合在引擎內或放外部，兩者各有取捨（O4–O6）</li><li>外部光源的主要理由是可更換與散熱分離，代價是損耗與更高輸出功率（O5）</li></ul></div><div class="sp-cannot"><h3>無法支持</h3><ul><li>任何產品已採用哪一種光源 — 這是框架文件，不是產品資料</li><li>ELS 的具體外型規格 — 本文只說要標準化，規格見 2023 年的 ELSFP 實作協議</li></ul></div></div></section><section class="sp-sec" id="claims"><h2>關鍵陳述<small>8 條</small></h2><ol class="sp-claims"><li id="O1" data-kind="standard"><p class="sp-c-text">Co-packaging 的定義：光或電通訊元件與主晶片（host ASIC）放在同一個一級基板上；光學引擎靠近 ASIC，可減少高速電通道的損耗與阻抗不連續</p><p class="sp-c-meta"><span class="ev ev-unknown"><b>標準／框架定義</b></span><span class="sp-c-pos">第 9 頁 §5、圖 1</span><a class="sp-c-id" href="#O1" title="連到這一條">O1</a></p></li><li id="O2" data-kind="standard"><p class="sp-c-text">共同封裝組件（CPA）是多晶片模組，ASIC 與光學引擎（OE）或電引擎（EE）可用插座或焊接放在高效能基板上</p><p class="sp-c-meta"><span class="ev ev-unknown"><b>標準／框架定義</b></span><span class="sp-c-pos">第 9 頁 §5</span><a class="sp-c-id" href="#O2" title="連到這一條">O2</a></p></li><li id="O3" data-kind="standard"><p class="sp-c-text">資料中心交換的需求表：每引擎 3.2 Tb/s、每台 51.2T 交換器 16 個引擎、引擎可靠度 10 FIT、光源可靠度 50 FIT、壽命 6 年；能耗目標含光源在內 15 pJ/b</p><p class="sp-c-meta"><span class="ev ev-unknown"><b>標準／框架定義</b></span><span class="sp-c-q">框架目標</span><span class="sp-c-pos">第 13 頁 表 1</span><a class="sp-c-id" href="#O3" title="連到這一條">O3</a></p></li><li id="O4" data-kind="standard"><p class="sp-c-text">以矽光子做光學引擎時，雷射可以整合在引擎內，也可以放在外部；外部時用高功率連續波（CW）光源，搭配調變器產生資料光</p><p class="sp-c-meta"><span class="ev ev-unknown"><b>標準／框架定義</b></span><span class="sp-c-q">說明</span><span class="sp-c-pos">第 18 頁 §7.3.1</span><a class="sp-c-id" href="#O4" title="連到這一條">O4</a></p></li><li id="O5" data-kind="standard"><p class="sp-c-text">外部光源（ELS）的好處：雷射壞了可在面板直接更換、不必停機；雷射和交換晶片分開，散熱環境都較好。代價是插入損耗較高，要用更高輸出功率補償</p><p class="sp-c-meta"><span class="ev ev-unknown"><b>標準／框架定義</b></span><span class="sp-c-q">說明</span><span class="sp-c-pos">第 18 頁 §7.3.1</span><a class="sp-c-id" href="#O5" title="連到這一條">O5</a></p></li><li id="O6" data-kind="standard"><p class="sp-c-text">引擎內整合雷射要克服的損耗較少，可用較低光功率；短距離用 VCSEL 搭配多模光纖可能最便宜、最省電</p><p class="sp-c-meta"><span class="ev ev-unknown"><b>標準／框架定義</b></span><span class="sp-c-q">說明</span><span class="sp-c-pos">第 18 頁 §7.3.1</span><a class="sp-c-id" href="#O6" title="連到這一條">O6</a></p></li><li id="O7" data-kind="standard"><p class="sp-c-text">一個外部光源外型可放多顆雷射；分光可以在 ELS 內、OE 內或兩者之間，圖 10 列出六種供光情境</p><p class="sp-c-meta"><span class="ev ev-unknown"><b>標準／框架定義</b></span><span class="sp-c-q">說明</span><span class="sp-c-pos">第 19–20 頁、圖 9–10</span><a class="sp-c-id" href="#O7" title="連到這一條">O7</a></p></li><li id="O8" data-kind="standard"><p class="sp-c-text">未來 ELS 模組的標準化（OIF 實作協議或 MSA）必須和共同封裝生態系的其他元素協調；ELS 必須符合雷射眼睛安全標準，安全機制通常要硬體實作</p><p class="sp-c-meta"><span class="ev ev-unknown"><b>標準／框架定義</b></span><span class="sp-c-q">說明</span><span class="sp-c-pos">第 20 頁、圖 11</span><a class="sp-c-id" href="#O8" title="連到這一條">O8</a></p></li></ol><div class="sp-note"><p>未摘錄：電介面（第 15–17 頁，重定時、線性等四種）、機構與散熱（第 22–26 頁）、可靠度（第 27 頁）、附錄 B 的雷射安全計算（第 32–51 頁）。</p></div></section><section class="sp-sec sp-interp" id="interp"><h2>研究解讀</h2><p class="sp-k">本站的判讀，不是來源原文</p><div class="ar-body"><ul>
+<li>表 1 的數字（3.2T 引擎、16 個、FIT 值）是 2022 年的框架目標，後來的產品不一定照這個切分；例如 Broadcom Bailly 是 8 個 6.4T 引擎（依據：見 Broadcom 簡報 第 10 頁）。</li>
+<li>文件名稱是 Framework Document，封面卻寫「Implementation Agreement created and approved」，以文件編號 FD 為準。</li>
+</ul></div></section>
+    <p class="ar-back"><a href="../../../pages/sources.html">← 回到來源庫</a></p>
+  </article>
+  <aside class="sp-side"><nav class="sp-toc" aria-label="本頁章節"><p>本頁章節</p><ul><li><a href="#boundary">證據界線</a></li><li><a href="#claims">關鍵陳述</a></li><li><a href="#interp">研究解讀</a></li></ul></nav><div class="sp-box"><p>來源資訊</p><dl class="sp-info"><div><dt>場合</dt><dd>Co-Packaging Framework Document（OIF-Co-Packaging-FD-01.0）</dd></div><div><dt>發言人</dt><dd>Kenneth Jackson（Sumitomo Electric，技術編輯）</dd></div><div><dt>發布者</dt><dd>OIF（Optical Internetworking Forum，光網路產業組織，成員超過 100 家公司）</dd></div><div><dt>日期</dt><dd>2022-02-03（文件封面）；修訂紀錄誤植為 2020</dd></div><div><dt>類型</dt><dd>產業組織的框架文件（Framework Document），53 頁；不是規格，不具約束力</dd></div><div><dt>證據性質</dt><dd>產業共識的需求整理；部分數值是目標或範例</dd></div><div><dt>距離</dt><dd>一手</dd></div><div><dt>原始檔</dt><dd><span class="raw-name">2022-02-03-OIF-Co-Packaging-Framework-Document.pdf</span></dd></div></dl><div class="sp-info-note"><p>頁碼即文件頁碼。</p></div></div><div class="sp-box"><p>相關來源</p><ul class="sp-rel"><li><a href="2023-08-08-OIF-ELSFP-Implementation-Agreement.html">OIF ELSFP Implementation Agreement（2023-08-08）</a><span>標準組織 · 2023-08-08</span><em>提到本頁</em></li><li><a href="2010-07-30-Nature-Photonics-Silicon-Optical-Modulators.html">Silicon optical modulators（Nature Photonics，2010-07-30）</a><span>學術研究 · 2010-07-30</span><em>提到本頁</em></li></ul></div></aside>
+</div>
+</main>
+
+<footer id="site-footer"></footer>
+</body>
+</html>

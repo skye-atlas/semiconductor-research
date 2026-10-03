@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>半導體技術研究資料庫｜天空研究室</title>
+<title>半導體與運算基礎設施｜天空研究室</title>
 <!-- 樣式：1 變數 → 2 全站共用 → 3 首頁 -->
 <link rel="stylesheet" href="assets/css/1-tokens.css">
 <link rel="stylesheet" href="assets/css/2-base.css">
@@ -22,24 +22,24 @@
 <section class="hero">
   <div>
     <!-- ════ 大標題與介紹 ════ -->
-    <h1 class="serif">半導體技術研究資料庫</h1>
-    <p class="lede">從技術原理一路讀到製程、量產瓶頸與供應鏈。每個重要說法都連回來源，並標明目前成立到什麼程度。</p>
+    <h1 class="serif">半導體與<span class="nb">運算基礎設施</span></h1>
+    <p class="lede">從運算晶片、記憶體與互連，一路到機房的供電與冷卻：先問需求與限制，再讀技術、公司與證據。每個重要說法都連回來源，並標明目前成立到什麼程度。</p>
 
     <!-- ════ 入口 ════ -->
     <div class="entries">
-      <a href="pages/landscape.html"><b>看全景 →</b><span>先知道一項技術位在產業的哪一塊，以及各主題目前收錄了哪些內容</span></a>
-      <a href="pages/domains.html"><b>深入一個主題 →</b><span>從五個研究領域選一個，看它在問什麼、目前答到哪裡</span></a>
+      <a href="pages/domains.html"><b>研究領域 →</b><span>從需求端、五個技術系統與共通支援中選一個，看它在問什麼、有哪些文章</span></a>
+      <a href="pages/companies.html"><b>公司與供應鏈 →</b><span>哪些公司在各研究主題裡提供什麼，公開證據走到哪裡</span></a>
     </div>
 
-    <!-- ════ 搜尋框 ════ -->
-    <label class="qlabel" for="q">已經有想查的說法？</label>
-    <form class="qbox" role="search" onsubmit="return false">
-      <input id="q" type="search" placeholder="搜尋技術、公司或主張，例如：翹曲、TGV、光纖耦合">
+    <!-- ════ 搜尋框：送到 pages/search.html ════ -->
+    <label class="qlabel" for="q">已經有想查的東西？</label>
+    <form class="qbox" role="search" action="pages/search.html" method="get">
+      <input id="q" name="q" type="search" placeholder="搜尋領域、技術、公司或來源，例如：CPO、HBM、冷板">
       <button type="submit">搜尋</button>
     </form>
 
     <!-- ════ 統計列：數字由 tools/update_stats.py 自動填 ════ -->
-    <p class="stats">全景 <span data-stat="topics">0</span> 個主題、<span data-stat="tech">0</span> 個已有技術頁 · 更新至 <span data-stat="updated">—</span></p>
+    <p class="stats"><span data-stat="topics">0</span> 個主題、<span data-stat="tech">0</span> 個已有技術頁、<span data-stat="companies">0</span> 家公司 · 更新至 <span data-stat="updated">—</span></p>
   </div>
 
   <!-- ════ 形象圖 ════ -->

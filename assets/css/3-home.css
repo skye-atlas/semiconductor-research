@@ -5,8 +5,9 @@
 /* ── 左文右圖 ── */
 .hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:48px;align-items:center;padding:64px 0 56px}
 .hero h1{font-size:var(--fs-hero);line-height:1.2;margin:0 0 22px;letter-spacing:.01em}
+.hero h1 .nb{white-space:nowrap}   /* 標題太長要換行時，這一段不拆開 */
 
-/* ── 入口（看全景、深入一個主題）── */
+/* ── 入口（研究領域、公司與供應鏈）── */
 .entries{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .entries a{display:block;padding:18px 20px 20px 0;text-decoration:none;color:var(--ink)}
 .entries a+a{border-left:1px solid var(--line);padding-left:26px}

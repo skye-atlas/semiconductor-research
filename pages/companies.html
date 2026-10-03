@@ -4,15 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>公司與供應鏈｜天空研究室</title>
-<!-- 樣式：1 變數 → 2 全站共用 → 4 公司與供應鏈 -->
 <link rel="stylesheet" href="../assets/css/1-tokens.css">
 <link rel="stylesheet" href="../assets/css/2-base.css">
 <link rel="stylesheet" href="../assets/css/4-supply-chain.css">
-<!-- 設定與資料 → 程式 -->
+<!-- 設定（用詞、研究架構）→ 公司資料（由 tools/update_stats.py 產生）→ 畫面程式 -->
 <script src="../settings/site.js"></script>
 <script src="../settings/supply-chain.js"></script>
+<script src="../settings/landscape-frame.js"></script>
 <script src="../generated/stats.js"></script>
+<script src="../generated/companies.js"></script>
+<script src="../generated/sources.js"></script>
 <script src="../assets/js/layout.js"></script>
+<script src="../assets/js/drawer.js"></script>
 <script src="../assets/js/supply-chain.js"></script>
 </head>
 <body data-page="companies" data-root="..">
@@ -21,37 +24,22 @@
 
 <main class="wrap">
 <section class="page">
-  <div class="crumb"><a href="../">首頁</a> · 公司與供應鏈</div>
+  <div class="crumb"><a href="../index.html">首頁</a> · 公司與供應鏈</div>
   <h1 class="serif">公司與供應鏈</h1>
-  <h2 class="sc-h">產業角色地圖</h2>
-  <p class="lede"><b>這張地圖把不同研究領域投影到同一套五段價值鏈座標。</b>每個位置代表一家公司在特定領域的角色，都有來源支持；數字是本庫目前收錄的具名公司數（同一家只算一次，不含未具名紀錄）。</p>
+  <!-- 一句話：文字在 settings/supply-chain.js 的 intro -->
+  <p class="lede" id="sc-intro"></p>
 
-  <!-- ════ 篩選區：按鈕與選項由 settings/supply-chain.js 產生 ════ -->
-  <div class="sc-filters">
-    <div class="sc-search">
-      <label for="sc-q">找公司</label>
-      <input id="sc-q" type="search" placeholder="公司名稱或能力，例如：前鼎、Corning、CDU" autocomplete="off">
-    </div>
-    <div class="sc-fr" id="sc-domains"><span>領域</span></div>
-    <div class="sc-fr sc-ddr" id="sc-dropdowns">
-      <span class="sc-view" role="group" aria-label="顯示方式"><span>顯示</span><button type="button" class="sc-names" data-v="0" aria-pressed="true">只看結構</button><button type="button" class="sc-names" data-v="1" aria-pressed="false">展開公司</button><button type="button" class="sc-names" data-v="list" aria-pressed="false">公司清單</button></span>
-    </div>
-  </div>
+  <!-- ════ 搜尋與篩選（由 assets/js/supply-chain.js 產生；沒有公司資料時不顯示）════ -->
+  <div class="sc-tools" id="sc-tools" hidden></div>
 
-  <!-- ════ 說明與關係圖例 ════ -->
-  <p class="sc-rkey">點角色或細項展開公司（依名稱排，不是排名）；點一家公司，列出它能做什麼、關係與來源。五段是價值創造的位置，不是供貨順序。<span id="sc-legend"></span>　競爭與替代只收來源明說的。「公司清單」一列一個位置，套用上面的篩選。</p>
+  <!-- ════ 結果：公司清單或角色概覽 ════ -->
+  <div id="sc-results" aria-live="polite"></div>
 
-  <!-- ════ 目前條件 ════ -->
-  <div class="sc-cur" aria-live="polite"><span class="sc-curk">目前條件</span><span class="sc-curv">沒有篩選：顯示全部位置</span></div>
-
-  <!-- ════ 五欄地圖：欄位由 settings/supply-chain.js 產生 ════ -->
-  <div class="sc-map" id="sc-map"></div>
-
-  <!-- ════ 公司清單（按「公司清單」時出現）════ -->
-  <section class="sc-list" id="sc-list" hidden>
-    <h2>公司清單</h2>
-    <p class="sc-empty">本庫還沒有收錄公司位置</p>
-  </section>
+  <!-- ════ 分類與證據說明：預設收起 ════ -->
+  <details class="sc-help">
+    <summary>分類與證據說明</summary>
+    <div id="sc-help"></div>
+  </details>
 </section>
 </main>
 

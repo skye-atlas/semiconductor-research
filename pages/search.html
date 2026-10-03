@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>搜尋｜天空研究室</title>
+<link rel="stylesheet" href="../assets/css/1-tokens.css">
+<link rel="stylesheet" href="../assets/css/2-base.css">
+<link rel="stylesheet" href="../assets/css/7-search.css">
+<!-- 搜尋的資料：研究架構、文章清單、用詞 → 公司與網頁索引（由 tools/update_stats.py 產生）→ 畫面程式 -->
+<script src="../settings/site.js"></script>
+<script src="../settings/landscape-frame.js"></script>
+<script src="../settings/landscape.js"></script>
+<script src="../settings/supply-chain.js"></script>
+<script src="../generated/stats.js"></script>
+<script src="../generated/companies.js"></script>
+<script src="../generated/pages-index.js"></script>
+<script src="../assets/js/layout.js"></script>
+<script src="../assets/js/search.js"></script>
+</head>
+<body data-page="search" data-root="..">
+
+<header id="site-header"></header>
+
+<main class="wrap">
+<section class="page">
+  <div class="crumb"><a href="../index.html">首頁</a> · 搜尋</div>
+  <h1 class="serif">搜尋</h1>
+
+  <!-- ════ 搜尋框（頂欄與首頁的搜尋框也會送到這裡，網址是 search.html?q=關鍵字）════ -->
+  <form class="sr-form" role="search" action="search.html" method="get">
+    <label for="sr-q">搜尋研究領域、主題、文章、公司與來源筆記</label>
+    <div><input id="sr-q" name="q" type="search" autocomplete="off"><button type="submit">搜尋</button></div>
+  </form>
+
+  <!-- ════ 結果（由 assets/js/search.js 產生）════ -->
+  <div id="sr-results" aria-live="polite"></div>
+</section>
+</main>
+
+<footer id="site-footer"></footer>
+</body>
+</html>

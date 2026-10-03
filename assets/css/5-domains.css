@@ -1,0 +1,79 @@
+/* ════════════════════════════════════════════════════════════
+   5. 研究領域頁：左側導覽＋右側總覽或單一領域
+   ════════════════════════════════════════════════════════════ */
+
+.gd-page{padding-top:28px}
+.gd{display:grid;grid-template-columns:230px minmax(0,1fr);gap:0 48px;align-items:start;margin-top:18px}
+
+/* ── 左側導覽 ──
+   選取：左側色條＋粗體＋淡底；滑過：只有更淡的底色；鍵盤焦點：外框（全站共用） */
+.gd-side{position:sticky;top:84px;border-right:1px solid var(--line);padding-right:16px;min-height:60vh}
+.gd-scope{margin:0 0 8px;font-size:var(--fs-xs);color:var(--muted);letter-spacing:.04em}
+.gd-sel-label,.gd-side select{display:none}
+.gd-nav{display:grid;gap:2px}
+.gd-nav a{display:block;padding:7px 12px;border-left:3px solid transparent;text-decoration:none;color:var(--ink);font-size:var(--fs-md);line-height:1.5}
+.gd-nav a:hover{background:var(--panel)}
+.gd-nav a[aria-current="page"]{border-left-color:var(--accent);background:var(--accbg);font-weight:700}
+.gd-glabel{margin:18px 0 2px;padding-left:15px;font-size:var(--fs-pill);color:var(--muted);letter-spacing:.08em}
+
+/* ── 右側：標題區 ── */
+.gd-main{min-width:0}
+.gd-back{display:none}
+.gd-title{font-size:clamp(28px,3.2vw,38px);line-height:1.3;margin:0 0 8px}
+.gd-q{font-size:var(--fs-lede);line-height:1.8;margin:0 0 12px;color:var(--muted)}
+.gd-intro{font-size:var(--fs-body);line-height:1.9;margin:0}
+.gd-guide{margin:12px 0 0;font-size:var(--fs-md)}
+.gd-h{font-size:var(--fs-sm);font-weight:700;color:var(--muted);letter-spacing:.06em;margin:36px 0 0;padding-bottom:6px;border-bottom:1px solid var(--line)}
+
+/* ── 主要主題：名稱在左，說明與文章在右；沒有文章的只是純文字 ── */
+.gd-sec{display:grid;grid-template-columns:170px minmax(0,1fr);gap:0 24px;padding:12px 0;border-bottom:1px solid var(--line);font-size:var(--fs-sm)}
+.gd-sec h3{grid-row:span 4;margin:0;font-size:var(--fs-md);font-weight:600;line-height:1.6}
+.gd-sec>p{margin:0;color:var(--muted);line-height:1.7}
+.gd-sec>p.gd-todo{color:var(--ink);margin-top:4px}
+.gd-co{margin-left:12px;white-space:nowrap}
+.gd-sec>p.gd-keys{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:6px}
+.gd-keys span{font-size:var(--fs-xs);color:var(--muted);border:1px solid var(--line);border-radius:var(--r);padding:0 7px;line-height:1.7}
+.gd-arts{list-style:none;margin:6px 0 0;padding:0}
+.gd-arts>li{padding:6px 0}
+.gd-arts p{margin:2px 0;line-height:1.7}
+.gd-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:var(--fs-xs);color:var(--muted)}
+.gd-cases{margin:4px 0 0;padding-left:18px;font-size:var(--fs-xs);color:var(--muted)}
+.gd-cases .tag{margin-right:6px}
+
+/* ── 收起的區塊：分類軸、研究方法（整列都可點）── */
+.gd-fold{margin-top:22px;font-size:var(--fs-sm)}
+.gd-fold summary{display:list-item;cursor:pointer;font-weight:600;color:var(--muted);padding:6px 0}
+.gd-fold summary:hover{color:var(--ink)}
+.gd-fold summary:focus:not(:focus-visible){outline:none}
+.gd-fold table{border-collapse:collapse;margin-top:8px;width:100%;max-width:52em}
+.gd-fold th,.gd-fold td{text-align:left;padding:6px 20px 6px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.gd-fold th{white-space:nowrap;font-weight:600;width:1%}
+.gd-fold td{color:var(--muted)}
+
+/* ── 延伸問題與閱讀 ── */
+.gd-further{list-style:none;margin:0;padding:0;font-size:var(--fs-sm)}
+.gd-further li{padding:12px 0;border-bottom:1px solid var(--line)}
+.gd-further p{margin:0 0 4px;font-weight:600}
+.gd-more{margin-left:14px;color:var(--muted)}
+
+/* ── 所有領域總覽 ── */
+.gd-all{list-style:none;margin:0;padding:0}
+.gd-all>li{padding:14px 0;border-bottom:1px solid var(--line)}
+.gd-all .art{font-size:var(--fs-lede)}
+.gd-all p{margin:2px 0 4px;font-size:var(--fs-sm);line-height:1.7}
+.gd-method{margin-top:40px;padding-top:10px;border-top:1px solid var(--line)}
+.gd-method p{color:var(--muted);margin:10px 0}
+.gd-method b{color:var(--ink);margin-right:4px}
+.gd-method ol{margin:0;padding-left:22px}
+
+/* ── 窄螢幕：導覽改成下拉選單，保留返回入口 ── */
+@media (max-width:860px){
+  .gd{grid-template-columns:1fr;gap:18px}
+  .gd-side{position:static;border-right:0;padding-right:0;min-height:0}
+  .gd-scope,.gd-nav{display:none}
+  .gd-sel-label{display:block;font-size:var(--fs-sm);font-weight:600;margin-bottom:6px}
+  .gd-side select{display:block;width:100%;font:inherit;font-size:var(--fs-input);color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:9px 10px}
+  .gd-back{display:inline-block;font-size:var(--fs-sm);margin-bottom:12px}
+  .gd-sec{grid-template-columns:1fr}
+  .gd-sec h3{grid-row:auto}
+}

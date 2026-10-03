@@ -6,27 +6,34 @@
 <title>研究領域｜天空研究室</title>
 <link rel="stylesheet" href="../assets/css/1-tokens.css">
 <link rel="stylesheet" href="../assets/css/2-base.css">
+<link rel="stylesheet" href="../assets/css/5-domains.css">
 <script src="../settings/site.js"></script>
 <script src="../generated/stats.js"></script>
+<!-- 研究架構 → 主題清單 → 畫面程式 -->
+<script src="../settings/landscape-frame.js"></script>
+<script src="../settings/landscape.js"></script>
+<script src="../generated/companies.js"></script>
 <script src="../assets/js/layout.js"></script>
+<script src="../assets/js/domains.js"></script>
 </head>
 <body data-page="domains" data-root="..">
 
 <header id="site-header"></header>
 
 <main class="wrap">
-<section class="page">
-  <div class="crumb"><a href="../">首頁</a> · 研究領域</div>
-  <h1 class="serif">研究領域</h1>
-  <p class="lede">〔本頁說明〕</p>
+<section class="page gd-page">
+  <div class="crumb"><a href="../index.html">首頁</a> · <a href="domains.html">研究領域</a><span id="gd-crumb"></span></div>
 
-  <!-- ════ 佔位區塊：之後換成實際內容 ════ -->
-  <div class="grid">
-    <div class="ph">〔區塊〕</div>
-    <div class="ph">〔區塊〕</div>
-    <div class="ph">〔區塊〕</div>
+  <!-- ════ 左側選領域、右側顯示一個領域或總覽（由 assets/js/domains.js 依 settings/landscape-frame.js 產生）════ -->
+  <div class="gd">
+    <aside class="gd-side">
+      <p class="gd-scope" id="gd-scope"></p>
+      <label class="gd-sel-label" for="gd-select">選擇領域</label>
+      <select id="gd-select"></select>
+      <nav class="gd-nav" id="gd-nav" aria-label="研究領域"></nav>
+    </aside>
+    <article class="gd-main" id="gd-main"></article>
   </div>
-  <div class="ph">〔內容區〕</div>
 </section>
 </main>
 

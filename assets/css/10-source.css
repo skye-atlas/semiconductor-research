@@ -1,0 +1,85 @@
+/* ════════════════════════════════════════════════════════════
+   10. 來源頁：content/04-Sources/ 的筆記轉成的網頁（版型在 tools/source_page.py）
+   頁首 → 證據界線 → 關鍵陳述 → 研究解讀 → 待驗證事項；右側欄：本頁章節、來源資訊、相關來源、使用處
+   ════════════════════════════════════════════════════════════ */
+
+.sp{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:0 48px;align-items:start;padding:40px 0 72px}
+.sp-main{min-width:0;max-width:52em}
+
+/* ── 頁首：誰說的・類型・日期・發布者、標題、一句重點 ── */
+.sp-chips{display:flex;flex-wrap:wrap;gap:4px 0;align-items:center;margin:14px 0 6px;font-size:var(--fs-xs);color:var(--muted)}
+.sp-chips b{color:var(--accent);font-weight:700;margin-right:10px}
+.sp-chips span:not(:last-child)::after{content:"·";margin:0 8px;color:var(--line)}
+.sp-head h1{margin:0 0 10px;line-height:1.35}
+.sp-summary{margin:0;font-size:var(--fs-lede);line-height:1.75;color:var(--ink);max-width:44em}
+.sp-hist{margin:0 0 12px;padding:8px 12px;border-left:3px solid var(--warn);background:var(--warnbg);font-size:var(--fs-sm);color:var(--ink)}
+.sp-hist b{margin-right:10px;color:var(--warn)}
+
+/* ── 段落 ── */
+.sp-sec{margin-top:40px}
+.sp-sec>h2{font-size:var(--fs-xl);margin:0 0 14px;padding-bottom:6px;border-bottom:1px solid var(--line);line-height:1.5}
+.sp-sec>h2 small{margin-left:10px;font-size:var(--fs-xs);font-weight:400;color:var(--muted)}
+.sp-sec h3{font-size:var(--fs-md);margin:22px 0 4px}
+
+/* 證據界線：兩組清單；寬螢幕並排，窄螢幕上下疊 */
+.sp-bound{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 28px}
+.sp-bound h3{margin:0 0 6px;font-size:var(--fs-sm)}
+.sp-bound ul{margin:0;padding-left:1.1em;font-size:var(--fs-sm);line-height:1.8}
+.sp-bound li{margin:4px 0}
+.sp-can,.sp-cannot{padding-top:10px;border-top:3px solid var(--accent)}
+.sp-cannot{border-top-color:var(--unk)}
+.sp-can h3{color:var(--accent)}
+.sp-cannot h3{color:var(--muted)}
+
+/* 關鍵陳述：簡潔清單，說法為主；性質、位置、編號放下一行小字 */
+.sp-claims{list-style:none;margin:0;padding:0}
+.sp-claims li{padding:11px 0;border-top:1px solid var(--line);scroll-margin-top:100px}
+.sp-claims li:first-child{border-top:0}
+.sp-claims li:target{background:var(--accbg);box-shadow:-10px 0 0 var(--accbg),10px 0 0 var(--accbg)}
+.sp-c-text{margin:0;line-height:1.8}
+.sp-c-title{display:block;font-weight:700}
+.sp-c-meta{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;margin:4px 0 0;font-size:var(--fs-xs);color:var(--muted)}
+.sp-c-q{color:var(--ink)}
+.sp-c-id{margin-left:auto;color:var(--muted);text-decoration:none;font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace}
+.sp-c-id:hover{color:var(--accent);text-decoration:underline}
+.sp-note{margin-top:6px;font-size:var(--fs-xs);color:var(--muted)}
+.sp-note p{margin:0}
+
+/* 研究解讀：本站的判讀，用左側虛線和原文分開 */
+.sp-interp .ar-body,.sp-open .ar-body{margin-top:0;line-height:1.85}
+.sp-interp .ar-body{padding-left:16px;border-left:2px dashed var(--unk)}
+.sp-k{margin:0 0 8px;font-size:var(--fs-xs);color:var(--muted)}
+
+/* ── 右側欄 ── */
+.sp-side{position:sticky;top:84px;font-size:var(--fs-sm);max-height:calc(100vh - 100px);overflow-y:auto}
+.sp-side>*{margin-bottom:22px}
+.sp-side p{margin:0}
+.sp-toc>p,.sp-box>p:first-child{font-size:var(--fs-xs);color:var(--muted);font-weight:700;letter-spacing:.06em;margin-bottom:6px}
+.sp-toc ul{list-style:none;margin:0;padding:0;border-left:1px solid var(--line)}
+.sp-toc a{display:block;padding:4px 12px;margin-left:-1px;border-left:2px solid transparent;color:var(--muted);text-decoration:none}
+.sp-toc a:hover{color:var(--ink)}
+.sp-toc a[aria-current="true"]{border-left-color:var(--accent);color:var(--ink);font-weight:700}
+.sp-box{padding-top:14px;border-top:1px solid var(--line)}
+.sp-info{margin:0}
+.sp-info div{padding:4px 0}
+.sp-info dt{font-size:var(--fs-xs);color:var(--muted)}
+.sp-info dd{margin:0;line-height:1.65;word-break:break-word}
+.sp-info-note{margin-top:6px;font-size:var(--fs-xs);color:var(--muted)}
+.sp-info-note p{margin:0 0 4px}
+.sp-rel,.sp-used{list-style:none;margin:0;padding:0}
+.sp-rel li{padding:6px 0;border-bottom:1px dashed var(--line);line-height:1.5}
+.sp-rel a{display:block}
+.sp-rel span,.sp-rel em{font-size:var(--fs-xs);color:var(--muted);font-style:normal}
+.sp-rel em::before{content:"・"}
+.sp-used li{display:flex;gap:6px;align-items:baseline;padding:4px 0}
+.sp-more summary{cursor:pointer;color:var(--accent);font-size:var(--fs-xs);margin-top:6px}
+
+@media (max-width:900px){
+  .sp{grid-template-columns:1fr;padding-top:24px}
+  .sp-side{position:static;max-height:none;margin-top:40px}
+  .sp-toc{display:none}
+}
+@media (max-width:640px){
+  .sp-bound{grid-template-columns:1fr}
+  .sp-claims li:target{box-shadow:none}
+}

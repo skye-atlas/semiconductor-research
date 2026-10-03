@@ -6,21 +6,21 @@ window.SITE = {
 
   // ── 左上角的網站名稱 ──
   name: "天空研究室",
-  subtitle: "SEMICONDUCTOR RESEARCH · 知識版",
+  subtitle: "SEMICONDUCTOR & COMPUTE INFRASTRUCTURE · 知識版",
 
   // ── 頂欄導覽：順序就是顯示順序 ──
   //   id   ：對應頁面 <body data-page="…"> 的值，用來標出「目前在哪一頁」
   //   label：顯示的文字
-  //   href ：從網站最外層算起的路徑（首頁寫空字串）
+  //   href ：從網站最外層算起的路徑（首頁要寫 index.html，直接開檔案時才不會跑到資料夾清單）
   nav: [
-    { id: "home",      label: "首頁",         href: "" },   // 空字串＝網站最外層，網址不帶 index.html
-    { id: "landscape", label: "技術全景",     href: "pages/landscape.html" },
+    { id: "home",      label: "首頁",         href: "index.html" },
     { id: "domains",   label: "研究領域",     href: "pages/domains.html" },
-    { id: "companies", label: "公司與供應鏈", href: "pages/companies.html" }
+    { id: "companies", label: "公司與供應鏈", href: "pages/companies.html" },
+    { id: "sources",   label: "來源庫",       href: "pages/sources.html" }
   ],
 
   // ── 頂欄搜尋框的提示字 ──
-  searchPlaceholder: "搜尋技術、公司或主張…",
+  searchPlaceholder: "搜尋領域、技術、公司",
 
   // ── 頁尾 ──
   footer: {

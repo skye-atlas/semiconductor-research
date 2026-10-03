@@ -1,0 +1,63 @@
+/* ════════════════════════════════════════════════════════════
+   6. 文章頁：content/ 的 .md 轉成的網頁（技術、整合分析、來源筆記、產品）
+   頁面由 tools/build_pages.py 產生；這裡只管排版。
+   ════════════════════════════════════════════════════════════ */
+
+/* 版面加寬到 64em：表格、示意圖可以用滿；一般段落仍限制在 50em 左右，避免一行太長難讀 */
+.ar{max-width:64em}
+.ar-body>p,.ar-body>ul,.ar-body>ol,.ar-body>blockquote,.ar-body>dl{max-width:50em}
+.raw-name{color:var(--muted)}   /* 原始檔檔名：只顯示、不連結（原始檔不放上網站）*/
+.ar-kind{margin:10px 0 0;font-size:var(--fs-xs);font-weight:700;color:var(--accent);letter-spacing:.08em}
+.ar h1{margin:4px 0 8px}
+.ar-meta{margin:0 0 8px;font-size:var(--fs-sm);color:var(--muted)}
+.ar-back{margin:48px 0 0;padding-top:14px;border-top:1px solid var(--line);font-size:var(--fs-sm)}
+
+/* ── 內文 ── */
+.ar-body{margin-top:24px;line-height:1.95}
+.ar-body>:first-child{margin-top:0}
+.ar-body h2{font-size:var(--fs-xl);margin:2.2em 0 .6em;padding-bottom:6px;border-bottom:1px solid var(--line);line-height:1.5}
+.ar-body h3{font-size:var(--fs-lede);margin:1.8em 0 .5em;line-height:1.5}
+.ar-body h4{font-size:var(--fs-md);margin:1.5em 0 .4em}
+.ar-body p,.ar-body ul,.ar-body ol,.ar-body dl{margin:0 0 1em}
+.ar-body li{margin:.25em 0}
+.ar-body li>ul,.ar-body li>ol{margin:.25em 0}
+.ar-body a{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.ar-body strong{font-weight:700}
+.ar-body blockquote{margin:0 0 1em;padding:4px 0 4px 16px;border-left:3px solid var(--mist);color:var(--muted)}
+.ar-body blockquote>:last-child{margin-bottom:0}
+.ar-body hr{border:0;border-top:1px solid var(--line);margin:2em 0}
+.ar-body img{max-width:100%;height:auto;border-radius:var(--r)}
+
+/* 示意圖：內文直接寫 <figure class="ar-fig"><div class="ar-fig-scroll"><svg>…；顏色跟著深淺色主題 */
+.ar-fig{margin:1.4em 0 1.8em}
+.ar-fig-scroll{overflow-x:auto}
+.ar-fig svg{display:block;width:100%;min-width:600px;height:auto}
+.ar-fig figcaption{margin-top:6px;font-size:var(--fs-xs);color:var(--muted);line-height:1.7}
+.ar-fig .box{fill:var(--panel);stroke:var(--ink);stroke-width:1.2}
+.ar-fig .zone{fill:none;stroke:var(--line);stroke-width:1.2;stroke-dasharray:6 4}
+.ar-fig .zone2{fill:var(--accbg);stroke:var(--accent);stroke-width:1}
+.ar-fig .src{fill:var(--warnbg);stroke:var(--warn);stroke-width:1.2}
+.ar-fig .panel{fill:var(--muted)}
+.ar-fig .ln{fill:none;stroke:var(--ink);stroke-width:1.4}
+.ar-fig .cw{fill:none;stroke:var(--warn);stroke-width:1.6;stroke-dasharray:5 4}
+.ar-fig .ah{fill:var(--ink)}
+.ar-fig .ahw{fill:var(--warn)}
+.ar-fig text{fill:var(--ink);font-size:13px;text-anchor:middle}
+.ar-fig text.k{fill:var(--muted);font-size:12px;text-anchor:start}
+.ar-body dt{font-weight:700}
+.ar-body dd{margin:0 0 .6em 1.2em;color:var(--muted)}
+
+/* 程式碼 */
+.ar-body code{font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;font-size:.88em;background:var(--unkbg);border-radius:var(--r);padding:.1em .35em}
+.ar-body pre{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;overflow-x:auto;line-height:1.6}
+.ar-body pre code{background:none;padding:0}
+
+/* 表格：窄螢幕可左右捲動，不撐破版面 */
+.ar-body table{display:block;overflow-x:auto;border-collapse:collapse;margin:0 0 1.2em;font-size:var(--fs-sm);line-height:1.7;max-width:100%}
+.ar-body th,.ar-body td{text-align:left;vertical-align:top;padding:7px 14px 7px 0;border-bottom:1px solid var(--line)}
+.ar-body th{font-weight:700;border-bottom-color:var(--ink);white-space:nowrap}
+
+/* 註腳：出處常放這裡 */
+.ar-body .footnote{margin-top:2.5em;font-size:var(--fs-sm);color:var(--muted)}
+.ar-body .footnote hr{margin:0 0 1em}
+.ar-body sup{line-height:0}

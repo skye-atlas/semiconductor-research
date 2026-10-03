@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', function () {
     header.className = 'top';
     header.innerHTML =
       '<div class="wrap">' +
-        '<a class="brand" href="' + root + '"><b>' + S.name + '</b><small>' + S.subtitle + '</small></a>' +
+        '<a class="brand" href="' + root + 'index.html"><b>' + S.name + '</b><small>' + S.subtitle + '</small></a>' +
         '<nav>' + nav + '</nav>' +
-        '<form class="hsearch" role="search" onsubmit="return false">' +
-          '<input type="search" placeholder="' + (S.searchPlaceholder || '') + '" aria-label="搜尋">' +
+        '<form class="hsearch" role="search" action="' + root + 'pages/search.html" method="get">' +
+          '<input type="search" name="q" placeholder="' + (S.searchPlaceholder || '') + '" aria-label="搜尋">' +
           '<button type="submit" aria-label="搜尋"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>' +
         '</form>' +
         '<button class="theme-t" type="button" aria-label="切換深淺色">' +
