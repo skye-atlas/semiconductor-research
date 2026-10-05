@@ -367,6 +367,37 @@ window.SOURCES = [
   ]
  },
  {
+  "file": "2026-06-16-Coherent-CHIPS-Letter-of-Intent-Press-Release.md",
+  "title": "Coherent CHIPS 意向書新聞稿（2026-06-16）",
+  "summary": "簽 CHIPS 意向書，最多 5,000 萬美元擴建德州 Sherman 6 吋 InP 廠，目標晶圓產能四倍。",
+  "historical": false,
+  "date": "2026-06-16",
+  "publisher": "Coherent",
+  "kind": "press",
+  "event": "Coherent Announces a CHIPS Letter of Intent for $50 Million to Expand World-Leading Manufacturing Facility for AI Infrastructure",
+  "speakers": [
+   "Jim Anderson（執行長）"
+  ],
+  "about": [
+   "Coherent",
+   "NVIDIA"
+  ],
+  "proves": "<h4>可以支持</h4><ul><li>Coherent 在 2026-06 宣布擴建美國德州的 InP 晶圓廠，並簽 CHIPS 補助意向書（CH1、CH2）</li></ul><h4>無法支持</h4><ul><li>補助已撥付 — 只是意向書</li><li>Coherent 把封裝或其他產能移到美國以外 — 這份只談美國的晶圓廠擴建</li></ul>",
+  "claims": 5,
+  "used": [
+   {
+    "kind": "公司檔案",
+    "title": "Coherent",
+    "url": "generated/pages/01-Companies/Coherent.html"
+   },
+   {
+    "kind": "公司檔案",
+    "title": "GIS-KY（業成）",
+    "url": "generated/pages/01-Companies/GIS-KY.html"
+   }
+  ]
+ },
+ {
   "file": "2026-06-29-GIS-KY-2026Q1法人說明會簡報.md",
   "title": "GIS-KY 2026 年第一季法人說明會簡報（2026-06-29）",
   "summary": "1Q26 營收與獲利的公司揭露數字；營收仍以平板與筆電觸控模組為主，另列 Micro-LED 等轉型方向。",
@@ -413,6 +444,145 @@ window.SOURCES = [
     "kind": "公司檔案",
     "title": "GIS-KY（業成）",
     "url": "generated/pages/01-Companies/GIS-KY.html"
+   }
+  ]
+ },
+ {
+  "file": "2026-08-14-Coherent-FY2026-Form-10-K.md",
+  "title": "Coherent FY2026 年報 Form 10-K（2026-08-14）",
+  "summary": "FY2026 營收 71.18 億美元、資料中心與通訊 52.75 億美元；最大客戶占 20%；台灣資產極少。",
+  "historical": false,
+  "date": "2026-08-14",
+  "publisher": "Coherent",
+  "kind": "filing",
+  "event": "Form 10-K（會計年度截至 2026-06-30；SEC 文件編號 0000820318-26-000020）",
+  "speakers": [
+   "James R. Anderson（執行長）",
+   "Sherri Luther（財務長）"
+  ],
+  "about": [
+   "Coherent",
+   "NVIDIA"
+  ],
+  "proves": "<h4>可以支持</h4><ul><li>Coherent FY2026 營收 71.18 億美元，資料中心與通訊部門 52.75 億美元（K1、K2）</li><li>一家未具名客戶占 FY2026 營收 20%（K7）</li><li>NVIDIA 以每股 256.80 美元認購約 779 萬股、共 20 億美元（K8）</li><li>Coherent 在台灣的長期資產只有約 430 萬美元，台灣也不在主要生產據點清單裡（K10、K13）</li><li>Coherent 有使用委外製造商（K11、K12）</li></ul><h4>無法支持</h4><ul><li>占營收 20% 的客戶是誰 — 10-K 沒有具名</li><li>委外製造商是誰、委外哪些工序 — 10-K 沒有列名</li><li>任何特定台灣廠商（聯鈞、GIS-KY）是 Coherent 的供應商</li></ul>",
+  "claims": 16,
+  "used": [
+   {
+    "kind": "公司檔案",
+    "title": "Coherent",
+    "url": "generated/pages/01-Companies/Coherent.html"
+   },
+   {
+    "kind": "公司檔案",
+    "title": "GIS-KY（業成）",
+    "url": "generated/pages/01-Companies/GIS-KY.html"
+   }
+  ]
+ },
+ {
+  "file": "2026-08-18-聯鈞-2026Q2法人說明會簡報.md",
+  "title": "聯鈞 2026 年第二季法人說明會簡報（2026-08-18）",
+  "summary": "聯鈞簡報列出 COSA、光收發模組、ELSFP 三平台；附 Coherent 頒發的 2024、2025 年供應商獎。",
+  "historical": false,
+  "date": "2026-08-18",
+  "publisher": "聯鈞",
+  "kind": "slides",
+  "event": "2026 年第二季法人說明會",
+  "speakers": [],
+  "about": [
+   "聯鈞",
+   "Coherent"
+  ],
+  "proves": "<h4>可以支持</h4><ul><li>聯鈞在簡報展示 Coherent 頒發的 2024、2025 年供應商獎（S4）</li><li>聯鈞 AI 光學營收占比從 2025 年 32.7% 升到 2026 年 7 月 45.5%（S1）</li><li>聯鈞稱 ELSFP 已進入試產（S2）</li></ul><h4>無法支持</h4><ul><li>Coherent 自己公開承認聯鈞是供應商 — 獎牌出現在聯鈞的簡報裡，不是 Coherent 的文件</li><li>獎項是哪一類產品、多少金額</li><li>ELSFP 的客戶或量產時程</li></ul>",
+  "claims": 8,
+  "used": [
+   {
+    "kind": "公司檔案",
+    "title": "聯鈞",
+    "url": "generated/pages/01-Companies/%E8%81%AF%E9%88%9E.html"
+   }
+  ]
+ },
+ {
+  "file": "2026-08-18-聯鈞-2026Q2法人說明會逐字稿.md",
+  "title": "聯鈞 2026 年第二季法人說明會逐字稿（2026-08-18）",
+  "summary": "聯鈞稱 2024 年起為 Coherent 做 COSA 封裝、產能逐年近倍增；ELSFP 已到工程樣品小量。",
+  "historical": false,
+  "date": "2026-08-18",
+  "publisher": "聯鈞",
+  "kind": "transcript",
+  "event": "2026 年第二季法人說明會",
+  "speakers": [
+   "鄭祝良（董事長）",
+   "宋天增（總經理）",
+   "蔡麗秋（財會主管）",
+   "吳鎮慶"
+  ],
+  "about": [
+   "聯鈞",
+   "Coherent"
+  ],
+  "proves": "<h4>可以支持</h4><ul><li>聯鈞管理層在 2026-08-18 具名說：2024 年起為 Coherent 做 COSA 封裝，並在 Coherent 開發初期就參與（L8）</li><li>聯鈞稱 COSA 產能 2024 年起逐年幾乎翻倍，機器設備資本支出由 2.6 億增到 11 億、2026 年預估 16 億元（L7、L16）</li><li>聯鈞稱外部光源與雷射晶片大廠共同開發，已到工程樣品小量生產，量產時程無法預估（L13、L15）</li></ul><h4>無法支持</h4><ul><li>Coherent 官方確認聯鈞是其供應商 — 這是聯鈞單方的說法（獎項見同場簡報）</li><li>外部光源的共同開發對象是誰 — 公司說因 NDA 不透露</li><li>COSA 的絕對產能或各客戶占比</li></ul>",
+  "claims": 17,
+  "used": [
+   {
+    "kind": "公司檔案",
+    "title": "Coherent",
+    "url": "generated/pages/01-Companies/Coherent.html"
+   },
+   {
+    "kind": "公司檔案",
+    "title": "GIS-KY（業成）",
+    "url": "generated/pages/01-Companies/GIS-KY.html"
+   },
+   {
+    "kind": "公司檔案",
+    "title": "聯鈞",
+    "url": "generated/pages/01-Companies/%E8%81%AF%E9%88%9E.html"
+   }
+  ]
+ },
+ {
+  "file": "2026-08-20-兆豐投顧-聯鈞個股報告.md",
+  "title": "兆豐投顧 聯鈞個股報告（2026-08-20）",
+  "summary": "兆豐轉述聯鈞 AI 光學占比升到 45.5%、COSA 產能續擴、ELSFP 進入試產，三年機器設備支出約 30 億元。",
+  "historical": false,
+  "date": "2026-08-20",
+  "publisher": "兆豐投顧",
+  "kind": "broker",
+  "event": "個股報告（法說會後）",
+  "speakers": [
+   "李彝安（研究員）"
+  ],
+  "about": [
+   "聯鈞"
+  ],
+  "proves": "<h4>可以支持</h4><ul><li>兆豐在 2026-08-20 轉述聯鈞法說內容：AI 光學占比 45.5%、ELSFP 進入試產、資本支出全為機器設備（M1、M3、M4）</li></ul><h4>無法支持</h4><ul><li>聯鈞的客戶是誰 — 首頁沒有具名</li><li>「2026 年底與 2027 年底各倍增」是公司說法還是券商推估 — 報告沒有區分</li></ul>",
+  "claims": 4,
+  "used": []
+ },
+ {
+  "file": "2026-08-20-康和投顧-聯鈞投資速報.md",
+  "title": "康和投顧 聯鈞投資速報（2026-08-20）",
+  "summary": "康和稱聯鈞 COSA 產能再次翻倍、源傑已打入 CSP 大廠供應鏈；聯鈞 2025 年營收 85.85 億元。",
+  "historical": false,
+  "date": "2026-08-20",
+  "publisher": "康和投顧",
+  "kind": "broker",
+  "event": "投資速報",
+  "speakers": [
+   "林宥成（研究員）"
+  ],
+  "about": [
+   "聯鈞"
+  ],
+  "proves": "<h4>可以支持</h4><ul><li>康和在 2026-08-20 轉述聯鈞 COSA 產能再次倍增（K2）</li><li>康和引用的聯鈞 2025 年營收結構（K4）</li></ul><h4>無法支持</h4><ul><li>「全球前三大」的排名依據 — 報告沒有說明</li><li>源傑的 CSP 客戶是誰</li></ul>",
+  "claims": 4,
+  "used": [
+   {
+    "kind": "公司檔案",
+    "title": "聯鈞",
+    "url": "generated/pages/01-Companies/%E8%81%AF%E9%88%9E.html"
    }
   ]
  },
@@ -486,6 +656,30 @@ window.SOURCES = [
     "kind": "公司檔案",
     "title": "GIS-KY（業成）",
     "url": "generated/pages/01-Companies/GIS-KY.html"
+   }
+  ]
+ },
+ {
+  "file": "2026-09-24-福邦投顧-聯鈞個股早報.md",
+  "title": "福邦投顧 聯鈞個股早報（2026-09-24）",
+  "summary": "福邦稱聯鈞客戶以美系光模組廠為主、Coherent 是其中之一，近期新增日系客戶。",
+  "historical": false,
+  "date": "2026-09-24",
+  "publisher": "福邦投顧",
+  "kind": "broker",
+  "event": "股市個股早報",
+  "speakers": [],
+  "about": [
+   "聯鈞",
+   "Coherent"
+  ],
+  "proves": "<h4>可以支持</h4><ul><li>福邦在 2026-09-24 具名稱 Coherent 是聯鈞的客戶之一（F2）</li><li>福邦轉述聯鈞的後段量產工序包括 die bonding 與最終測試（F3）</li></ul><h4>無法支持</h4><ul><li>Coherent 官方確認 — 這是券商報告</li><li>聯鈞對 Coherent 的營收占比</li></ul>",
+  "claims": 4,
+  "used": [
+   {
+    "kind": "公司檔案",
+    "title": "聯鈞",
+    "url": "generated/pages/01-Companies/%E8%81%AF%E9%88%9E.html"
    }
   ]
  },

@@ -9,6 +9,8 @@ window.COMPANIES = [
    "2025-09-25-Coherent-400mW-CW-Lasers-Sampling-Press-Release.md": 4,
    "2026-03-17-Coherent-CPO-Technologies-at-OFC-2026-Press-Release.md": 1,
    "2026-03-02-NVIDIA-Coherent-Strategic-Partnership-Press-Release.md": 4,
+   "2026-06-16-Coherent-CHIPS-Letter-of-Intent-Press-Release.md": 1,
+   "2026-08-14-Coherent-FY2026-Form-10-K.md": 2,
    "2026-09-29-NVIDIA-Silicon-Photonics-Product-Page.md": 1
   },
   "name": "Coherent",
@@ -107,8 +109,8 @@ window.COMPANIES = [
      }
     ],
     "verify": [
-     "CPO 大量多年訂單的客戶是否就是 NVIDIA",
-     "ELS 內 CW 雷射的後段封裝與測試是否全部自製，有沒有外包",
+     "CPO 大量多年訂單的客戶、以及 10-K 中占營收 20% 的客戶是否就是 NVIDIA",
+     "雷射後段封裝外包了多少、外包給誰（聯鈞自述 2024 年起為 Coherent 做 COSA；元富指向 GIS-KY）",
      "CPO 用 CW 雷射與 ELS 的營收規模",
      "400 mW CW 雷射是否如期在 2026 第三季量產"
     ]
@@ -407,6 +409,129 @@ window.COMPANIES = [
     "what": "光連接器與光纖組件（以保偏光纖連接 ELS 與矽光子引擎）",
     "sources": [
      "2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.md"
+    ]
+   }
+  ]
+ },
+ {
+  "file": "聯鈞",
+  "notes": false,
+  "cites": {
+   "2026-08-18-聯鈞-2026Q2法人說明會逐字稿.md": 9,
+   "2026-08-18-聯鈞-2026Q2法人說明會簡報.md": 7,
+   "2026-09-24-福邦投顧-聯鈞個股早報.md": 4,
+   "2026-08-20-康和投顧-聯鈞投資速報.md": 2
+  },
+  "name": "聯鈞",
+  "aliases": [
+   "聯鈞光電",
+   "Elite Advanced Laser",
+   "eLaser",
+   "3450"
+  ],
+  "listing": [
+   {
+    "market": "tw",
+    "ticker": "3450"
+   }
+  ],
+  "summary": "雷射二極體封測廠，旗下有捷敏-KY 與源傑；本站追蹤它的光通訊雷射 COSA 封裝與 ELSFP 外部光源。",
+  "roles": [
+   {
+    "section": "d3-photonics",
+    "role": "packaging",
+    "offering": "光通訊雷射 COSA 封裝與測試（EML、CW 雷射）",
+    "tags": [
+     "CW 雷射 70–400 mW",
+     "委外 COSA 封裝"
+    ],
+    "evidence": [
+     {
+      "status": "shipping",
+      "claim": "總經理稱 2024 年起為 Coherent 做 COSA 並連續兩年獲選最佳供應商；COSA 產能從 2024 年起逐年幾乎翻倍",
+      "scope": "公司說法；Coherent 未公開確認；沒有產能絕對數字",
+      "source": "2026-08-18-聯鈞-2026Q2法人說明會逐字稿.md",
+      "date": "2026-08-18",
+      "nature": "vendor",
+      "relay": "",
+      "key": true
+     },
+     {
+      "status": "customer",
+      "claim": "簡報展示 Coherent 頒發的 2024、2025 年供應商獎",
+      "scope": "由聯鈞展示；沒有說明是哪一類產品",
+      "source": "2026-08-18-聯鈞-2026Q2法人說明會簡報.md",
+      "date": "2026-08-18",
+      "nature": "vendor",
+      "relay": ""
+     },
+     {
+      "status": "customer",
+      "claim": "福邦轉述聯鈞客戶以美系光模組廠為主，Coherent 為其一，近期新增一家日系客戶",
+      "scope": "券商轉述",
+      "source": "2026-09-24-福邦投顧-聯鈞個股早報.md",
+      "date": "2026-09-24",
+      "nature": "vendor",
+      "relay": "福邦投顧"
+     }
+    ],
+    "state": {
+     "summary": "COSA 已量產，公司稱產能逐年近倍增；客戶包括 Coherent",
+     "mark": "said",
+     "as_of": "2026-08-18"
+    },
+    "progress": [
+     {
+      "step": "開始為 Coherent 封裝",
+      "when": "2024",
+      "mark": "said"
+     },
+     {
+      "step": "客戶頒獎",
+      "when": "2024、2025",
+      "mark": "said"
+     },
+     {
+      "step": "產能倍增",
+      "when": "2024–2026",
+      "mark": "said"
+     }
+    ],
+    "verify": [
+     "Coherent 是否在自己的文件提到聯鈞或雷射封裝外包",
+     "COSA 的絕對產能、各客戶占比",
+     "分析師提到「美國光電大廠可能自製 COSA」是哪家、會不會影響外包比重",
+     "EML 與 CW 雷射在 COSA 營收中的比重"
+    ]
+   }
+  ],
+  "relations": [
+   {
+    "type": "supply",
+    "with": "Coherent",
+    "what": "雷射 COSA 封裝與測試（2024 年起；聯鈞展示 Coherent 頒發的 2024、2025 年供應商獎）",
+    "status": "stated",
+    "sources": [
+     "2026-08-18-聯鈞-2026Q2法人說明會逐字稿.md",
+     "2026-08-18-聯鈞-2026Q2法人說明會簡報.md",
+     "2026-09-24-福邦投顧-聯鈞個股早報.md"
+    ]
+   }
+  ],
+  "mentions": [
+   {
+    "name": "捷敏-KY（6525）",
+    "what": "子公司（持股約 51%），功率元件封裝測試",
+    "sources": [
+     "2026-08-20-康和投顧-聯鈞投資速報.md"
+    ]
+   },
+   {
+    "name": "源傑（7917）",
+    "what": "子公司（持股約 54%），光收發模組與 AOC 設計，聯鈞負責後段量產",
+    "sources": [
+     "2026-08-20-康和投顧-聯鈞投資速報.md",
+     "2026-09-24-福邦投顧-聯鈞個股早報.md"
     ]
    }
   ]
