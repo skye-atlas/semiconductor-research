@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 由 tools/build_pages.py 自動產生，不要手改；要改內容請改 content/ 裡的 .md -->
+<title>共同封裝光學（CPO）｜天空研究室</title>
+<link rel="stylesheet" href="../../../assets/css/1-tokens.css">
+<link rel="stylesheet" href="../../../assets/css/2-base.css">
+<link rel="stylesheet" href="../../../assets/css/6-article.css">
+<script src="../../../settings/site.js"></script>
+<script src="../../../generated/stats.js"></script>
+<script src="../../../assets/js/layout.js"></script>
+<script src="../../../assets/js/toc.js"></script>
+</head>
+<body data-page="domains" data-root="../../..">
+
+<header id="site-header"></header>
+
+<main class="wrap">
+<div class="ar-grid">
+<article class="page ar">
+  <div class="crumb"><a href="../../../index.html">首頁</a> · <a href="../../../pages/domains.html">研究領域</a> · <a href="../../../pages/domains.html#d3">高速互連與網路</a> · <a href="../../../pages/domains.html#d3-optics">光互連產品與整合架構</a> · 共同封裝光學（CPO）</div>
+  <p class="ar-kind">技術</p>
+  <h1 class="serif">共同封裝光學（CPO）</h1>
+  <p class="ar-meta">主要分區：<a href="../../../pages/domains.html#d3-optics">高速互連與網路・光互連產品與整合架構</a>　也列於：<a href="../../../pages/domains.html#d3-photonics">高速互連與網路・光電元件與整合製程</a>、<a href="../../../pages/domains.html#d1-pkg">運算晶片與封裝・封裝平台</a></p><p class="ar-meta ar-updated">本頁更新：2026-10-06<small>（見文末更新紀錄；全站日期在頁尾）</small></p>
+  <div class="ar-body">
+<p>把光電轉換從前面板的可插拔光模組，移到交換晶片或運算晶片旁邊、放進同一個封裝。這篇回答：CPO 解決什麼問題、有哪些做法、要付出什麼代價、誰在做，以及本站收錄的來源支持到哪裡（說法都標出時間或報告版本）。</p>
+<h2 id="scope">研究問題與範圍</h2>
+<ul>
+<li><strong>要解決的問題</strong>：交換晶片的頻寬大約每兩年翻倍，可插拔光模組要用高功率的 SerDes 把訊號經過電路板與連接器送到前面板，DSP 又吃掉模組一半以上的功耗（<a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html#NB3">NVIDIA 技術部落格 NB3</a>、<a href="../04-Sources/2023-03-Broadcom-Tomahawk-5-Bailly-CPO-Press-Deck.html#B2">Broadcom 簡報 B2</a>）。CPO 把光學引擎移到晶片旁邊，電訊號只走幾毫米到幾公分。</li>
+<li><strong>定義</strong>：產業組織 OIF 把 co-packaging 定義為光學引擎和主晶片放在同一個基板上（<a href="../04-Sources/2022-02-03-OIF-Co-Packaging-Framework-Document.html#O1">OIF 框架文件 O1</a>）。Yole 的統計單位是「光學引擎（OE）」：把 ASIC 的電訊號轉成光的元件，也叫 optical tile 或 optical chiplet（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y2">Yole CPO 2025 Y2</a>）。</li>
+<li><strong>兩種應用</strong>：</li>
+<li><strong>scale-out</strong>：交換器與機櫃之間的網路，取代前面板可插拔模組，距離數百公尺到 2 公里。</li>
+<li><strong>scale-up</strong>：GPU 之間的高速網路（例：NVLink），取代機櫃內的銅線，距離 1–30 公尺（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y24">Yole Y24</a>）。</li>
+<li><strong>不在本篇</strong>：可插拔光模組本身、LPO 等可插拔的省電做法，見 <a href="../03-Technologies/%E5%8F%AF%E6%8F%92%E6%8B%94%E5%85%89%E6%A8%A1%E7%B5%84.html">可插拔光模組</a>；雷射晶片的製造（見「光電元件與整合製程」）。</li>
+<li><strong>怎麼讀這篇</strong>：「重點摘要與證據範圍」列出主要判斷與依據的性質（公司公告、標準文件、研究機構估計、媒體轉述），研究機構的數字標明版本；完整比較在各節；說法對不齊或證據不足的放在「未解問題」，要持續追的數字放在「持續追蹤的數字」。查證過程記在各來源筆記與本站內部的收錄紀錄。</li>
+</ul>
+<h2 id="summary">重點摘要與證據範圍</h2>
+<p>本站整理至 2026-10-06（各項的日期寫在表內，不代表全篇數字都更新到這天）。每一項寫出由誰說、什麼性質；完整依據與比較見下方各節。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>目前能說到哪裡（誰說的）</th>
+<th>還不知道</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Broadcom</td>
+<td>2024 年 3 月宣布 TH5 Bailly 已交付客戶（<a href="../04-Sources/2024-03-14-Broadcom-Bailly-51.2T-CPO-Switch-Delivery-Press-Release.html#BD1">BD1</a>）；2025 年 5 月稱它是業界第一個量產的 CPO，並發表第三代 200G/lane（<a href="../04-Sources/2025-05-15-Broadcom-Third-Generation-CPO-200G-per-Lane-Press-Release.html#P3">P3</a>）</td>
+<td>客戶名稱與出貨量</td>
+</tr>
+<tr>
+<td>NVIDIA</td>
+<td>2025 年 3 月發表 CPO 交換器，稱 Spectrum-X Photonics 2026 年上市（<a href="../04-Sources/2025-03-18-NVIDIA-Spectrum-X-Photonics-Announcement-Press-Release.html#NX2">NX2</a>）；2026 年 5 月稱已在量產（<a href="../04-Sources/2026-05-31-NVIDIA-Vera-Rubin-Full-Production-Press-Release.html#VR1">VR1</a>）；2026-09 擷取的產品頁寫 2026 下半年上市（<a href="../04-Sources/2026-09-29-NVIDIA-Silicon-Photonics-Product-Page.html#NP4">NP4</a>）</td>
+<td>出貨時間與數量（到 2026-10-06 本站未找到出貨公告）</td>
+</tr>
+<tr>
+<td>供應夥伴</td>
+<td>NVIDIA 2025 年 3 月點名 Coherent、Lumentum、Sumitomo 為 ELS 夥伴，台積電、矽品為生態系合作夥伴（<a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html#NB7">NB7–NB11</a>）</td>
+<td>各家供貨階段與規模</td>
+</tr>
+<tr>
+<td>Coherent</td>
+<td>2026 年 9 月稱 scale-out CPO 首批生產 2026 年第四季開始放量（<a href="../04-Sources/2026-09-21-Coherent-ECOC-2026-Presentation-Transcript.html#CE1">CE1</a>，第三方整理的逐字稿）</td>
+<td>客戶與規模</td>
+</tr>
+<tr>
+<td>市場規模</td>
+<td>Yole 2025 版估計：2024 年 CPO 光學引擎營收約 4,600 萬美元；2030 年依 scale-up 何時改用光分兩種情境，預測 54–81 億美元（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y8">Y8、Y9</a>）</td>
+<td>哪一種情境成立</td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-it-works">原理與流程</h2>
+<p>一套 CPO 交換器由四部分組成：交換 ASIC、圍在旁邊的光學引擎、供光的雷射光源，以及接到前面板的光纖（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y40">Yole Y40</a>）。</p>
+<table>
+<thead>
+<tr>
+<th>組成</th>
+<th>做什麼</th>
+<th>已發表的做法（例）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>交換 ASIC</td>
+<td>交換資料</td>
+<td>Broadcom Tomahawk 5（51.2T）、NVIDIA Quantum-X/Spectrum-X</td>
+</tr>
+<tr>
+<td>光學引擎（OE）</td>
+<td>電轉光、光轉電；由 PIC（光路、調變器、光偵測器）與 EIC（驅動器、TIA）組成</td>
+<td>Broadcom：PIC 疊在 7 奈米 EIC 上、扇出型封裝；台積電 COUPE：以 SoIC 把 EIC 疊在 PIC 上（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y52">Yole Y52、Y38</a>）</td>
+</tr>
+<tr>
+<td>雷射光源</td>
+<td>提供不調變的連續波（CW）光</td>
+<td>多數放在前面板的可插拔外部光源（ELS）模組，用保偏光纖送光（<a href="../04-Sources/2023-08-08-OIF-ELSFP-Implementation-Agreement.html#E1">OIF ELSFP E1</a>）</td>
+</tr>
+<tr>
+<td>光纖與連接器</td>
+<td>把光從引擎拉到前面板</td>
+<td>光纖陣列（FAU）、可拆光連接器</td>
+</tr>
+</tbody>
+</table>
+<p><strong>頻寬怎麼往上加</strong>：增加 ASIC 周圍的 OE 數量、增加每個 OE 的通道數、提高每通道速率（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y60">Yole Y60</a>）。實際例子：</p>
+<table>
+<thead>
+<tr>
+<th>產品</th>
+<th>交換容量</th>
+<th>OE 配置</th>
+<th>光源</th>
+<th>依據</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Broadcom TH4 Humboldt（第一代）</td>
+<td>25.6T（一半光、一半電）</td>
+<td>4 個 3.2T</td>
+<td>4 個 ELS，每個 8 顆雷射</td>
+<td><a href="../04-Sources/2023-03-Broadcom-Tomahawk-5-Bailly-CPO-Press-Deck.html#B5">Broadcom 簡報 B5</a>、<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y61">Yole Y61</a></td>
+</tr>
+<tr>
+<td>Broadcom TH5 Bailly（第二代）</td>
+<td>51.2T</td>
+<td>8 個 6.4T，每通道 100G</td>
+<td>16 個可插拔雷射模組</td>
+<td><a href="../04-Sources/2024-04-29-Broadcom-BCM78909-51.2T-CPO-Switch-Product-Brief.html#C3">BCM78909 C3</a>、<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y51">Yole Y51</a></td>
+</tr>
+<tr>
+<td>NVIDIA Quantum-X Q3450-LD</td>
+<td>115.2T（4 顆 ASIC）</td>
+<td>每顆 ASIC 6 個 4.8T，每通道 200G</td>
+<td>18 個 ELS、144 顆雷射（Yole 依其假設的配置推算，未說明是否含備援）</td>
+<td><a href="../04-Sources/2026-09-29-NVIDIA-Silicon-Photonics-Product-Page.html#NP3">NVIDIA 產品頁 NP3</a>、<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y47">Yole Y47</a></td>
+</tr>
+<tr>
+<td>NVIDIA Spectrum-X SN6810/SN6800</td>
+<td>102.4T/409.6T</td>
+<td>16/32–64 個 OE</td>
+<td>32/64 個 ELS（Yole 推算）</td>
+<td><a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y48">Yole Y48</a></td>
+</tr>
+</tbody>
+</table>
+<p>NVIDIA 的 ELS 與雷射數量是 Yole 依公開資料推算的，NVIDIA 官方沒有公布。</p>
+<h2 id="tradeoffs">方案與取捨</h2>
+<h3 id="cpo-npo-pluggable">CPO、近封裝（NPO）與可插拔</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>可插拔</th>
+<th>近封裝（NPO）</th>
+<th>CPO</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>光學放在哪</td>
+<td>前面板模組</td>
+<td>主機板上的高效能基板，靠近 ASIC</td>
+<td>與 ASIC 同一個封裝基板</td>
+</tr>
+<tr>
+<td>ASIC 到光學的電通道</td>
+<td>經電路板到前面板</td>
+<td>最長 150 mm、損耗上限 13 dB</td>
+<td>50 mm 內、損耗 10 dB</td>
+</tr>
+<tr>
+<td>能耗（Yole 整理）</td>
+<td>約 25 pJ/bit</td>
+<td>3–4 pJ/bit</td>
+<td>低於 3 pJ/bit</td>
+</tr>
+<tr>
+<td>維修</td>
+<td>前面板直接換</td>
+<td>發展中</td>
+<td>困難：引擎固定，壞了要換整組</td>
+</tr>
+<tr>
+<td>現況（Yole 2025 版報告）</td>
+<td>主流</td>
+<td>停在概念驗證，排除在預測外</td>
+<td>Broadcom 2024 年起量產；NVIDIA 2025–2026 推出</td>
+</tr>
+<tr>
+<td>依據</td>
+<td><a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y34">Yole Y34、Y35</a></td>
+<td><a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y3">Yole Y3</a></td>
+<td><a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y53">Yole Y49、Y53</a>、<a href="../04-Sources/2025-05-15-Broadcom-Third-Generation-CPO-200G-per-Lane-Press-Release.html#P3">Broadcom 新聞稿 P3</a></td>
+</tr>
+</tbody>
+</table>
+<p><strong>省電幅度，各家說法不同，口徑也不同</strong>：Broadcom 稱可插拔 14 W/800G、CPO 5.5 W/800G（<a href="../04-Sources/2023-03-Broadcom-Tomahawk-5-Bailly-CPO-Press-Deck.html#B1">B1</a>）；NVIDIA 先稱省電 3.5 倍（<a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html#NB1">NB1</a>），2026 年改稱 5 倍（<a href="../04-Sources/2026-05-31-NVIDIA-Vera-Rubin-Full-Production-Press-Release.html#VR2">VR2</a>）；Yole 整理為比可插拔低 30–50%（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y31">Y31</a>）。前兩者是公司說法，比較基準沒有統一。</p>
+<p><strong>可插拔不是靜止的</strong>：Yole 認為拿掉 DSP 的線性驅動（LPO）、新調變材料與高效率雷射，可插拔也做得到，而且 ELS 本身會增加功耗（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y28">Y28</a>）；OIF 還在推新的高密度可插拔外型（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y30">Y30</a>）。2026 年又出現兩個新外型：液冷的 XPO 每模組 12.8T、前面板密度是 OSFP 的 4 倍；Open CPX 則把光學引擎做成 ASIC 旁可拆的插座，等於「可插拔的 CPO」（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT37">光收發器 2026 OT37、OT38</a>）。細節見 <a href="../03-Technologies/%E5%8F%AF%E6%8F%92%E6%8B%94%E5%85%89%E6%A8%A1%E7%B5%84.html">可插拔光模組</a>。</p>
+<p><strong>時程，Yole 前後兩份報告的口徑</strong>：CPO 2025 年版說 scale-out CPO 在 2025–2028 年起量（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y25">Y25</a>）；光收發器 2026 年版說 CPO 要到 3.2T 世代才有意義的份額、大量部署在 2027–2028 年，NVIDIA 也表示 CPO 至少兩年內與可插拔並存（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT35">OT35</a>）。兩份的整合式光學營收數字其實相同（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT3">OT3</a>），差別在「從小基數起量」與「占有意義比例」的用詞。</p>
+<h3 id="soldered-vs-socketed">焊接式與插座式</h3>
+<p>焊接式 CPO 不可拆、多為單一供應商；插座式（開放）CPO 可維修、多供應商，若再改用內建雷射，功耗與成本最低（Arista 的比較，<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT39">OT39</a>）。這是 Open CPX 想解決的問題：降低把光學移近 ASIC 的維修與供應商風險。</p>
+<h3 id="light-source">光源放在哪裡</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>內建（雷射整合在 PIC 上）</th>
+<th>外部光源（ELS）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>代表</td>
+<td>Intel OCI：DWDM 雷射做在矽光子晶片上，不需要保偏光纖（<a href="../04-Sources/2026-10-01-Intel-Silicon-Photonics-Product-Page.html#I1">Intel I1、I3</a>）</td>
+<td>Broadcom、NVIDIA、Marvell（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y40">Yole Y40</a>）</td>
+</tr>
+<tr>
+<td>好處</td>
+<td>損耗低、不用額外光纖</td>
+<td>雷射離開熱源；雷射壞了可以從前面板換；一個光源可供多個引擎</td>
+</tr>
+<tr>
+<td>代價</td>
+<td>雷射靠近 ASIC 溫度高；壞了要換整個引擎</td>
+<td>耦合與連接器損耗，需要更高功率的雷射；保偏光纖與眼睛安全設計</td>
+</tr>
+<tr>
+<td>依據</td>
+<td><a href="../04-Sources/2022-02-03-OIF-Co-Packaging-Framework-Document.html#O6">OIF O6</a>、<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y41">Yole Y41</a></td>
+<td><a href="../04-Sources/2022-02-03-OIF-Co-Packaging-Framework-Document.html#O5">OIF O5</a>、<a href="../04-Sources/2023-08-08-OIF-ELSFP-Implementation-Agreement.html#E4">OIF ELSFP E4</a>、<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y42">Yole Y42</a></td>
+</tr>
+</tbody>
+</table>
+<p>外部光源的細節（規格、每台用量、供應鏈）見 <a href="../03-Technologies/%E5%A4%96%E9%83%A8%E9%9B%B7%E5%B0%84%E5%85%89%E6%BA%90.html">外部雷射光源</a>。要點是需要高功率 CW 雷射：學界試算每顆雷射晶片約 286 mW 等級，可插拔模組用的 CW 雷射一般低於 100 mW（<a href="../04-Sources/2023-03-20-Frontiers-of-Optoelectronics-Co-packaged-Optics-Status-Challenges-and-Solutions.html#F7">Frontiers 綜述 F7</a>）；Broadcom 的雷射模組每通道 100 mW、整個模組 800 mW、耗電 10 W（<a href="../04-Sources/2024-11-07-Broadcom-ARLM-96F8DMZ-Pluggable-Laser-Module-Product-Brief.html#A3">ARLM A3、A6</a>）。OIF 把前面板可插拔的外部光源標準化成 ELSFP，光功率分六級（<a href="../04-Sources/2023-08-08-OIF-ELSFP-Implementation-Agreement.html#E7">E7</a>）；業界希望一個驗證過的雷射封裝能用兩代交換器以上，因為雷射驗證週期超過兩年（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y44">Yole Y44</a>）。</p>
+<h3 id="fiber-coupling">光纖耦合</h3>
+<p>光柵耦合可以被動對準、先測成已知良品再封裝，業界偏好；邊緣耦合損耗較低，但要主動對準（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y36">Yole Y36</a>）。Broadcom 的第一代就用邊緣耦合與可拆光纖連接器（<a href="../04-Sources/2025-05-15-Broadcom-Third-Generation-CPO-200G-per-Lane-Press-Release.html#P2">P2</a>）。封裝端的難點是貼片精度 0.2 µm 等級、基板翹曲與底部填膠（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y37">Yole Y37</a>）。</p>
+<p>光纖陣列的間距正由 250 µm 縮到約 127 µm，CPO 交換器邊緣每個引擎要接 16–64 根光纖（<a href="../04-Sources/2026-03-13-Yole-Photonics-Packaging-2026.html#PP25">光子封裝 2026 PP25</a>）。業者都同意光纖連接必須可拆，但標準還沒出現（<a href="../04-Sources/2026-03-13-Yole-Photonics-Packaging-2026.html#PP27">PP27</a>）。</p>
+<h3 id="engine-stacking">光學引擎怎麼疊：晶圓廠與封測廠</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>台積電 COUPE</th>
+<th>日月光 FOCoS（VIPack）</th>
+<th>Intel OCI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>做法</td>
+<td>EIC 以混合鍵合疊在 PIC 上，再進 CoWoS</td>
+<td>扇出型封裝，PIC 與 EIC 並排或疊合</td>
+<td>光學 I/O 晶粒，內建雷射</td>
+</tr>
+<tr>
+<td>接點間距</td>
+<td>小於 10 µm</td>
+<td>20–40 µm</td>
+<td>—</td>
+</tr>
+<tr>
+<td>成熟度（Yole 2026 版報告）</td>
+<td>平台就緒，首批產品與試產</td>
+<td>對特定客戶小量生產</td>
+<td>多為試點</td>
+</tr>
+<tr>
+<td>依據</td>
+<td><a href="../04-Sources/2026-03-13-Yole-Photonics-Packaging-2026.html#PP17">PP16、PP17</a>、<a href="../04-Sources/2026-03-13-Yole-Photonics-Packaging-2026.html#PP18">PP18</a></td>
+<td><a href="../04-Sources/2026-03-13-Yole-Photonics-Packaging-2026.html#PP16">PP16、PP17</a></td>
+<td><a href="../04-Sources/2026-03-13-Yole-Photonics-Packaging-2026.html#PP17">PP17</a></td>
+</tr>
+</tbody>
+</table>
+<p>NVIDIA Quantum-X 的光學引擎用台積電 COUPE 疊合，每個引擎 3 組 PIC-EIC（<a href="../04-Sources/2026-03-13-Yole-Photonics-Packaging-2026.html#PP18">PP18</a>）；Yole 2026 版稱「ASE」與矽品已進入 Broadcom 的 CPO 後段封裝供應鏈（<a href="../04-Sources/2026-03-13-Yole-Photonics-Packaging-2026.html#PP21">PP21</a>）。Yole 假設 CPO 的封裝占模組價值約一半，高於可插拔的 20–25%（<a href="../04-Sources/2026-03-13-Yole-Photonics-Packaging-2026.html#PP3">PP3</a>）。<code>[推論]</code> CPO 讓光子封裝的重心由模組組裝廠移到晶圓廠與大型封測廠。光學引擎所在的 CoWoS、扇出型等運算封裝平台，見 <a href="../03-Technologies/%E9%AB%98%E9%9A%8E%E5%B0%81%E8%A3%9D%E5%B9%B3%E5%8F%B0.html">高階封裝平台</a>；Yole 高階封裝 2025 說日月光最先宣布支援 CPO，但當時認為和運算晶片同封裝的 CPO 短期不會商用（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP26">HP26</a>）。</p>
+<h2 id="supply-chain">產品與供應鏈</h2>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>做什麼</th>
+<th>進度</th>
+<th>證據性質</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../01-Companies/NVIDIA.html">NVIDIA</a></td>
+<td>CPO 交換器 Quantum-X、Spectrum-X Photonics；雷射放在前面板 ELS</td>
+<td>2025 年 3 月發表時稱 Spectrum-X Photonics 2026 年上市（<a href="../04-Sources/2025-03-18-NVIDIA-Spectrum-X-Photonics-Announcement-Press-Release.html#NX2">NX2</a>）；2026-09 擷取的產品頁寫 2026 下半年；公司 2026 年 5 月稱已在量產，沒有出貨量；到 2026-10-06 本站未找到出貨公告（<a href="../04-Sources/2026-05-31-NVIDIA-Vera-Rubin-Full-Production-Press-Release.html#VR1">VR1</a>）</td>
+<td>公司說法</td>
+</tr>
+<tr>
+<td>Broadcom</td>
+<td>TH5 Bailly 51.2T CPO 交換晶片、可插拔雷射模組；第三代 200G/lane</td>
+<td>公司 2024 年 3 月宣布 Bailly 已交付客戶，客戶未具名（<a href="../04-Sources/2024-03-14-Broadcom-Bailly-51.2T-CPO-Switch-Delivery-Press-Release.html#BD1">BD1</a>）；2025 年 5 月稱 Bailly 為業界第一個量產的 CPO（<a href="../04-Sources/2025-05-15-Broadcom-Third-Generation-CPO-200G-per-Lane-Press-Release.html#P3">P3</a>）；Yole 2025 版也列為 2024 年起量產（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y53">Y53</a>）</td>
+<td>公司說法、產業分析</td>
+</tr>
+<tr>
+<td><a href="../01-Companies/Coherent.html">Coherent</a></td>
+<td>高功率 InP CW 雷射與 ELS 組裝、光學對準與測試</td>
+<td>NVIDIA 2025 年 3 月點名為 ELS 夥伴（<a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html#NB9">NB9</a>）；Yole 列為雷射與 ELSFP 供應商（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y55">Y55</a>）；公司 2026 年 9 月稱 scale-out CPO 首批生產 2026 年第四季開始放量（<a href="../04-Sources/2026-09-21-Coherent-ECOC-2026-Presentation-Transcript.html#CE1">CE1</a>，第三方整理的逐字稿）</td>
+<td>客戶具名、產業分析、公司說法</td>
+</tr>
+<tr>
+<td>Lumentum、Sumitomo</td>
+<td>ELS 雷射與子組件</td>
+<td>NVIDIA 點名（<a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html#NB9">NB9</a>）</td>
+<td>客戶具名</td>
+</tr>
+<tr>
+<td><a href="../01-Companies/%E5%8F%B0%E7%A9%8D%E9%9B%BB.html">台積電</a>、<a href="../01-Companies/%E7%9F%BD%E5%93%81.html">矽品</a></td>
+<td>光學引擎製程（COUPE）；CPO 多晶片模組的凸塊、測試與組裝</td>
+<td>NVIDIA 2025 年 3 月列為 CPO 開發的生態系合作夥伴（<a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html#NB7">NB7、NB8</a>）；未說供貨階段與規模</td>
+<td>客戶具名的合作</td>
+</tr>
+<tr>
+<td>Foxconn、Fabrinet</td>
+<td>系統層級 CPO 組裝與測試</td>
+<td>NVIDIA 點名（<a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html#NB11">NB11</a>）</td>
+<td>客戶具名</td>
+</tr>
+<tr>
+<td><a href="../01-Companies/%E8%81%AF%E9%88%9E.html">聯鈞</a></td>
+<td>ELSFP 外部雷射光源模組</td>
+<td>見公司檔；Yole 的生態圖沒有列入</td>
+<td>公司說法</td>
+</tr>
+<tr>
+<td><a href="../01-Companies/GIS-KY.html">GIS-KY</a></td>
+<td>CW 雷射光源封裝與測試</td>
+<td>公司 2026 年 9 月稱客戶驗證中；沒有說用在 CPO，Yole 也沒有列入</td>
+<td>公司說法</td>
+</tr>
+</tbody>
+</table>
+<p>Yole 認為 Broadcom、NVIDIA、Marvell 很可能共用同一批雷射、光纖、封裝與組裝供應商（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y57">Y57</a>），而且光學引擎不太會單獨對外銷售（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y58">Y58</a>）。<code>[推論]</code> 這表示 CPO 的商業機會比較可能落在雷射、ELS、光纖陣列與封裝測試這些周邊工序，而不是獨立的光學引擎市場。</p>
+<h2 id="market-roadmap">市場資料與技術路線</h2>
+<h3 id="market-size">市場規模（Yole 2025 版：2024 年為估計，之後為預測）</h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>2024（估計）</th>
+<th>2030 預測（情境一）</th>
+<th>2030 預測（情境二）</th>
+<th>依據</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OE 總營收</td>
+<td>4,600 萬美元</td>
+<td>81 億美元</td>
+<td>54 億美元</td>
+<td><a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y8">Y8、Y9</a></td>
+</tr>
+<tr>
+<td>其中 scale-out</td>
+<td>2,100 萬美元</td>
+<td>26 億美元</td>
+<td>26 億美元</td>
+<td><a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y15">Y15</a></td>
+</tr>
+<tr>
+<td>其中 scale-up</td>
+<td>2,500 萬美元</td>
+<td>55 億美元</td>
+<td>28 億美元</td>
+<td><a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y22">Y22</a></td>
+</tr>
+<tr>
+<td>CPO 交換器出貨</td>
+<td>942 台</td>
+<td>207,188 台</td>
+<td>同左</td>
+<td><a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y12">Y12</a></td>
+</tr>
+</tbody>
+</table>
+<p>統計範圍是「CPO 光學引擎」：不含可插拔、NPO 與雷射光源（scale-up 單價明確不含雷射），2024 年是 Yole 估計，不是實績。兩種情境的差別只在 scale-up：情境一假設 2028 年起量，情境二假設 hyperscaler 到 2030 年才大規模採用（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y7">Y7</a>）。報告內部有幾處數字前後不一致，見來源筆記的疑點表。</p>
+<h2 id="open-questions">未解問題</h2>
+<p>每一項寫出差異、缺什麼證據，以及什麼新資料會改變判斷。已查過仍無法確認的，記下查證範圍、等新資料再更新，不另外衍生搜尋；要持續追的數字列在「持續追蹤的數字」。</p>
+<ul>
+<li><strong>NVIDIA CPO 交換器何時出貨、出多少</strong>：只有「已在量產」與「2026 下半年上市」兩種說法，沒有出貨量。→ 等 NVIDIA 季報或出貨公告。</li>
+<li><strong>scale-up 何時改用光</strong>：決定 Yole 兩種情境誰成立。NVIDIA GTC 2026 稱 Feynman 世代的 Kyber 以銅線與共同封裝光學做 scale-up（<a href="../04-Sources/2026-03-16-NVIDIA-GTC-2026-Live-Updates-Blog.html#FY2">FY2</a>），沒有說哪一代起、比例多少。→ 等 NVIDIA 產品技術文件；hyperscaler 自研 ASIC 是否採 CPO。</li>
+<li><strong>可插拔的反擊</strong>：LPO、XPO 與 OIF 高密度連接器（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y30">Y30</a>、<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT37">OT37</a>）若在 1.6T、3.2T 世代成熟，scale-out 的 CPO 滲透會變慢。→ 等這些外型的量產公告與採用者具名。</li>
+<li><strong>維修與良率</strong>：Yole 認為量產要晶粒加組裝合計良率超過 60%（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y29">Y29</a>），本站收錄的來源中沒有公司揭露良率。→ 等出貨規模與客戶回報。</li>
+<li><strong>每台交換器用幾個 ELS</strong>：本站收錄的來源中只有 Broadcom 有官方數字，NVIDIA 的是 Yole 推算；這決定雷射與 ELS 廠商的需求量；完整整理見 <a href="../03-Technologies/%E5%A4%96%E9%83%A8%E9%9B%B7%E5%B0%84%E5%85%89%E6%BA%90.html">外部雷射光源</a>「一台交換器要幾個 ELS」。</li>
+<li><strong>台灣廠商的實際角色</strong>：聯鈞、GIS-KY 的 ELS 或雷射封裝是否用在 CPO、客戶是誰。→ 等客戶具名或法說會。</li>
+</ul>
+<h3 id="tracking">持續追蹤的數字</h3>
+<p>不是待解的問題，而是每次有新資料都要更新的數字；括號裡是本站目前的基準與出處。</p>
+<ul>
+<li><strong>CPO 交換器出貨量</strong>：看 NVIDIA、Broadcom 揭露（Yole 估 2024 年 942 台，<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y12">Y12</a>）。</li>
+<li><strong>CPO 的良率</strong>：看公司或客戶揭露（Yole 認為量產門檻是晶粒加組裝合計超過 60%，<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y29">Y29</a>）。</li>
+<li><strong>每台交換器用幾個 ELS</strong>：看產品規格書（Broadcom 有官方數字，見 <a href="../03-Technologies/%E5%A4%96%E9%83%A8%E9%9B%B7%E5%B0%84%E5%85%89%E6%BA%90.html#els-per-switch">外部雷射光源</a>）。</li>
+</ul>
+<h2 id="sources-log">來源與更新紀錄</h2>
+<ul><li><a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html">Yole CPO 2025</a>：市場預測、技術比較、NVIDIA 與 Broadcom 系統拆解、供應鏈圖</li><li><a href="../04-Sources/2022-02-03-OIF-Co-Packaging-Framework-Document.html">OIF Co-Packaging 框架文件</a>：定義與光源取捨</li><li><a href="../04-Sources/2023-08-08-OIF-ELSFP-Implementation-Agreement.html">OIF ELSFP 實作協議</a>：外部光源外型</li><li><a href="../04-Sources/2023-03-20-Frontiers-of-Optoelectronics-Co-packaged-Optics-Status-Challenges-and-Solutions.html">Frontiers 綜述</a>：外部光源功率試算</li><li>Broadcom：<a href="../04-Sources/2023-03-Broadcom-Tomahawk-5-Bailly-CPO-Press-Deck.html">Bailly 簡報</a>、<a href="../04-Sources/2024-03-14-Broadcom-Bailly-51.2T-CPO-Switch-Delivery-Press-Release.html">Bailly 交付新聞稿</a>、<a href="../04-Sources/2024-04-29-Broadcom-BCM78909-51.2T-CPO-Switch-Product-Brief.html">BCM78909 產品簡介</a>、<a href="../04-Sources/2024-11-07-Broadcom-ARLM-96F8DMZ-Pluggable-Laser-Module-Product-Brief.html">ARLM 雷射模組</a>、<a href="../04-Sources/2025-05-15-Broadcom-Third-Generation-CPO-200G-per-Lane-Press-Release.html">第三代 CPO 新聞稿</a></li><li>NVIDIA：<a href="../04-Sources/2025-03-18-NVIDIA-Spectrum-X-Photonics-Announcement-Press-Release.html">GTC 2025 新聞稿</a>、<a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html">技術部落格</a>、<a href="../04-Sources/2026-05-31-NVIDIA-Vera-Rubin-Full-Production-Press-Release.html">Vera Rubin 新聞稿</a>、<a href="../04-Sources/2026-09-29-NVIDIA-Silicon-Photonics-Product-Page.html">產品頁</a></li><li><a href="../04-Sources/2026-10-01-Intel-Silicon-Photonics-Product-Page.html">Intel 矽光子產品頁</a>：內建雷射的做法</li><li><a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html">Yole 光收發器 2026</a>：CPO 時程看法、XPO、Open CPX、焊接式與插座式比較</li><li><a href="../04-Sources/2026-03-13-Yole-Photonics-Packaging-2026.html">Yole 光子封裝 2026</a>：封裝平台、光纖耦合、封裝價值占比</li><li><a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html">Yole 高階封裝 2025</a>：CPO 在運算封裝的時程看法</li></ul><details class="ar-log"><summary>更新紀錄（8 筆，最近 2026-10-06）</summary><ul><li>2026-10-06：整理版面（只改寫法，未核對最新進度）—預測與估計標出報告版本；新增重點摘要、市場資料與技術路線、未解問題與持續追蹤的數字</li><li>2026-10-06：依新來源更新—Spectrum-X Photonics 補上 2025 年 3 月「2026 年上市」的原始說法，查證日未找到出貨公告；scale-up 改用光補上 GTC 2026 的 Kyber 說法</li><li>2026-10-06：更正—台積電、矽品與 NVIDIA 的關係依原文改為「生態系合作夥伴」，不寫成供貨</li><li>2026-10-06：更正—Quantum-X 的 ELS 數註明是 Yole 推算、未說明是否含備援</li><li>2026-10-05：加入 Yole 高階封裝 2025 的 CPO 看法</li><li>2026-10-05：加入 Yole 光子封裝 2026 的封裝平台與光纖耦合；外部光源細節移到 <a href="../03-Technologies/%E5%A4%96%E9%83%A8%E9%9B%B7%E5%B0%84%E5%85%89%E6%BA%90.html">外部雷射光源</a></li><li>2026-10-05：加入 Yole 光收發器 2026 的時程看法、XPO 與 Open CPX</li><li>2026-10-05：建立</li></ul></details>
+  </div>
+  <p class="ar-back"><a href="../../../pages/domains.html#d3">← 回到高速互連與網路</a></p>
+</article>
+<aside class="ar-side"><nav class="ar-toc" aria-label="本頁章節"><p>本頁章節</p><ul><li><a href="#scope">研究問題與範圍</a></li><li><a href="#summary">重點摘要與證據範圍</a></li><li><a href="#how-it-works">原理與流程</a></li><li><a href="#tradeoffs">方案與取捨</a></li><li class="sub"><a href="#cpo-npo-pluggable">CPO、近封裝（NPO）與可插拔</a></li><li class="sub"><a href="#soldered-vs-socketed">焊接式與插座式</a></li><li class="sub"><a href="#light-source">光源放在哪裡</a></li><li class="sub"><a href="#fiber-coupling">光纖耦合</a></li><li class="sub"><a href="#engine-stacking">光學引擎怎麼疊：晶圓廠與封測廠</a></li><li><a href="#supply-chain">產品與供應鏈</a></li><li><a href="#market-roadmap">市場資料與技術路線</a></li><li class="sub"><a href="#market-size">市場規模（Yole 2025 版：2024 年為估計，之後為預測）</a></li><li><a href="#open-questions">未解問題</a></li><li class="sub"><a href="#tracking">持續追蹤的數字</a></li><li><a href="#sources-log">來源與更新紀錄</a></li></ul></nav></aside>
+</div>
+</main>
+
+<footer id="site-footer"></footer>
+</body>
+</html>

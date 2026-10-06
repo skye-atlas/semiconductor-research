@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════════════════════════
-   4. 公司與供應鏈頁：上方篩選區、下方結果區（公司清單／角色概覽）
+   4. 公司與供應鏈頁：上方篩選區、下方結果區（公司清單/角色概覽）
    ════════════════════════════════════════════════════════════ */
 
 /* ── 篩選區：一個緊湊的區塊 ── */
@@ -61,7 +61,7 @@
 .sc-mk{margin-left:8px;font-size:var(--fs-xs);color:var(--muted);white-space:nowrap}
 
 /* ── 公司清單：一家公司一列（公司｜角色與技術｜現況｜更新）；整列可點開預覽 ── */
-.sc-list{border-top:1px solid var(--line)}
+.sc-list{border-top:1px solid var(--line);container-type:inline-size}   /* 依清單本身的寬度換排法（右側預覽打開時清單會變窄）*/
 .sc-colhead,.sc-co{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr) 92px;gap:4px 24px}
 .sc-colhead{padding:8px 10px;font-size:var(--fs-xs);font-weight:600;color:var(--muted);border-bottom:1px solid var(--line)}
 .sc-colhead>span:last-child,.sc-c-date{text-align:right}
@@ -74,7 +74,8 @@
 .sc-c-roles{display:grid;gap:8px}
 .sc-r{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2px 24px}
 .sc-c-role{display:grid;gap:1px;align-content:start}
-.sc-c-state{line-height:1.6}
+.sc-c-state{line-height:1.6;overflow-wrap:anywhere}
+.sc-c-role{overflow-wrap:anywhere}
 .sc-c-date{font-size:var(--fs-xs);color:var(--muted);padding-top:2px}
 /* 蓋住整列的預覽按鈕（公司名稱浮在它上面，仍然是連結）*/
 .sc-peek{position:absolute;inset:0;width:100%;background:none;border:0;padding:0;cursor:pointer}
@@ -106,6 +107,7 @@
 .pv-prog li>span{color:var(--accent);width:1em}
 .pv-prog .pv-plan>span,.pv-prog .pv-plan b{color:var(--muted);font-weight:400}
 .pv-prog small{color:var(--muted);font-size:var(--fs-xs)}
+.pv-prog .pv-lapsed{font-style:normal;font-size:var(--fs-xs);color:var(--warn, #9a5b00);font-weight:700}
 .pv-prog em{font-style:normal;font-size:var(--fs-pill);background:var(--accent);color:var(--panel);border-radius:var(--r);padding:0 6px}
 .pv-list{margin:0;padding-left:1.2em}
 .pv-src{margin:0;font-size:var(--fs-xs);color:var(--muted)}
@@ -133,4 +135,13 @@
   .sc-co{grid-template-columns:minmax(0,1fr) auto;padding:12px 4px}
   .sc-c-roles{grid-column:1 / -1;grid-row:2}
   .sc-r{grid-template-columns:1fr}
+}
+
+/* 清單變窄時（右側預覽打開、或平板寬度）：公司與更新日一行，下面每個角色一段，角色與現況上下排 */
+@container (max-width:820px){
+  .sc-colhead{display:none}
+  .sc-co{grid-template-columns:minmax(0,1fr) auto;gap:6px 16px}
+  .sc-c-roles{grid-column:1 / -1;grid-row:2;gap:12px}
+  .sc-r{grid-template-columns:1fr;gap:2px}
+  .sc-c-date{max-width:9em}
 }

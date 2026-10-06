@@ -14,7 +14,8 @@
 .gd-nav a{display:block;padding:7px 12px;border-left:3px solid transparent;text-decoration:none;color:var(--ink);font-size:var(--fs-md);line-height:1.5}
 .gd-nav a:hover{background:var(--panel)}
 .gd-nav a[aria-current="page"]{border-left-color:var(--accent);background:var(--accbg);font-weight:700}
-.gd-glabel{margin:18px 0 2px;padding-left:15px;font-size:var(--fs-pill);color:var(--muted);letter-spacing:.08em}
+.gd-glabel{margin:20px 0 4px;padding:10px 0 0 15px;border-top:1px solid var(--line);font-size:var(--fs-xs);font-weight:700;color:var(--muted);letter-spacing:.1em}
+.gd-nav>a:first-child+.gd-glabel{margin-top:12px}
 
 /* ── 右側：標題區 ── */
 .gd-main{min-width:0}
@@ -25,20 +26,17 @@
 .gd-guide{margin:12px 0 0;font-size:var(--fs-md)}
 .gd-h{font-size:var(--fs-sm);font-weight:700;color:var(--muted);letter-spacing:.06em;margin:36px 0 0;padding-bottom:6px;border-bottom:1px solid var(--line)}
 
-/* ── 主要主題：名稱在左，說明與文章在右；沒有文章的只是純文字 ── */
+/* ── 研究分區：名稱在左，說明與文章在右；沒有文章的只是純文字 ── */
 .gd-sec{display:grid;grid-template-columns:170px minmax(0,1fr);gap:0 24px;padding:12px 0;border-bottom:1px solid var(--line);font-size:var(--fs-sm)}
 .gd-sec h3{grid-row:span 4;margin:0;font-size:var(--fs-md);font-weight:600;line-height:1.6}
 .gd-sec>p{margin:0;color:var(--muted);line-height:1.7}
 .gd-sec>p.gd-todo{color:var(--ink);margin-top:4px}
 .gd-co{margin-left:12px;white-space:nowrap}
-.gd-sec>p.gd-keys{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:6px}
-.gd-keys span{font-size:var(--fs-xs);color:var(--muted);border:1px solid var(--line);border-radius:var(--r);padding:0 7px;line-height:1.7}
 .gd-arts{list-style:none;margin:6px 0 0;padding:0}
 .gd-arts>li{padding:6px 0}
 .gd-arts p{margin:2px 0;line-height:1.7}
 .gd-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:var(--fs-xs);color:var(--muted)}
-.gd-cases{margin:4px 0 0;padding-left:18px;font-size:var(--fs-xs);color:var(--muted)}
-.gd-cases .tag{margin-right:6px}
+/* 交叉引用：沒有卡片框的緊湊文字列 */
 
 /* ── 收起的區塊：分類軸、研究方法（整列都可點）── */
 .gd-fold{margin-top:22px;font-size:var(--fs-sm)}
@@ -77,3 +75,15 @@
   .gd-sec{grid-template-columns:1fr}
   .gd-sec h3{grid-row:auto}
 }
+
+/* ── 研究分區第一層之後的兩行：產業證據分布（點開看公司）、延伸閱讀（淡色）──
+   規格見 README「研究領域頁的資訊層級」 */
+.gd-ev{margin:4px 0 0;font-size:var(--fs-xs);color:var(--muted)}
+.gd-ev summary{cursor:pointer;width:fit-content}
+.gd-ev summary:hover{color:var(--ink)}
+.gd-ev ul{margin:4px 0 2px;padding-left:18px}
+.gd-ev .tag{margin-right:6px}
+.gd-sec>p.gd-same{margin:2px 0 0;font-size:var(--fs-sm);color:var(--muted)}
+.gd-sec>p.gd-xline{margin-top:6px;font-size:var(--fs-xs);color:var(--muted);line-height:1.8}
+.gd-xline a{color:var(--muted)}
+.gd-xline a:hover{color:var(--ink)}

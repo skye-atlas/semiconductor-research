@@ -52,6 +52,7 @@ window.SUPPLY_CHAIN = {
     { id: "demo",       label: "技術展示" },
     { id: "sampling",   label: "送樣" },
     { id: "customer",   label: "客戶驗證" },
+    { id: "production", label: "生產／量產" },
     { id: "shipping",   label: "商業出貨" },
     { id: "revenue",    label: "相關收入" },
     { id: "profit",     label: "獲利與現金流" }
@@ -71,11 +72,13 @@ window.SUPPLY_CHAIN = {
   //   said：被描述為已發生，但主要證據仍來自公司自己
   //   plan：還沒發生的時程或目標（只用在進度）
   //   inferred：研究者從幾筆證據推出來的（只用在現況）
+  //   reported：只有第三方（研究機構、券商、媒體）的報告或估計，公司與客戶都沒有揭露；不等於已確認
   marks: [
     { id: "fact",     label: "已確認",       tag: "已確認",   style: "fact" },
     { id: "said",     label: "公司說法",     tag: "公司說法", style: "said" },
     { id: "plan",     label: "已宣布或計畫中", tag: "計畫",   style: "plan" },
-    { id: "inferred", label: "研究者推論",   tag: "推論",     style: "inf" }
+    { id: "inferred", label: "研究者推論",   tag: "推論",     style: "inf" },
+    { id: "reported", label: "第三方報告",   tag: "第三方報告", style: "unknown" }
   ],
 
   // ── 來源類型：來源筆記開頭的 kind 用這裡的 id；voice 是「誰說的」，會顯示在每條證據旁；hint 是來源庫說明裡的「適合拿來確認什麼」──
@@ -104,7 +107,7 @@ window.SUPPLY_CHAIN = {
   claimKinds: [
     { id: "done",      label: "已實現",         style: "fact" },
     { id: "spec",      label: "產品規格",       style: "said" },
-    { id: "standard",  label: "標準／框架定義", style: "unknown" },
+    { id: "standard",  label: "標準/框架定義", style: "unknown" },
     { id: "stated",    label: "公司陳述",       style: "said" },
     { id: "target",    label: "目標與預測",     style: "plan" },
     { id: "model",     label: "試算與假設",     style: "inf" },

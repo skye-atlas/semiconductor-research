@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 由 tools/build_pages.py 自動產生，不要手改；要改內容請改 content/ 裡的 .md -->
+<title>可插拔光模組｜天空研究室</title>
+<link rel="stylesheet" href="../../../assets/css/1-tokens.css">
+<link rel="stylesheet" href="../../../assets/css/2-base.css">
+<link rel="stylesheet" href="../../../assets/css/6-article.css">
+<script src="../../../settings/site.js"></script>
+<script src="../../../generated/stats.js"></script>
+<script src="../../../assets/js/layout.js"></script>
+<script src="../../../assets/js/toc.js"></script>
+</head>
+<body data-page="domains" data-root="../../..">
+
+<header id="site-header"></header>
+
+<main class="wrap">
+<div class="ar-grid">
+<article class="page ar">
+  <div class="crumb"><a href="../../../index.html">首頁</a> · <a href="../../../pages/domains.html">研究領域</a> · <a href="../../../pages/domains.html#d3">高速互連與網路</a> · <a href="../../../pages/domains.html#d3-optics">光互連產品與整合架構</a> · 可插拔光模組</div>
+  <p class="ar-kind">技術</p>
+  <h1 class="serif">可插拔光模組</h1>
+  <p class="ar-meta">主要分區：<a href="../../../pages/domains.html#d3-optics">高速互連與網路・光互連產品與整合架構</a>　也列於：<a href="../../../pages/domains.html#d3-photonics">高速互連與網路・光電元件與整合製程</a></p><p class="ar-meta ar-updated">本頁更新：2026-10-06<small>（見文末更新紀錄；全站日期在頁尾）</small></p>
+  <div class="ar-body">
+<p>插在交換器或伺服器前面板、可以現場更換的光收發器。這篇回答：AI 資料中心的光模組在怎麼變（速率、訊號處理、光源、外型），哪些變化影響雷射與封裝供應鏈，以及它和 CPO 的界線在哪裡。</p>
+<h2 id="scope">研究問題與範圍</h2>
+<ul>
+<li><strong>要解決的問題</strong>：AI 叢集需要大量交換器與 GPU 之間的光連線，模組速率由 800G 往 1.6T、3.2T 走，同時要壓住功耗與成本。Yole 光收發器 2026 版估市場由 2025 年 234 億美元增至 2031 年 1,123 億美元，datacom 占九成以上（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT5">OT5、OT6</a>）。本頁的預測數字都採光收發器 2026 版。</li>
+<li><strong>範圍</strong>：datacom 的乙太網路與 InfiniBand 可插拔模組、主動光纜（AOC），以及正在出現的新外型（XPO、OSFP-XD、插座式 CPX）。</li>
+<li><strong>不在本篇</strong>：光學引擎直接和晶片封裝在一起的做法，見 <a href="../03-Technologies/%E5%85%B1%E5%90%8C%E5%B0%81%E8%A3%9D%E5%85%89%E5%AD%B8.html">共同封裝光學（CPO）</a>；電信用的同調模組（ZR/ZR+）只在追蹤指標帶過。</li>
+<li><strong>怎麼讀這篇</strong>：本頁多數數字是 Yole 光收發器 2026 版的估計與轉述。「重點摘要與證據範圍」列出主要判斷與依據的性質（公司公告、標準文件、研究機構估計、媒體轉述），研究機構的數字標明版本；完整比較在各節；說法對不齊或證據不足的放在「未解問題」，要持續追的數字放在「持續追蹤的數字」。查證過程記在各來源筆記與本站內部的收錄紀錄。</li>
+</ul>
+<h2 id="summary">重點摘要與證據範圍</h2>
+<p>本站整理至 2026-10-06（各項的日期寫在表內，不代表全篇數字都更新到這天）。每一項寫出由誰說、什麼性質；完整依據與比較見下方各節。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>目前能說到哪裡（誰說的）</th>
+<th>還不知道</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DSP 的功耗</td>
+<td>NVIDIA：DSP 占 1.6T 重定時模組功耗一半以上（<a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html#NB3">NB3</a>）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>LPO 互通</td>
+<td>Cisco 工程師 OFC 2025 論文：端到端表現可接受，但模組發射端規格 56 條通道中 33 條通過；同廠搭配可靠，跨廠隨插即用仍有風險（<a href="../04-Sources/2025-03-25-Cisco-OFC-2025-LPO-System-Integration.html#LP9">LP8–LP10</a>，限於該次樣本與條件）</td>
+<td>200G/lane 的互通</td>
+</tr>
+<tr>
+<td>新外型</td>
+<td>XPO（Arista，OFC 2026）、Open CPX（2026 年 3 月成立）本站只有 Yole 轉述</td>
+<td>量產與採用者</td>
+</tr>
+<tr>
+<td>市場規模</td>
+<td>Yole 光收發器 2026 版：2025 年 234 億美元，預測 2031 年 1,123 億美元，datacom 占九成以上（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT5">OT5、OT6</a>）；同年另一份 Yole 報告的預測明顯較低（見未解問題）</td>
+<td>哪一份預測較接近實際</td>
+</tr>
+<tr>
+<td>1.6T 放量</td>
+<td>Yole 2026 版轉述：業界把 2026 年 1.6T 出貨的估計由約 1,200 萬下修到約 500 萬個，800G 反而上修（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT34">OT34</a>）</td>
+<td>實際出貨</td>
+</tr>
+</tbody>
+</table>
+<p>市占、出貨量、價值鏈毛利等都是 Yole 估計，見各節。</p>
+<h2 id="how-it-works">原理與流程</h2>
+<p>一個可插拔模組由四部分組成：發射端的雷射與調變器、接收端的光偵測器與 TIA、負責等化與重定時的 DSP，以及外殼與光纖連接器（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT47">Yole OT47</a>）。模組的演進可以拆成四個互相獨立的方向：</p>
+<table>
+<thead>
+<tr>
+<th>方向</th>
+<th>報告時的主流（Yole 2026 版）</th>
+<th>往哪裡走（Yole 2026 版預測）</th>
+<th>依據</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>每通道速率</td>
+<td>100G/λ（800G = 8×100G）</td>
+<td>200G/λ 在 2026 年快速普及，2027 年占出貨 45%；400G/λ 2028 年起量</td>
+<td><a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT11">OT11</a></td>
+</tr>
+<tr>
+<td>訊號處理</td>
+<td>完整重定時（模組內有 DSP）</td>
+<td>LPO 拿掉 DSP、LRO 只留發射端 DSP</td>
+<td><a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT40">OT14、OT40</a></td>
+</tr>
+<tr>
+<td>光源平台</td>
+<td>EML、VCSEL 為主</td>
+<td>CW-DFB 雷射加矽光子調變器</td>
+<td><a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT45">OT12、OT45</a></td>
+</tr>
+<tr>
+<td>外型</td>
+<td>OSFP、QSFP-DD</td>
+<td>OSFP-XD、液冷 XPO、插座式 CPX</td>
+<td><a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT9">OT9、OT37、OT38</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="tradeoffs">方案與取捨</h2>
+<h3 id="signal-processing">訊號處理：重定時、LRO、LPO</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>完整重定時（FRO）</th>
+<th>LRO</th>
+<th>LPO</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>模組內 DSP</td>
+<td>發射與接收各一</td>
+<td>只留發射端</td>
+<td>沒有，等化交給主機晶片</td>
+</tr>
+<tr>
+<td>1.6T 模組功耗（Yole 比較表）</td>
+<td>約 30 W</td>
+<td>約 18 W</td>
+<td>約 10 W</td>
+</tr>
+<tr>
+<td>距離</td>
+<td>任何距離（含 ZR）</td>
+<td>單模光纖皆可</td>
+<td>一般 2 km 以內</td>
+</tr>
+<tr>
+<td>主要風險</td>
+<td>功耗與成本最高</td>
+<td>過渡角色</td>
+<td>不同廠牌兩端互通（200G/lane 時尤其），需要主機 SerDes 支援</td>
+</tr>
+<tr>
+<td>依據</td>
+<td><a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT40">OT40</a></td>
+<td><a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT41">OT41</a></td>
+<td><a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT40">OT40</a></td>
+</tr>
+</tbody>
+</table>
+<p>DSP 占一個 1.6T 重定時模組功耗的一半以上（<a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html#NB3">NVIDIA 技術部落格 NB3</a>），所以拿掉 DSP 是可插拔省電最直接的方法。Yole 預測 LPO/LRO 出貨由 2025 年 128 萬個增至 2031 年 1.05 億個、占 800G 以上模組的 43%（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT14">OT14</a>）。同一份報告對「每模組省多少瓦」有四種說法（5 W 到 20 W），引用時要註明速率與頁碼（見來源筆記的疑點表）。</p>
+<p><strong>互通是 LPO 的主要難點</strong>：Cisco 工程師在 OFC 2025 的實測（100G/lane，三家供應商的 400G、800G LPO 模組，4 個主機埠）中，所有埠的端到端表現都可接受，但模組發射端的規格只有 33 條通過（論文寫「33 ports」，本站理解為 56 條通道中的 33 條）。作者的結論是主機與模組同廠搭配可做到可靠表現，要在各種主機埠隨插即用仍有風險；這些結果限於該次樣本與測試條件（室溫、每次 30 秒、部分為早期產品）（<a href="../04-Sources/2025-03-25-Cisco-OFC-2025-LPO-System-Integration.html#LP9">Cisco OFC 2025 LP8–LP10</a>）。兩套標準的取捨也不同：OIF 的版本要求 LPO 也能和重定時模組互通，但主機通道損耗只能到約 13 dB；LPO-MSA 的版本放寬到約 16 dB，但不保證和重定時互通（<a href="../04-Sources/2025-03-25-Cisco-OFC-2025-LPO-System-Integration.html#LP5">LP5、LP6</a>）。他們給的功耗例子是 800G-DR8 重定時 13–15 W、LPO 7–9 W，64 埠交換器約省 400 W（<a href="../04-Sources/2025-03-25-Cisco-OFC-2025-LPO-System-Integration.html#LP2">LP2</a>）。</p>
+<p><strong>限制</strong>：LPO 要求主機電端和光端用同一種調變；若 448G 電介面改用 PAM6/PAM8，LPO 在 448G 就做不成（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT44">OT44</a>）。</p>
+<h3 id="eml-vs-cw">光源：EML 對 CW-DFB 加矽光子</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>EML</th>
+<th>CW-DFB 加矽光子</th>
+<th>VCSEL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>做法</td>
+<td>雷射與調變器做在同一顆 InP 晶片，一通道一顆</td>
+<td>雷射只發連續光，調變在矽光子晶片上；一顆雷射可供 4 個通道</td>
+<td>直接調變，多模光纖</td>
+</tr>
+<tr>
+<td>強項</td>
+<td>訊號品質好，10 km（LR）仍有優勢</td>
+<td>雷射用料少、可用 CMOS 晶圓廠量產，也是 CPO 的光源架構</td>
+<td>最便宜、最省電的短距離方案</td>
+</tr>
+<tr>
+<td>弱點</td>
+<td>InP 產能吃緊、需要致冷器</td>
+<td>雷射貼合到 PIC 的良率、微環調變器怕溫度</td>
+<td>200G/lane 以上距離急縮，448G 不可行</td>
+</tr>
+<tr>
+<td>依據</td>
+<td><a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT48">OT30、OT48</a></td>
+<td><a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT46">OT23、OT46</a></td>
+<td><a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT45">OT45、OT50</a></td>
+</tr>
+</tbody>
+</table>
+<p>Yole 用 1.6T-DR8 估算兩種做法的用料：EML 版 8 顆 EML、模組單價約 615 美元；矽光子版 2 顆 CW-DFB、約 545 美元，DSP 都是 95 美元、占最大一項（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT47">OT47</a>）。估算裡雷射可能重複計算，只能看方向。依此 Yole 預測矽光子占 datacom 模組出貨由 2025 年 25% 增至 2031 年 62%、營收占 85%（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT12">OT12</a>）。</p>
+<p>可插拔模組用的 CW 雷射功率一般低於 100 mW（<a href="../04-Sources/2023-03-20-Frontiers-of-Optoelectronics-Co-packaged-Optics-Status-Challenges-and-Solutions.html#F7">Frontiers 綜述 F7</a>），CPO 外部光源則需要數百 mW 等級。<code>[推論]</code> 同樣是「CW 雷射」，可插拔與 CPO 對功率、可靠度的要求不同，供應商能力不能直接互推。</p>
+<h3 id="form-factors">外型：可插拔和 CPO 的界線在移動</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>OSFP/OSFP-XD</th>
+<th>XPO</th>
+<th>插座式 CPX</th>
+<th>焊接式 CPO</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>每模組頻寬</td>
+<td>1.6T/3.2T</td>
+<td>12.8T（8 顆 1.6T 光學晶片）</td>
+<td>6.4T</td>
+<td>依引擎而定</td>
+</tr>
+<tr>
+<td>散熱</td>
+<td>氣冷</td>
+<td>整合冷板，最高 400 W</td>
+<td>靠近 ASIC</td>
+<td>和 ASIC 同封裝</td>
+</tr>
+<tr>
+<td>可更換</td>
+<td>前面板直接換</td>
+<td>前面板直接換</td>
+<td>插座可拆</td>
+<td>不可，要換整台</td>
+</tr>
+<tr>
+<td>多供應商</td>
+<td>成熟</td>
+<td>MSA 推動中</td>
+<td>MSA 推動中</td>
+<td>多為單一供應商</td>
+</tr>
+<tr>
+<td>Yole 預測 2031 年營收</td>
+<td>OSFP-XD 3.2T 249 億美元</td>
+<td>12.8T 315 億</td>
+<td>92 億</td>
+<td>見 CPO 頁</td>
+</tr>
+<tr>
+<td>依據</td>
+<td><a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT9">OT9</a></td>
+<td><a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT37">OT37</a></td>
+<td><a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT38">OT38</a></td>
+<td><a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT39">OT39</a></td>
+</tr>
+</tbody>
+</table>
+<p>XPO 由 Arista 在 OFC 2026 提出、2027 年量產是創辦方的說法；Open CPX 由 Ciena、Coherent、Marvell、Molex、Samtec、TeraHop 在 2026 年 3 月成立（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT37">OT37、OT38</a>）。Yole 認為可插拔至少主導到 2028 年，CPO 到 3.2T 世代才有意義的份額（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT35">OT35</a>）。<code>[推論]</code> 「可插拔對 CPO」不再是二選一：XPO 把可插拔推到 CPO 的密度，CPX 把 CPO 做成可插拔，判斷時要看可更換性與供應商數，而不只看光學放在哪。</p>
+<h2 id="supply-chain">產品與供應鏈</h2>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>做什麼</th>
+<th>進度或份額</th>
+<th>證據性質</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>旭創（Innolight）、新易盛（Eoptolink）</td>
+<td>800G/1.6T 光模組</td>
+<td>Yole 估 2025 年 datacom 市占 27%、17%（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT19">OT19</a>）；通路調查稱兩家合拿 NVIDIA 800G 新增訂單約 60%（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT27">OT27</a>）</td>
+<td>產業分析、通路調查</td>
+</tr>
+<tr>
+<td><a href="../01-Companies/Coherent.html">Coherent</a></td>
+<td>光模組，以及 EML、CW-DFB、VCSEL 雷射；Open CPX 創始成員</td>
+<td>Yole 估 2025 年全市場市占 13%（第三）；列為主要 CW-DFB 與 EML 供應商（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT23">OT18、OT23、OT30</a>）</td>
+<td>產業分析</td>
+</tr>
+<tr>
+<td>Lumentum</td>
+<td>EML、CW-DFB、模組</td>
+<td>Yole 2026 版轉述投資人說法：唯一量產出貨 200G/lane EML 的廠商（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT30">OT30</a>）</td>
+<td>轉述</td>
+</tr>
+<tr>
+<td><a href="../01-Companies/NVIDIA.html">NVIDIA</a></td>
+<td>自有品牌 LinkX 模組（Fabrinet 代工）；也是最大的模組採購方</td>
+<td>Yole 2026 版轉述通路調查：已預先包下多家 EML 產能（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT22">OT22</a>）</td>
+<td>產業分析、通路調查</td>
+</tr>
+<tr>
+<td><a href="../01-Companies/%E5%8F%B0%E7%A9%8D%E9%9B%BB.html">台積電</a>、Tower</td>
+<td>矽光子代工</td>
+<td>Yole 2026 版稱 Tower 是可插拔用矽光子的第一大代工，台積電 COUPE 是 CPO 的第一大代工（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT31">OT31</a>）</td>
+<td>產業分析</td>
+</tr>
+<tr>
+<td>Marvell、Broadcom</td>
+<td>模組 DSP</td>
+<td>雙寡占；LPO 是最大風險（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT32">OT32</a>）</td>
+<td>產業分析</td>
+</tr>
+<tr>
+<td>富采、聯亞、光環</td>
+<td>CW-DFB 雷射晶片</td>
+<td>Yole 雷射地圖上僅有的台灣廠（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT26">OT26</a>）</td>
+<td>產業分析（名單）</td>
+</tr>
+<tr>
+<td><a href="../01-Companies/%E8%81%AF%E9%88%9E.html">聯鈞</a></td>
+<td>雷射 COSA 封裝與測試（EML、CW 雷射）</td>
+<td>見公司檔；Yole 沒有列入</td>
+<td>公司說法</td>
+</tr>
+</tbody>
+</table>
+<p>Yole 認為價值正往上游移：模組廠平均毛利不到 30%，而雷射、DSP 等晶片層有 45–60%；光學次組件越來越由大廠自製（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT28">OT28</a>）。這一點對做外包封裝的台灣廠是要追的風險，見「追蹤指標」。</p>
+<h2 id="open-questions">未解問題</h2>
+<p>每一項寫出差異、缺什麼證據，以及什麼新資料會改變判斷。已查過仍無法確認的，記下查證範圍、等新資料再更新，不另外衍生搜尋；要持續追的數字列在「持續追蹤的數字」。</p>
+<ul>
+<li><strong>兩份 Yole 2026 版預測分歧</strong>：同樣是 2026 版的 Yole 光子封裝報告，對光收發器市場的數字 2025 年接近（229 億對 234 億），之後明顯較低（2026 年 279 億對 430 億、2031 年 565 億對 1,123 億，<a href="../04-Sources/2026-03-13-Yole-Photonics-Packaging-2026.html#PP8">PP8</a>）；兩份報告都沒有說明原因，也無法判斷哪一份較新。本頁採光收發器 2026 版。→ 等 Yole 的方法說明或新版報告。</li>
+<li><strong>1.6T 的實際放量速度</strong>：Yole 2026 版轉述，業界對 2026 年 1.6T 出貨的估計由約 1,200 萬下修到約 500 萬個，800G 反而上修（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT34">OT34</a>）。→ 等 2026 下半年模組廠營收與 NVIDIA 平台出貨揭露（本站尚未收錄）。</li>
+<li><strong>EML 短缺何時緩解</strong>：Yole 認為到 2027 年 800G 產量可能比需求少 40–60%（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT22">OT22</a>）。→ 等 Coherent 6 吋 InP 與 Lumentum 擴產進度（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT24">OT24、OT29</a>）。</li>
+<li><strong>LPO 在 200G/lane 的互通</strong>：Cisco 的實測是 100G/lane；200G/lane 的互通決定 LPO 能否從 Meta 等少數客戶擴大。→ 等 200G/lane 的互通測試或量產部署公告。</li>
+<li><strong>400G/lane 用哪種調變器</strong>：矽 MZ、TFLN、InP、有機材料都在競爭（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT49">OT13、OT49</a>）。→ 等 400G/lane 產品發表。</li>
+<li><strong>外包封裝的空間</strong>：大廠擴充 CW 產能「供外售與自用」、光學次組件走向自製（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT28">OT24、OT28</a>），台灣雷射封裝廠的訂單會增加還是被收回。→ 等聯鈞、GIS-KY 的客戶揭露。</li>
+</ul>
+<h3 id="tracking">持續追蹤的數字</h3>
+<p>不是待解的問題，而是每次有新資料都要更新的數字；括號裡是本站目前的基準與出處。</p>
+<ul>
+<li><strong>800G 與 1.6T 的出貨量</strong>：看模組廠財報與 Yole 新版（2026 年 1.6T 的業界估計約 500 萬個，<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT34">OT34</a>）。</li>
+<li><strong>EML 供需缺口</strong>：看 Coherent 6 吋 InP 與 Lumentum 擴產（Yole 估 2027 年 800G 產量可能比需求少 40–60%，<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT22">OT22</a>）。</li>
+<li><strong>模組廠營收</strong>：本站尚未收錄模組廠財報。</li>
+</ul>
+<h2 id="sources-log">來源與更新紀錄</h2>
+<ul><li><a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html">Yole 光收發器 2026</a>：市場預測、市占、供應鏈、架構與光源比較、BOM</li><li><a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html">NVIDIA 技術部落格</a>：DSP 占模組功耗的比例</li><li><a href="../04-Sources/2025-03-25-Cisco-OFC-2025-LPO-System-Integration.html">Cisco OFC 2025 論文</a>：LPO 標準與互通實測</li><li><a href="../04-Sources/2023-03-20-Frontiers-of-Optoelectronics-Co-packaged-Optics-Status-Challenges-and-Solutions.html">Frontiers 綜述</a>：可插拔與 CPO 對雷射功率的差異</li></ul><details class="ar-log"><summary>更新紀錄（4 筆，最近 2026-10-06）</summary><ul><li>2026-10-06：整理版面（只改寫法，未核對最新進度）—預測與估計標出報告版本；新增重點摘要、市場資料與技術路線、未解問題與持續追蹤的數字</li><li>2026-10-06：加入兩份 Yole 2026 版的光收發器預測對照</li><li>2026-10-05：加入 Cisco OFC 2025 的 LPO 互通實測</li><li>2026-10-05：建立</li></ul></details>
+  </div>
+  <p class="ar-back"><a href="../../../pages/domains.html#d3">← 回到高速互連與網路</a></p>
+</article>
+<aside class="ar-side"><nav class="ar-toc" aria-label="本頁章節"><p>本頁章節</p><ul><li><a href="#scope">研究問題與範圍</a></li><li><a href="#summary">重點摘要與證據範圍</a></li><li><a href="#how-it-works">原理與流程</a></li><li><a href="#tradeoffs">方案與取捨</a></li><li class="sub"><a href="#signal-processing">訊號處理：重定時、LRO、LPO</a></li><li class="sub"><a href="#eml-vs-cw">光源：EML 對 CW-DFB 加矽光子</a></li><li class="sub"><a href="#form-factors">外型：可插拔和 CPO 的界線在移動</a></li><li><a href="#supply-chain">產品與供應鏈</a></li><li><a href="#open-questions">未解問題</a></li><li class="sub"><a href="#tracking">持續追蹤的數字</a></li><li><a href="#sources-log">來源與更新紀錄</a></li></ul></nav></aside>
+</div>
+</main>
+
+<footer id="site-footer"></footer>
+</body>
+</html>

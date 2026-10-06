@@ -12,6 +12,22 @@
 .ar-meta{margin:0 0 8px;font-size:var(--fs-sm);color:var(--muted)}
 .ar-back{margin:48px 0 0;padding-top:14px;border-top:1px solid var(--line);font-size:var(--fs-sm)}
 
+/* ── 技術頁：右側「本頁章節」（build_pages.py 的 toc_of 產生；捲動時標出目前段落：assets/js/toc.js）──
+   側欄跟著捲動、太長時自己捲；1000px 以下只留內文 */
+.ar-grid{display:grid;grid-template-columns:minmax(0,64em) 220px;gap:0 48px;align-items:start}
+.ar-grid>.ar{max-width:none;min-width:0}
+.ar-side{position:sticky;top:84px;margin-top:48px;max-height:calc(100vh - 104px);overflow-y:auto;font-size:var(--fs-sm);scrollbar-width:thin}
+.ar-toc>p{margin:0 0 6px;font-size:var(--fs-xs);color:var(--muted);font-weight:700;letter-spacing:.06em}
+.ar-toc ul{list-style:none;margin:0;padding:0;border-left:1px solid var(--line)}
+.ar-toc a{display:block;padding:4px 12px;margin-left:-1px;border-left:2px solid transparent;color:var(--muted);text-decoration:none;line-height:1.5}
+.ar-toc li.sub a{padding:2px 12px 2px 24px;font-size:var(--fs-xs)}
+.ar-toc a:hover{color:var(--ink)}
+.ar-toc a[aria-current="true"]{border-left-color:var(--accent);color:var(--ink);font-weight:700}
+@media (max-width:1000px){
+  .ar-grid{grid-template-columns:minmax(0,1fr)}
+  .ar-side{display:none}
+}
+
 /* ── 內文 ── */
 .ar-body{margin-top:24px;line-height:1.95}
 .ar-body>:first-child{margin-top:0}
@@ -61,3 +77,9 @@
 .ar-body .footnote{margin-top:2.5em;font-size:var(--fs-sm);color:var(--muted)}
 .ar-body .footnote hr{margin:0 0 1em}
 .ar-body sup{line-height:0}
+
+/* 「來源與更新紀錄」裡的更新紀錄：預設收起，新的在上（tools/build_pages.py 的 fold_log）*/
+.ar-log{margin:0 0 1em;font-size:var(--fs-sm)}
+.ar-log summary{cursor:pointer;color:var(--muted);font-weight:600}
+.ar-log summary:focus:not(:focus-visible){outline:none}
+.ar-log ul{margin:8px 0 0;color:var(--muted)}

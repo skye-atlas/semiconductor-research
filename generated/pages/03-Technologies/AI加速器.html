@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 由 tools/build_pages.py 自動產生，不要手改；要改內容請改 content/ 裡的 .md -->
+<title>AI 加速器（GPU 與 AI ASIC）｜天空研究室</title>
+<link rel="stylesheet" href="../../../assets/css/1-tokens.css">
+<link rel="stylesheet" href="../../../assets/css/2-base.css">
+<link rel="stylesheet" href="../../../assets/css/6-article.css">
+<script src="../../../settings/site.js"></script>
+<script src="../../../generated/stats.js"></script>
+<script src="../../../assets/js/layout.js"></script>
+<script src="../../../assets/js/toc.js"></script>
+</head>
+<body data-page="domains" data-root="../../..">
+
+<header id="site-header"></header>
+
+<main class="wrap">
+<div class="ar-grid">
+<article class="page ar">
+  <div class="crumb"><a href="../../../index.html">首頁</a> · <a href="../../../pages/domains.html">研究領域</a> · <a href="../../../pages/domains.html#d1">運算晶片與封裝</a> · <a href="../../../pages/domains.html#d1-chip">運算晶片與製程</a> · AI 加速器（GPU 與 AI ASIC）</div>
+  <p class="ar-kind">技術</p>
+  <h1 class="serif">AI 加速器（GPU 與 AI ASIC）</h1>
+  <p class="ar-meta">主要分區：<a href="../../../pages/domains.html#d1-chip">運算晶片與封裝・運算晶片與製程</a>　也列於：<a href="../../../pages/domains.html#d1-split">運算晶片與封裝・Chiplet 架構與異質整合</a>、<a href="../../../pages/domains.html#d1-pkg">運算晶片與封裝・封裝平台</a>、<a href="../../../pages/domains.html#d2-hbm">記憶體與儲存・加速器記憶體與 HBM</a></p><p class="ar-meta ar-updated">本頁更新：2026-10-06<small>（見文末更新紀錄；全站日期在頁尾）</small></p>
+  <div class="ar-body">
+<p>資料中心的生成式 AI 主要跑在兩種晶片上：NVIDIA、AMD 的 GPU，以及雲端業者自己設計的 AI ASIC。這篇回答：兩者差在哪、誰在設計與製造、NVIDIA 下一代產品已公布到哪裡，以及它們如何帶動封裝與 HBM 的需求。</p>
+<h2 id="scope">研究問題與範圍</h2>
+<ul>
+<li><strong>範圍</strong>：資料中心的 GPU 與 AI ASIC，以及搭配的伺服器 CPU、網路處理器（DPU、網路 ASIC）。AI 加速器怎麼封裝見 <a href="../03-Technologies/%E9%AB%98%E9%9A%8E%E5%B0%81%E8%A3%9D%E5%B9%B3%E5%8F%B0.html">高階封裝平台</a>，記憶體見 <a href="../03-Technologies/%E9%AB%98%E9%A0%BB%E5%AF%AC%E8%A8%98%E6%86%B6%E9%AB%94.html">高頻寬記憶體</a>，跨機櫃的光互連見 <a href="../03-Technologies/%E5%85%B1%E5%90%8C%E5%B0%81%E8%A3%9D%E5%85%89%E5%AD%B8.html">共同封裝光學</a>，機櫃供電見 <a href="../03-Technologies/%E8%B3%87%E6%96%99%E4%B8%AD%E5%BF%83%E9%9B%BB%E6%BA%90%E4%BE%9B%E6%87%89%E5%99%A8.html">資料中心電源供應器</a>。</li>
+<li><strong>口徑</strong>：Yole 的 AI ASIC 營收是用成本加合理利潤估算，因為雲端業者不對外販售；GPU 營收則含 NVIDIA 的高毛利（<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA3">Yole GenAI 2025 GA3</a>）。兩者的營收比不能直接當成算力或用量比。</li>
+<li><strong>怎麼讀這篇</strong>：「重點摘要與證據範圍」列出主要判斷與依據的性質（公司公告、標準文件、研究機構估計、媒體轉述），研究機構的數字標明版本；完整比較在各節；說法對不齊或證據不足的放在「未解問題」，要持續追的數字放在「持續追蹤的數字」。查證過程記在各來源筆記與本站內部的收錄紀錄。</li>
+</ul>
+<h2 id="summary">重點摘要與證據範圍</h2>
+<p>本站整理至 2026-10-06（各項的日期寫在表內，不代表全篇數字都更新到這天）。每一項寫出由誰說、什麼性質；完整依據與比較見下方各節。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>目前能說到哪裡（誰說的）</th>
+<th>還不知道</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NVIDIA Vera Rubin</td>
+<td>2026 年 5 月稱平台進入全面量產、量產出貨「今年秋天」開始；Rubin GPU 為兩顆光罩上限尺寸的運算晶粒、最多 288 GB HBM4</td>
+<td>出貨量；封裝技術（見高階封裝平台）</td>
+</tr>
+<tr>
+<td>NVIDIA Rubin Ultra</td>
+<td>GTC 2026 改寫機櫃規劃：NVL576 由 8 個各 72 顆 GPU 的機櫃組成，Kyber 機櫃先做 NVL144</td>
+<td>每個封裝幾顆運算晶粒、上市時間</td>
+</tr>
+<tr>
+<td>NVIDIA Feynman</td>
+<td>GTC 2026 官方文字：Rubin 之後的架構，搭配 Rosa CPU、LP40 LPU</td>
+<td>年份（只有 Yole 轉述的路線圖與媒體報導）；晶粒堆疊與客製 HBM 的細節（只有媒體依主題演講的報導）</td>
+</tr>
+<tr>
+<td>AWS Trainium3</td>
+<td>2025 年 12 月宣布 Trn3 UltraServers 正式上市，3 奈米</td>
+<td>出貨量、設計夥伴</td>
+</tr>
+<tr>
+<td>市場規模</td>
+<td>Yole 2025 版估計：2024 年資料中心 GPU 約 1,012 億美元、AI ASIC 約 90 億美元；預測 AI ASIC 成長較快，2030 年數量超過 GPU（<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA2">GA1、GA2</a>、<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA4">GA4</a>）</td>
+<td>2025 年起的實際值</td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-it-works">原理與流程</h2>
+<p>一顆 AI 加速器的價值鏈：</p>
+<table>
+<thead>
+<tr>
+<th>步驟</th>
+<th>誰做</th>
+<th>依據</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>晶片設計</td>
+<td>GPU：NVIDIA、AMD、Intel；AI ASIC：雲端業者自己定規格，常找 Broadcom、Marvell、世芯、創意協同設計（Yole 整理）</td>
+<td><a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA11">GA11</a></td>
+</tr>
+<tr>
+<td>晶圓製造</td>
+<td>Yole 2025 版：幾乎都在台積電，Blackwell 4 奈米、Rubin 3 奈米、多數 AI ASIC 4/5 奈米、Trainium3 3 奈米（Trainium3 的 3 奈米 AWS 也有寫，<a href="../04-Sources/2025-12-02-AWS-Trainium3-UltraServers-GA-Press-Release.html#AT1">AT1</a>）</td>
+<td><a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA13">GA13</a>、<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA15">GA15</a></td>
+</tr>
+<tr>
+<td>HBM</td>
+<td>SK hynix、Samsung、Micron</td>
+<td><a href="../03-Technologies/%E9%AB%98%E9%A0%BB%E5%AF%AC%E8%A8%98%E6%86%B6%E9%AB%94.html">高頻寬記憶體</a></td>
+</tr>
+<tr>
+<td>封裝</td>
+<td>CoWoS 等 2.5D 平台，台積電為主</td>
+<td><a href="../03-Technologies/%E9%AB%98%E9%9A%8E%E5%B0%81%E8%A3%9D%E5%B9%B3%E5%8F%B0.html">高階封裝平台</a></td>
+</tr>
+<tr>
+<td>系統</td>
+<td>NVIDIA 已從晶片延伸到 NVL72 等整櫃方案；Yole 2025 版稱 AMD、Intel 預計 2026 年跟進（原定期間尚未結束，進展本站尚未核對）</td>
+<td><a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA10">GA10</a>、<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA14">GA14</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="tradeoffs">方案與取捨</h2>
+<h3 id="gpu-vs-asic">GPU 對 AI ASIC</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>GPU</th>
+<th>AI ASIC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>代表</td>
+<td>NVIDIA Hopper、Blackwell、Rubin；AMD Instinct</td>
+<td>Google TPU、AWS Trainium、Meta MTIA、Microsoft MAIA、華為昇騰</td>
+</tr>
+<tr>
+<td>優勢</td>
+<td>彈性高、CUDA 軟體生態、單顆效能最強</td>
+<td>為自家工作負載優化、成本低，雲端業者避開 NVIDIA 的高價</td>
+</tr>
+<tr>
+<td>弱點</td>
+<td>價格高（Yole 估 2024 年 ASP 15,877 美元）</td>
+<td>單顆效能較低，要用更多顆組叢集；軟體生態封閉（Yole 估 2024 年 ASP 2,484 美元，成本估計）</td>
+</tr>
+<tr>
+<td>依據</td>
+<td><a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA3">GA3</a>、<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA9">GA9</a></td>
+<td><a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA3">GA3</a>、<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA17">GA17</a></td>
+</tr>
+</tbody>
+</table>
+<p>Yole 認為推論工作負載是 AI ASIC 最可能挑戰 GPU 的地方；2024 年約一半的伺服器 GPU 營收來自正在自研 ASIC 的雲端業者，這部分會逐步被取代（<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA9">GA9</a>）。</p>
+<h3 id="chiplets">chiplet 與晶片尺寸</h3>
+<p>旗艦加速器都轉向 chiplet。Blackwell 是兩顆約 800 mm² 晶粒（<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA13">GA13</a>），AMD 最多 13 個 chiplet（<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA14">GA14</a>）。NVIDIA 下一代的晶粒組成見下方「NVIDIA 產品路線」。晶粒變多、變大直接推動中介層與載板變大，封裝尺寸的路線圖見 <a href="../03-Technologies/%E9%AB%98%E9%9A%8E%E5%B0%81%E8%A3%9D%E5%B9%B3%E5%8F%B0.html">高階封裝平台</a>。</p>
+<h3 id="memory-placement">記憶體放在哪</h3>
+<p>沒有任何單一 GPU 裝得下最先進的模型，需要 1 TB 以上 HBM。另一條路是 Groq 這類大量用晶片內 SRAM 取代 HBM，頻寬高但容量小，推論一個 671B 參數模型要 2,900 顆以上晶片（<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA16">GA16</a>）。</p>
+<h2 id="supply-chain">產品與供應鏈</h2>
+<h3 id="nvidia-roadmap">NVIDIA 產品路線</h3>
+<table>
+<thead>
+<tr>
+<th>世代</th>
+<th>公司已公布</th>
+<th>研究機構與媒體說法</th>
+<th>依據</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vera Rubin</td>
+<td>2026 年 5 月稱平台進入全面量產、量產出貨「今年秋天」開始，沒有出貨量；Rubin GPU 由兩顆光罩上限尺寸的運算晶粒以 NV-HBI 合成一個封裝，3,360 億電晶體，最多 288 GB HBM4（12 層）；比較表寫 Blackwell 與 Rubin 都是 2 顆運算晶粒</td>
+<td>GTC 2025 路線圖為 2026 下半年（Yole 轉述）；Yole 寫 4 個 chiplet，原文是 2 顆 GPU、1 顆 I/O、1 顆晶粒互連，GPU 晶粒數與 NVIDIA 一致；媒體則說有 2 顆 I/O 晶粒（見未解問題）</td>
+<td><a href="../04-Sources/2026-05-31-NVIDIA-Vera-Rubin-Full-Production-Press-Release.html#VR5">VR4、VR5</a>、<a href="../04-Sources/2026-07-21-NVIDIA-Inside-Rubin-GPU-Architecture-Technical-Blog.html#RG1">RG1–RG3</a>、<a href="../04-Sources/2026-01-14-NVIDIA-Inside-Vera-Rubin-Platform-Technical-Blog.html#RP1">RP1</a>；<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA13">GA13</a>、<a href="../04-Sources/2025-11-17-Toms-Hardware-Vera-Rubin-Platform-In-Depth.html#TR2">TR2</a></td>
+</tr>
+<tr>
+<td>Rubin Ultra</td>
+<td>GTC 2026：NVL576 由 8 個各 72 顆 Rubin Ultra GPU 的 MGX 機櫃組成；Kyber 機櫃先以 NVL144 推出；沒有寫晶粒數與時間</td>
+<td>GTC 2025 路線圖（Yole 轉述）：2027 下半年、8 個 chiplet、約 3,600 mm²、1 TB HBM4E；台灣媒體 2026-04 稱改為雙晶粒，理由是四晶粒封裝約 7.5–8 倍光罩、良率與成本壓力大（沒有公司確認）</td>
+<td><a href="../04-Sources/2026-03-16-NVIDIA-Vera-Rubin-POD-Technical-Blog.html#RU1">RU1、RU2</a>；<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA13">GA13</a>、<a href="../04-Sources/2026-04-01-TrendForce-Rubin-Ultra-Dual-Die-Design.html#RD1">RD1、RD3</a></td>
+</tr>
+<tr>
+<td>Feynman</td>
+<td>GTC 2026 官方文字：Rubin 之後的架構，搭配 Rosa CPU、LP40 LPU、BlueField-5、CX10，以 Kyber 做銅線與 CPO 的 scale-up</td>
+<td>GTC 2025 路線圖（Yole 轉述）：約 2028；媒體依主題演講影片與路線圖：2028 年、GPU 晶粒上下堆疊、首次用客製 HBM</td>
+<td><a href="../04-Sources/2026-03-16-NVIDIA-GTC-2026-Live-Updates-Blog.html#FY1">FY1、FY2</a>；<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA13">GA13</a>、<a href="../04-Sources/2026-03-17-heise-Nvidia-Feynman-Stacked-GPU-Dies.html#HS1">HS1、HS3</a></td>
+</tr>
+</tbody>
+</table>
+<p>這些世代用什麼封裝（CoWoS-L、SoIC、CoPoS）的證據整理在 <a href="../03-Technologies/%E9%AB%98%E9%9A%8E%E5%B0%81%E8%A3%9D%E5%B9%B3%E5%8F%B0.html">高階封裝平台</a>「NVIDIA 用哪種封裝」；客製 HBM（NVHBM）見 <a href="../03-Technologies/%E9%AB%98%E9%A0%BB%E5%AF%AC%E8%A8%98%E6%86%B6%E9%AB%94.html">高頻寬記憶體</a>「基底晶粒與客製化」。</p>
+<h3 id="players">誰在做</h3>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>產品</th>
+<th>公司已公布的進度</th>
+<th>Yole 估 2024 年</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../01-Companies/NVIDIA.html">NVIDIA</a></td>
+<td>Hopper、Blackwell、Vera Rubin</td>
+<td>見上表</td>
+<td>伺服器 GPU 市占 94%；旗艦 GPU 420 萬顆，2025 年預估 660 萬顆（Blackwell 570 萬）（<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA5">GA5</a>、<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA10">GA10</a>）</td>
+</tr>
+<tr>
+<td>AMD</td>
+<td>Instinct MI300、MI325X</td>
+<td>本站沒有收錄 AMD 公告</td>
+<td>GPU 市占 6%</td>
+</tr>
+<tr>
+<td>Google</td>
+<td>TPU v6e、v7（Ironwood）</td>
+<td>本站沒有收錄 Google 公告</td>
+<td>AI ASIC 第一，210 萬顆、46 億美元（<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA6">GA6</a>）</td>
+</tr>
+<tr>
+<td>華為</td>
+<td>昇騰 910B、910C</td>
+<td>—</td>
+<td>AI ASIC 第二，20 億美元；產量為傳聞（<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA21">GA21</a>）</td>
+</tr>
+<tr>
+<td>AWS</td>
+<td>Inferentia、Trainium2、Trainium3</td>
+<td>2025 年 12 月 2 日宣布 Trainium3 UltraServers 正式上市（<a href="../04-Sources/2025-12-02-AWS-Trainium3-UltraServers-GA-Press-Release.html#AT1">AT1</a>；Yole 2025 版原稱 2025 年第四季）</td>
+<td>AI ASIC 第三，81 萬顆、11.9 億美元</td>
+</tr>
+</tbody>
+</table>
+<h3 id="design-services">設計服務與台灣</h3>
+<p>Yole 整理的 AI ASIC 設計夥伴（<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA11">GA11</a>；Yole 標明部分為估計或非官方來源，下表尚未以公司或客戶揭露核實）：</p>
+<table>
+<thead>
+<tr>
+<th>客戶</th>
+<th>晶片</th>
+<th>設計夥伴</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Google</td>
+<td>TPU</td>
+<td>Broadcom</td>
+</tr>
+<tr>
+<td>AWS</td>
+<td>Inferentia1/2、Trainium1 → Trainium2</td>
+<td><a href="../01-Companies/%E4%B8%96%E8%8A%AF-KY.html">世芯</a> → Marvell</td>
+</tr>
+<tr>
+<td>Microsoft</td>
+<td>MAIA 100、Cobalt 100 CPU</td>
+<td><a href="../01-Companies/%E5%89%B5%E6%84%8F.html">創意</a></td>
+</tr>
+<tr>
+<td>Meta、ByteDance、OpenAI、Apple</td>
+<td>MTIA、未具名、Baltra</td>
+<td>Broadcom</td>
+</tr>
+<tr>
+<td>Tesla、Intel</td>
+<td>Dojo、Gaudi 3</td>
+<td><a href="../01-Companies/%E4%B8%96%E8%8A%AF-KY.html">世芯</a></td>
+</tr>
+</tbody>
+</table>
+<p>公司自己的揭露（2026 年）：世芯稱 2026 年 5 月起量產出貨 3 奈米 AI 加速器給一家北美雲端業者，台積電 CoWoS-S／R 設計量產中（<a href="../04-Sources/2026-08-14-%E4%B8%96%E8%8A%AF-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E7%B0%A1%E5%A0%B1.html#AS2">AS2</a>、<a href="../04-Sources/2026-09-14-%E4%B8%96%E8%8A%AF-AI-Infra-Summit-2026%E6%96%B0%E8%81%9E%E7%A8%BF.html#AX2">AX2</a>）；創意稱 2Q26 雲端類占營收 79%，主要來自 CPU、AI 加速器與 BMC 專案（<a href="../04-Sources/2026-07-30-%E5%89%B5%E6%84%8F-2Q26%E8%B2%A1%E5%A0%B1%E7%AE%A1%E7%90%86%E5%A0%B1%E5%91%8A.html#GQ2">GQ2</a>）。兩家都不具名客戶；上表的客戶對應只有 Yole 整理，本站 2026-10-06 查證兩家與 Microsoft、AWS、Tesla、Intel 的官方來源都沒有寫。</p>
+<p><code>[推論]</code> 台灣在 AI 加速器的位置可能有兩層：製造幾乎全在台積電；世芯、創意替雲端客戶做設計與量產服務已有公司揭露，但客戶是誰仍待核實。夥伴會隨世代換手（AWS 由世芯轉 Marvell），Intel 也表示 Gaudi 3 是最後一代（<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA14">GA14</a>），個別公司的營收要看客戶與世代。</p>
+<h3 id="network-processors">網路處理器</h3>
+<p>AI 伺服器有兩種網卡：前端最高約 200 Gbps，後端（NVIDIA SuperNIC、AMD AI NIC）約 400 Gbps，與 GPU 一對一配對（<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA19">GA19</a>）。Yole 估網路處理器 2030 年近 180 億美元，後端網路 2025 年在數量上超過前端（<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA18">GA18</a>）。</p>
+<h2 id="market-roadmap">市場資料與技術路線</h2>
+<h3 id="market-size">市場規模（Yole 2025 版：2024 年為估計，之後為預測）</h3>
+<table>
+<thead>
+<tr>
+<th>百萬美元</th>
+<th>2024（估計）</th>
+<th>2025（預測）</th>
+<th>2030（預測）</th>
+<th>CAGR 24–30</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>資料中心 GPU</td>
+<td>101,222</td>
+<td>191,818</td>
+<td>228,671</td>
+<td>14.5%</td>
+</tr>
+<tr>
+<td>AI ASIC</td>
+<td>8,951</td>
+<td>14,210</td>
+<td>84,553</td>
+<td>45.4%</td>
+</tr>
+<tr>
+<td>伺服器 CPU</td>
+<td>22,769</td>
+<td>25,646</td>
+<td>35,623</td>
+<td>7.7%</td>
+</tr>
+<tr>
+<td>DPU 與網路 ASIC</td>
+<td>10,334</td>
+<td>13,797</td>
+<td>17,653</td>
+<td>9.3%</td>
+</tr>
+<tr>
+<td>資料中心處理器合計</td>
+<td>146,628</td>
+<td>248,969</td>
+<td>372,226</td>
+<td>16.8%</td>
+</tr>
+</tbody>
+</table>
+<p>依據：<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA2">GA1、GA2</a>。2025 年以後是 Yole 2025 版的預測，2025 年的實際值本站尚未核對。Yole 預期 GPU 營收在 2028 年見頂後小幅下滑，並認為取決於 AI 能否快速產生營收；數量上 AI ASIC 2030 年（1,100 萬顆）會超過 GPU（820 萬顆）（<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA4">GA4</a>、<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA9">GA9</a>）。</p>
+<h3 id="schedule-check">時程對照</h3>
+<p>Yole 2025 版轉述的 NVIDIA 路線圖是 Rubin 2026 下半年、Rubin Ultra 2027 下半年、Feynman 約 2028（GA13）。之後的公司公告：Vera Rubin 2026 年 5 月稱進入全面量產、秋天開始出貨，落在路線圖的 2026 下半年；Rubin Ultra 與 Feynman 的時間 NVIDIA 2026 年的技術文件沒有再寫。Trn3 UltraServers 2025 年 12 月正式上市，落在 Yole 說的第四季。</p>
+<h2 id="open-questions">未解問題</h2>
+<p>每一項寫出差異、缺什麼證據，以及什麼新資料會改變判斷。已查過仍無法確認的，記下查證範圍、等新資料再更新，不另外衍生搜尋；要持續追的數字列在「持續追蹤的數字」。</p>
+<ul>
+<li><strong>Rubin 的 I/O 晶粒組成</strong>：Yole 寫 1 顆 I/O 加 1 顆晶粒互連，媒體寫 2 顆 I/O，NVIDIA 文件沒有提 I/O 晶粒。→ 等 NVIDIA 技術文件（Hot Chips 2026 簡報要登入，本站沒有取得）或拆解。</li>
+<li><strong>Rubin Ultra 每個封裝幾顆運算晶粒</strong>：GTC 2025 路線圖是 8 個 chiplet；台灣媒體稱改為雙晶粒；NVIDIA 2026 年的機櫃規劃沒有寫晶粒數，不能用來確認。→ 等 NVIDIA 產品技術文件。</li>
+<li><strong>Feynman 的年份與晶粒堆疊方式</strong>：官方文字沒有寫。年份只有 Yole 2025 版轉述的路線圖（約 2028，GA13）與媒體依主題演講影片的報導；堆疊方式只有媒體報導。→ 等 NVIDIA 技術文件或主題演講原話。</li>
+<li><strong>Rubin 與 AI ASIC 的出貨規模</strong>：NVIDIA 稱秋天開始量產出貨，沒有出貨量；Rubin 的出貨規模會影響 HBM4 需求（Rubin 搭載 HBM4，<a href="../04-Sources/2026-07-21-NVIDIA-Inside-Rubin-GPU-Architecture-Technical-Blog.html#RG3">RG3</a>）；若 Rubin 採用 CoWoS-L（尚未確認，見 <a href="../03-Technologies/%E9%AB%98%E9%9A%8E%E5%B0%81%E8%A3%9D%E5%B9%B3%E5%8F%B0.html">高階封裝平台</a>「NVIDIA 用哪種封裝」），也會帶動相應的封裝需求。Trainium3、TPU v7 的量產規模與外部客戶採用，本站沒有來源。→ 等季報或研究機構資料。</li>
+<li><strong>GPU 營收的高峰</strong>：Yole 預期 2028 年見頂，並認為取決於 AI 能否快速產生營收（<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA9">GA9</a>）。→ 看雲端業者的資本支出指引。</li>
+<li><strong>設計夥伴的換手</strong>：世芯、創意都不具名客戶（世芯只說北美 CSP），客戶對應與 Broadcom、Marvell 的份額只有 Yole 整理。→ 等公司或客戶揭露。</li>
+<li><strong>出口管制</strong>：美國對中國的晶片與模型管制，以及華為昇騰的實際產量，本站沒有新來源。</li>
+</ul>
+<h3 id="tracking">持續追蹤的數字</h3>
+<p>不是待解的問題，而是每次有新資料都要更新的數字；括號裡是本站目前的基準與出處。</p>
+<ul>
+<li><strong>NVIDIA 資料中心營收與 Rubin 出貨描述</strong>：看 NVIDIA 季報（目前只有「秋天開始量產出貨」，沒有出貨量）。</li>
+<li><strong>雲端業者資本支出指引</strong>：看各家季報；Yole 認為 GPU 營收高峰取決於 AI 能否快速產生營收（<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA9">GA9</a>）。</li>
+<li><strong>AI ASIC 的量產或部署規模</strong>：看 AWS、Google 等公告（本站目前只有 Yole 的數量預測，<a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html#GA4">GA4</a>）。</li>
+<li><strong>台積電 HPC 營收占比</strong>：看台積電法說會。</li>
+</ul>
+<h2 id="sources-log">來源與更新紀錄</h2>
+<ul><li><a href="../04-Sources/2025-06-30-Yole-Generative-AI-2025-Computing-and-AI-for-Data-Center.html">Yole GenAI 2025</a>：資料中心處理器市場、市占、AI ASIC 設計夥伴、NVIDIA 與 AWS、Google 路線</li><li>NVIDIA（公司說法）：<a href="../04-Sources/2026-05-31-NVIDIA-Vera-Rubin-Full-Production-Press-Release.html">Vera Rubin 新聞稿</a>、技術部落格 <a href="../04-Sources/2026-01-14-NVIDIA-Inside-Vera-Rubin-Platform-Technical-Blog.html">Vera Rubin 平台（2026-01）</a>、<a href="../04-Sources/2026-03-16-NVIDIA-Vera-Rubin-POD-Technical-Blog.html">Vera Rubin POD（2026-03）</a>、<a href="../04-Sources/2026-07-21-NVIDIA-Inside-Rubin-GPU-Architecture-Technical-Blog.html">Rubin GPU 架構（2026-07）</a>、<a href="../04-Sources/2026-03-16-NVIDIA-GTC-2026-Live-Updates-Blog.html">GTC 2026 官方紀錄</a></li><li>媒體：<a href="../04-Sources/2026-03-17-heise-Nvidia-Feynman-Stacked-GPU-Dies.html">heise：Feynman 堆疊 GPU 晶粒</a>、<a href="../04-Sources/2026-04-01-TrendForce-Rubin-Ultra-Dual-Die-Design.html">TrendForce：Rubin Ultra 傳改雙晶粒</a>、<a href="../04-Sources/2025-11-17-Toms-Hardware-Vera-Rubin-Platform-In-Depth.html">Tom's Hardware：Vera Rubin 整理</a></li><li><a href="../04-Sources/2025-12-02-AWS-Trainium3-UltraServers-GA-Press-Release.html">AWS Trainium3 上市新聞稿</a>：Trainium3 上市時間（公司說法）</li></ul><details class="ar-log"><summary>更新紀錄（7 筆，最近 2026-10-06）</summary><ul><li>2026-10-06：補一手來源——世芯 2Q26 法說會簡報與 AI Infra Summit 新聞稿、創意 2Q26 財報管理報告；設計服務段落補公司揭露，並註明客戶對應仍只有 Yole</li><li>2026-10-06：整理版面（只改寫法，未核對最新進度）—預測與估計標出報告版本；新增重點摘要、市場資料與技術路線、未解問題與持續追蹤的數字</li><li>2026-10-06：更正—Rubin 用 CoWoS-L 沒有一手確認，改用條件句；刪除來源不支持的「機櫃規劃改變方向與此一致」</li><li>2026-10-06：更正—Rubin 的晶粒組成與 Yole 說法不矛盾，待釐清的是 I/O 晶粒</li><li>2026-10-06：依新來源更新—Trainium3 已上市；Rubin 晶粒數與 HBM4 規格；Rubin Ultra 的機櫃規劃與改雙晶粒報導；Feynman 的官方與媒體說法</li><li>2026-10-06：更正—設計夥伴表標明是 Yole 整理、尚未經公司揭露核實</li><li>2026-10-06：建立</li></ul></details>
+  </div>
+  <p class="ar-back"><a href="../../../pages/domains.html#d1">← 回到運算晶片與封裝</a></p>
+</article>
+<aside class="ar-side"><nav class="ar-toc" aria-label="本頁章節"><p>本頁章節</p><ul><li><a href="#scope">研究問題與範圍</a></li><li><a href="#summary">重點摘要與證據範圍</a></li><li><a href="#how-it-works">原理與流程</a></li><li><a href="#tradeoffs">方案與取捨</a></li><li class="sub"><a href="#gpu-vs-asic">GPU 對 AI ASIC</a></li><li class="sub"><a href="#chiplets">chiplet 與晶片尺寸</a></li><li class="sub"><a href="#memory-placement">記憶體放在哪</a></li><li><a href="#supply-chain">產品與供應鏈</a></li><li class="sub"><a href="#nvidia-roadmap">NVIDIA 產品路線</a></li><li class="sub"><a href="#players">誰在做</a></li><li class="sub"><a href="#design-services">設計服務與台灣</a></li><li class="sub"><a href="#network-processors">網路處理器</a></li><li><a href="#market-roadmap">市場資料與技術路線</a></li><li class="sub"><a href="#market-size">市場規模（Yole 2025 版：2024 年為估計，之後為預測）</a></li><li class="sub"><a href="#schedule-check">時程對照</a></li><li><a href="#open-questions">未解問題</a></li><li class="sub"><a href="#tracking">持續追蹤的數字</a></li><li><a href="#sources-log">來源與更新紀錄</a></li></ul></nav></aside>
+</div>
+</main>
+
+<footer id="site-footer"></footer>
+</body>
+</html>

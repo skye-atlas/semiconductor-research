@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 由 tools/build_pages.py 自動產生，不要手改；要改內容請改 content/ 裡的 .md -->
+<title>高階封裝平台（2.5D 與 3D）｜天空研究室</title>
+<link rel="stylesheet" href="../../../assets/css/1-tokens.css">
+<link rel="stylesheet" href="../../../assets/css/2-base.css">
+<link rel="stylesheet" href="../../../assets/css/6-article.css">
+<script src="../../../settings/site.js"></script>
+<script src="../../../generated/stats.js"></script>
+<script src="../../../assets/js/layout.js"></script>
+<script src="../../../assets/js/toc.js"></script>
+</head>
+<body data-page="domains" data-root="../../..">
+
+<header id="site-header"></header>
+
+<main class="wrap">
+<div class="ar-grid">
+<article class="page ar">
+  <div class="crumb"><a href="../../../index.html">首頁</a> · <a href="../../../pages/domains.html">研究領域</a> · <a href="../../../pages/domains.html#d1">運算晶片與封裝</a> · <a href="../../../pages/domains.html#d1-pkg">封裝平台</a> · 高階封裝平台（2.5D 與 3D）</div>
+  <p class="ar-kind">技術</p>
+  <h1 class="serif">高階封裝平台（2.5D 與 3D）</h1>
+  <p class="ar-meta">主要分區：<a href="../../../pages/domains.html#d1-pkg">運算晶片與封裝・封裝平台</a>　也列於：<a href="../../../pages/domains.html#d1-sub">運算晶片與封裝・載板、中介層與重布線</a>、<a href="../../../pages/domains.html#d1-d2d">運算晶片與封裝・封裝內互連</a>、<a href="../../../pages/domains.html#d2-hbm">記憶體與儲存・加速器記憶體與 HBM</a></p><p class="ar-meta ar-updated">本頁更新：2026-10-06<small>（見文末更新紀錄；全站日期在頁尾）</small></p>
+  <div class="ar-body">
+<p><a href="../03-Technologies/AI%E5%8A%A0%E9%80%9F%E5%99%A8.html">AI 加速器</a>要把運算晶粒和多顆 HBM 放進同一個封裝，靠的是 2.5D 中介層、矽橋與 3D 堆疊。這篇回答：有哪幾種平台、各自的取捨、產能與路線圖、誰在做，以及 NVIDIA 下一代產品用哪種封裝目前能確認到哪裡。</p>
+<h2 id="scope">研究問題與範圍</h2>
+<ul>
+<li><strong>什麼算高階封裝</strong>：Yole 的定義是 I/O 密度每平方毫米 16 個以上、間距 130 µm 以下（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP1">Yole 高階封裝 2025 HP1</a>）。這個範圍包含 3D NAND、3DS 等記憶體堆疊，不只 AI 晶片。</li>
+<li><strong>範圍</strong>：本篇談平台結構、產能、路線圖與廠商；HBM 本身的世代與供應見 <a href="../03-Technologies/%E9%AB%98%E9%A0%BB%E5%AF%AC%E8%A8%98%E6%86%B6%E9%AB%94.html">高頻寬記憶體（HBM）</a>，光學引擎進封裝見 <a href="../03-Technologies/%E5%85%B1%E5%90%8C%E5%B0%81%E8%A3%9D%E5%85%89%E5%AD%B8.html">共同封裝光學（CPO）</a>，NVIDIA 各世代的晶粒組成見 <a href="../03-Technologies/AI%E5%8A%A0%E9%80%9F%E5%99%A8.html">AI 加速器</a>。</li>
+<li><strong>怎麼讀這篇</strong>：「重點摘要與證據範圍」列出主要判斷與依據的性質（公司公告、標準文件、研究機構估計、媒體轉述），研究機構的數字標明版本；完整比較在各節；說法對不齊或證據不足的放在「未解問題」，要持續追的數字放在「持續追蹤的數字」。查證過程記在各來源筆記與本站內部的收錄紀錄。</li>
+</ul>
+<h2 id="summary">重點摘要與證據範圍</h2>
+<p>本站整理至 2026-10-06（各項的日期寫在表內，不代表全篇數字都更新到這天）。每一項寫出由誰說、什麼性質；完整依據與比較見下方各節。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>目前能說到哪裡（誰說的）</th>
+<th>還不知道</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CoWoS 尺寸</td>
+<td>台積電 2026 年 4 月：量產 5.5 倍光罩的 CoWoS，14 倍 2028 年量產、2029 年 14 倍以上</td>
+<td>各客戶用多大</td>
+</tr>
+<tr>
+<td>先進封裝產能</td>
+<td>台積電 2026 年 4 月稱非常緊、要和封測夥伴合作；7 月稱緊到限制客戶成長、後段仍短缺</td>
+<td>CoWoS 產能數字（台積電 2026 年兩次法說會都沒有公布）</td>
+</tr>
+<tr>
+<td>CoPoS（面板級）</td>
+<td>台積電 2026 年 4 月法說會：已建試產線，「幾年後」量產</td>
+<td>量產年份（只有媒體說法）</td>
+</tr>
+<tr>
+<td>SoIC</td>
+<td>台積電官網：3 奈米晶片堆疊 2025 年量產；SoIC 疊好的晶片可再放進 CoWoS、InFO</td>
+<td>哪些客戶產品採用</td>
+</tr>
+<tr>
+<td>NVIDIA 下一代的封裝</td>
+<td>本站已核對的來源中，NVIDIA 只在光通訊（CPO 光學引擎）有台積電 SoIC 的公司說法</td>
+<td>Rubin、Rubin Ultra、Feynman 用哪種封裝</td>
+</tr>
+<tr>
+<td>市場規模</td>
+<td>Yole 2025 版估計：高階封裝 2024 年 80.3 億美元，預測 2030 年 284.6 億美元（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP4">HP4</a>）</td>
+<td>2025 年起的實際值</td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-it-works">原理與流程</h2>
+<p>Yole 把高階封裝分成七類（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP2">HP2</a>）：</p>
+<table>
+<thead>
+<tr>
+<th>類別</th>
+<th>做法</th>
+<th>商業平台</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>矽中介層</td>
+<td>晶粒並排在一大片有 TSV 的被動矽片上</td>
+<td>台積電 CoWoS-S、Samsung I-Cube/H-Cube、聯電</td>
+</tr>
+<tr>
+<td>RDL 中介層（超高密度扇出）</td>
+<td>用有機重布線層取代矽片，沒有 TSV</td>
+<td>台積電 CoWoS-R、InFO；日月光 FOCoS</td>
+</tr>
+<tr>
+<td>模封中介層</td>
+<td>RDL 加嵌在模封材料裡的局部矽橋，只在需要高密度的地方用矽</td>
+<td>台積電 CoWoS-L、InFO-LSI；矽品 FOEB；Samsung I-CubeE；長電 XDFOI-EB；Amkor S-Connect</td>
+</tr>
+<tr>
+<td>嵌入載板的矽橋</td>
+<td>矽橋直接埋在 IC 載板裡</td>
+<td>Intel EMIB、Co-EMIB</td>
+</tr>
+<tr>
+<td>主動矽中介層</td>
+<td>底下的矽片本身有電路</td>
+<td>Intel Foveros</td>
+</tr>
+<tr>
+<td>3D SoC</td>
+<td>晶粒直接以混合鍵合上下疊</td>
+<td>台積電 SoIC、Intel Foveros Direct、Samsung X-Cube</td>
+</tr>
+<tr>
+<td>3D 記憶體</td>
+<td>記憶體晶粒堆疊</td>
+<td>HBM、3DS、3D NAND、CBA DRAM</td>
+</tr>
+</tbody>
+</table>
+<p>製程上，矽中介層需要前段晶圓廠能力，封測廠只能接 CoW 之後的步驟；RDL 中介層封測廠可以全做；模封中介層只有矽橋要前段（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP17">HP17</a>）。HBM 的分工：記憶體廠供 HBM 堆疊，台積電、GF、聯電做 CoW，台積電與日月光、矽品、Amkor 做載板上的最終組裝（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP29">HP29</a>）。</p>
+<h2 id="tradeoffs">方案與取捨</h2>
+<h3 id="interposers">三種中介層</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>矽中介層</th>
+<th>RDL 中介層</th>
+<th>模封中介層（矽橋）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>成本</td>
+<td>最貴（大面積矽加 TSV）</td>
+<td>沒有 TSV</td>
+<td>矽只用在小面積矽橋</td>
+</tr>
+<tr>
+<td>訊號完整性</td>
+<td>好</td>
+<td>很好</td>
+<td>很好</td>
+</tr>
+<tr>
+<td>尺寸上限</td>
+<td>約 3.3 倍光罩</td>
+<td>可超過</td>
+<td>可超過</td>
+</tr>
+<tr>
+<td>封測廠能否做</td>
+<td>只能做 CoW 之後</td>
+<td>可以</td>
+<td>矽橋以外可以</td>
+</tr>
+<tr>
+<td>依據</td>
+<td><a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP17">HP17</a></td>
+<td>同左</td>
+<td>同左</td>
+</tr>
+</tbody>
+</table>
+<p>台積電三種 CoWoS 正好對應三種中介層：CoWoS-S（2011 年量產，Hopper、Google TPU、Broadcom）、CoWoS-R（AWS 自研晶片）、CoWoS-L（NVIDIA Blackwell 首用）（Yole 整理，<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP18">HP18</a>、<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP16">HP16</a>）。Yole 估每顆封裝 ASP（不含載板與測試）2025 年 CoWoS-S 約 174 美元、CoWoS-L 約 248 美元、CoWoS-R 約 72 美元、EMIB 約 3 美元（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP9">HP9</a>）。</p>
+<h3 id="larger-packages">封裝越做越大</h3>
+<p><strong>台積電官方路線圖（2026 年 4 月）</strong>：目前量產 5.5 倍光罩的 CoWoS；14 倍光罩（約 10 顆大型運算晶粒加 20 個 HBM）預定 2028 年量產，2029 年再擴大到 14 倍以上；另有 40 倍光罩的 SoW-X 晶圓級系統，也預計 2029 年（<a href="../04-Sources/2026-04-22-%E5%8F%B0%E7%A9%8D%E9%9B%BB-2026%E5%8C%97%E7%BE%8E%E6%8A%80%E8%A1%93%E8%AB%96%E5%A3%87%E6%96%B0%E8%81%9E%E7%A8%BF.html#TS1">TS1、TS2</a>）。Yole 2025 版的路線圖：載板由 2023 年 80×80 mm（B200、MI300）到 2028 年前後 120×120 mm，中介層由 3.3 倍光罩到 2028 年 9 倍，每片 12 吋晶圓只切得出 4 片（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP21">HP21</a>；和台積電的倍數量法不同，見「市場資料與技術路線」）。中介層再變大，一片圓形晶圓能切的數量就更少，所以下一步是：</p>
+<ul>
+<li><strong>面板級（CoPoS）</strong>：中介層改在方形面板上做，提高面積利用率（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP27">HP27</a>）。台積電 2026 年 4 月法說會說已建試產線、「幾年後」量產，主要供應仍是大尺寸 CoWoS（<a href="../04-Sources/2026-04-16-%E5%8F%B0%E7%A9%8D%E9%9B%BB-2026Q1%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF%E6%91%98%E9%8C%84.html#TA1">TA1</a>），同月技術論壇新聞稿沒有提 CoPoS（TS1、TS2）；7 月說正在開發降低成本的替代方案、與載板廠合作，先前宣布的試產線約再一年成熟（<a href="../04-Sources/2026-07-16-%E5%8F%B0%E7%A9%8D%E9%9B%BB-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF%E6%91%98%E9%8C%84.html#TJ4">TJ4</a>，沒有點名 CoPoS）。量產年份見「市場資料與技術路線」。</li>
+<li><strong>玻璃基板</strong>：有機載板極限約 120×120 mm；Intel 最早投入（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP24">HP24</a>）。商用狀態見「未解問題」。</li>
+<li><strong>矽橋加 TSV、主動矽橋</strong>：Intel EMIB-T、台積電都在矽橋裡加 TSV（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP20">HP20</a>）。</li>
+</ul>
+<h3 id="hybrid-bonding-3d">3D 與混合鍵合</h3>
+<p>3D SoC 用混合鍵合直接疊晶粒，Yole 估 2024 年台積電 SoIC 獨占（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP12">HP12</a>）。台積電官網說 SoIC 把小晶片整合成一顆像 SoC 的晶片，這顆晶片可以再放進 CoWoS、InFO 等封裝，3 奈米晶片堆疊 2025 年量產（<a href="../04-Sources/2026-10-06-%E5%8F%B0%E7%A9%8D%E9%9B%BB-SoIC%E6%8A%80%E8%A1%93%E9%A0%81.html#TP1">TP1、TP2</a>）—所以「部分晶粒用 SoIC 疊合」與「整體是 2.5D 並排」可以同時成立。HBM 的混合鍵合則延後，時程見 <a href="../03-Technologies/%E9%AB%98%E9%A0%BB%E5%AF%AC%E8%A8%98%E6%86%B6%E9%AB%94.html">高頻寬記憶體</a>「製造與鍵合」。Yole 認為混合鍵合需要承擔良率損失與大額資本支出，會讓門檻更偏向有晶圓廠的業者（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP13">HP13</a>）；未來的平台會把 3D SoC、2.5D 中介層、矽橋甚至 CPO 放進同一個封裝（「3.5D」，<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP25">HP25</a>）。</p>
+<h2 id="supply-chain">產品與供應鏈</h2>
+<h3 id="capacity">產能</h3>
+<p>台積電 2026 年兩次法說會都沒有公布 CoWoS 產能數字，也不談個別客戶；本站在 Yole 2025 版報告的文字中也沒有找到產能數字。2026 年 4 月法說會說先進封裝產能非常緊、要和封測夥伴合作（<a href="../04-Sources/2026-04-16-%E5%8F%B0%E7%A9%8D%E9%9B%BB-2026Q1%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF%E6%91%98%E9%8C%84.html#TA2">TA2</a>）；7 月說封裝產能緊到限制客戶成長、後段仍在短缺，並歡迎 EMIB-T 等替代方案分擔（<a href="../04-Sources/2026-07-16-%E5%8F%B0%E7%A9%8D%E9%9B%BB-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF%E6%91%98%E9%8C%84.html#TJ3">TJ3、TJ5</a>）。2026 年資本支出 600–640 億美元，其中 10–20% 用於先進封裝、測試、光罩與其他，封裝沒有單獨列出；並宣布亞利桑那再投資 1,000 億美元（含先進封裝廠）、台灣興建 13 座先進製程與封裝廠（<a href="../04-Sources/2026-07-16-%E5%8F%B0%E7%A9%8D%E9%9B%BB-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF%E6%91%98%E9%8C%84.html#TJ1">TJ1、TJ2</a>）；更早的 2025 年 3 月美國投資案含兩座先進封裝廠（Yole 轉述，<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP31">HP31</a>）。媒體流傳的 CoWoS 月產能數字不是台積電公布的，本站不採用。</p>
+<h3 id="nvidia-packaging">NVIDIA 用哪種封裝</h3>
+<table>
+<thead>
+<tr>
+<th>世代</th>
+<th>本站已核對的來源能確認的</th>
+<th>只有研究機構或媒體說法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Blackwell</td>
+<td>—</td>
+<td>Yole：第一個採用 CoWoS-L 的產品（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP16">HP16</a>）</td>
+</tr>
+<tr>
+<td>Rubin</td>
+<td>NVIDIA 技術文件：兩顆運算晶粒以 NV-HBI 合成一個封裝，沒有寫封裝技術、中介層或代工廠（2026 年 1 月與 7 月兩份，<a href="../04-Sources/2026-07-21-NVIDIA-Inside-Rubin-GPU-Architecture-Technical-Blog.html#RG1">RG1</a>、<a href="../04-Sources/2026-01-14-NVIDIA-Inside-Vera-Rubin-Platform-Technical-Blog.html#RP1">RP1</a>）</td>
+<td>Yole 2025 版：2026 年 Rubin 用 100×100 mm 載板（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP21">HP21</a>）；媒體 2025-03：用 SoIC 整合兩顆 GPU 與一顆 I/O 晶粒（<a href="../04-Sources/2025-03-25-TrendForce-Rubin-SoIC-Orders.html#SO1">SO1、SO2</a>）；媒體 2025-11：「預期」用 CoWoS-L（<a href="../04-Sources/2025-11-17-Toms-Hardware-Vera-Rubin-Platform-In-Depth.html#TR3">TR3</a>，作者判斷）；媒體 2026-03：依路線圖描述為並排的 2.5D（<a href="../04-Sources/2026-03-17-heise-Nvidia-Feynman-Stacked-GPU-Dies.html#HS2">HS2</a>）</td>
+</tr>
+<tr>
+<td>Rubin Ultra</td>
+<td>NVIDIA 技術文件只寫機櫃規劃（<a href="../04-Sources/2026-03-16-NVIDIA-Vera-Rubin-POD-Technical-Blog.html#RU1">RU1</a>）</td>
+<td>媒體 2026-04：維持雙晶粒、用 CoWoS-L（<a href="../04-Sources/2026-04-01-TrendForce-Rubin-Ultra-Dual-Die-Design.html#RD1">RD1、RD2</a>）；媒體 2026-03：SoIC 是關鍵技術（<a href="../04-Sources/2026-03-18-TrendForce-Rubin-Ultra-Feynman-SoIC.html#SF1">SF1</a>）</td>
+</tr>
+<tr>
+<td>Feynman</td>
+<td>NVIDIA 官方文字只寫架構名稱與周邊晶片（<a href="../04-Sources/2026-03-16-NVIDIA-GTC-2026-Live-Updates-Blog.html#FY1">FY1</a>）</td>
+<td>媒體依主題演講影片：GPU 晶粒上下堆疊（<a href="../04-Sources/2026-03-17-heise-Nvidia-Feynman-Stacked-GPU-Dies.html#HS1">HS1</a>），沒有說用 SoIC；報紙轉述供應鏈：Feynman 會大幅增加 SoIC 用量（SF1）</td>
+</tr>
+<tr>
+<td>CPO 光學引擎</td>
+<td>台積電在 NVIDIA 2025-03 新聞稿中稱矽光子方案結合 SoIC 3D 晶片堆疊（<a href="../04-Sources/2025-03-18-NVIDIA-Spectrum-X-Photonics-Announcement-Press-Release.html#NX6">NX6</a>）</td>
+<td>Yole：Quantum-X 光學引擎以 COUPE 的 SoIC-X 混合鍵合疊合（<a href="../04-Sources/2026-03-13-Yole-Photonics-Packaging-2026.html#PP18">PP18</a>）</td>
+</tr>
+</tbody>
+</table>
+<p>Rubin 的「SoIC」與「2.5D 並排」兩種媒體說法不一定互斥（見「3D 與混合鍵合」），但兩者都不是 NVIDIA 的說法。各世代的晶粒組成見 <a href="../03-Technologies/AI%E5%8A%A0%E9%80%9F%E5%99%A8.html">AI 加速器</a>「NVIDIA 產品路線」。</p>
+<h3 id="players">誰在做</h3>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>平台</th>
+<th>Yole 估 2024 年市占</th>
+<th>證據性質</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../01-Companies/%E5%8F%B0%E7%A9%8D%E9%9B%BB.html">台積電</a></td>
+<td>CoWoS-S/R/L、InFO、SoIC，之後 CoPoS</td>
+<td>整體 28%；矽中介層 95%、超高密度扇出 85%、模封中介層 27%、3D SoC 100%</td>
+<td>研究機構估計（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP12">HP11、HP12</a>）</td>
+</tr>
+<tr>
+<td>Intel</td>
+<td>EMIB、Foveros、EMIB-T</td>
+<td>整體 25%；EMIB 97%、Foveros 100%</td>
+<td>研究機構估計</td>
+</tr>
+<tr>
+<td><a href="../01-Companies/%E7%9F%BD%E5%93%81.html">矽品</a></td>
+<td>FOEB（模封中介層）、FO-EB-T</td>
+<td>模封中介層 73%、超高密度扇出 2%；2021 年為 AMD MI200 首先量產</td>
+<td>研究機構估計（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP16">HP16</a>）</td>
+</tr>
+<tr>
+<td><a href="../01-Companies/%E6%97%A5%E6%9C%88%E5%85%89%E6%8A%95%E6%8E%A7.html">日月光投控</a>（Yole 標示為「ASE」）</td>
+<td>FOCoS、FOCoS-Bridge</td>
+<td>超高密度扇出 10%（ASE 與矽品同屬日月光投控，Yole 分開列）</td>
+<td>研究機構估計</td>
+</tr>
+<tr>
+<td>聯電</td>
+<td>矽中介層（CoW）</td>
+<td>矽中介層 3%</td>
+<td>研究機構估計</td>
+</tr>
+<tr>
+<td>Samsung</td>
+<td>I-Cube、H-Cube、I-CubeE、X-Cube</td>
+<td>整體 13%（多為記憶體）；矽中介層 1%</td>
+<td>研究機構估計</td>
+</tr>
+<tr>
+<td>力成</td>
+<td>PiFO（模封矽橋）</td>
+<td>未列市占</td>
+<td>產業整理（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP19">HP19</a>）</td>
+</tr>
+<tr>
+<td>盛合晶微（中國）</td>
+<td>類 CoWoS-S 的 2.5D，主要客戶華為昇騰</td>
+<td>未列市占</td>
+<td>研究機構判斷（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP30">HP30</a>）</td>
+</tr>
+</tbody>
+</table>
+<p>封測廠合計只占高階封裝營收 2%（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP11">HP11</a>），因為中介層與 CoW 的價值歸在晶圓廠。<code>[推論]</code> 台灣封測廠在 AI 封裝最直接的切入點是模封中介層（矽品）與 HBM 上中介層之後的最終組裝；矽中介層與 3D SoC 幾乎都在台積電。台積電法說會說封裝產能要和封測夥伴合作（TA2），但沒有說外包哪些工序、比例多少。</p>
+<p>EMIB 的載板由 Shinko、Ibiden、AT&amp;S 製作並嵌入矽橋（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP20">HP20</a>）；混合鍵合設備以 Besi（與 AMAT 合作）、ASMPT、EVG、TEL、SUSS 等為主（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP28">HP28</a>；設備市場見 <a href="../03-Technologies/%E5%BE%8C%E6%AE%B5%E5%B0%81%E8%A3%9D%E8%A8%AD%E5%82%99.html">後段封裝設備</a>）。</p>
+<h2 id="market-roadmap">市場資料與技術路線</h2>
+<h3 id="market-size">市場規模（Yole 2025 版：2024 年為估計，之後為預測）</h3>
+<p>Yole 估高階封裝營收由 2024 年 80.3 億美元增至 2030 年 284.6 億美元，CAGR 23%（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP4">HP4</a>）。各技術 2024 → 2030 年（百萬美元，<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP7">HP7</a>）：</p>
+<table>
+<thead>
+<tr>
+<th>技術</th>
+<th>2024（估計）</th>
+<th>2030（預測）</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主動矽中介層（Foveros）</td>
+<td>1,866</td>
+<td>5,787</td>
+<td></td>
+</tr>
+<tr>
+<td>矽中介層（CoWoS-S 等）</td>
+<td>2,052</td>
+<td>1,644</td>
+<td>唯一衰退的類別</td>
+</tr>
+<tr>
+<td>模封中介層（CoWoS-L、FOEB 等）</td>
+<td>130</td>
+<td>1,725</td>
+<td>2025 年就跳到 1,467</td>
+</tr>
+<tr>
+<td>超高密度扇出（CoWoS-R、InFO 等）</td>
+<td>171</td>
+<td>752</td>
+<td></td>
+</tr>
+<tr>
+<td>嵌入載板矽橋（EMIB）</td>
+<td>156</td>
+<td>200</td>
+<td>ASP 低</td>
+</tr>
+<tr>
+<td>3D SoC（SoIC 等）</td>
+<td>74</td>
+<td>1,282</td>
+<td></td>
+</tr>
+<tr>
+<td>HBM</td>
+<td>1,053</td>
+<td>4,156</td>
+<td>只算堆疊封裝價值</td>
+</tr>
+</tbody>
+</table>
+<p>範圍只算封裝，不含載板與測試，ASP 依 Yole 的毛利率假設推算（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP3">HP3</a>）。報告內有多處文字和圖表數字不一致，見來源筆記的疑點表。</p>
+<h3 id="size-timeline">尺寸與新平台的時程</h3>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>台積電官方</th>
+<th>Yole 2025 版</th>
+<th>媒體</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CoWoS 尺寸</td>
+<td>5.5 倍量產中；14 倍 2028 年；14 倍以上 2029 年（TS2）</td>
+<td>中介層 2028 年 9 倍；載板 2026 年 100×100 mm、2028 年前後 120×120 mm（HP21）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>CoPoS</td>
+<td>已建試產線，「幾年後」量產（TA1）</td>
+<td>列為下一步（HP27）</td>
+<td>試產線 2026-06 完工、2028–2029 年量產（<a href="../04-Sources/2026-04-13-TrendForce-TSMC-CoPoS-Pilot-Line.html#CP1">CP1</a>）；或 2027 年試產、2028 下半年量產（<a href="../04-Sources/2026-08-27-Toms-Hardware-Glass-Substrate-Roadmaps-Examined.html#TG5">TG5</a>）；載板越大翹曲越嚴重（CP3）</td>
+</tr>
+<tr>
+<td>玻璃核心載板</td>
+<td>—</td>
+<td>第一個商用產品預期 2025 下半年（HP24）</td>
+<td>見「未解問題」</td>
+</tr>
+</tbody>
+</table>
+<p>Yole 與台積電的倍數不是同一種量法（Yole 寫中介層倍數，台積電寫 CoWoS 倍數），不直接比較。</p>
+<h2 id="open-questions">未解問題</h2>
+<p>每一項寫出差異、缺什麼證據，以及什麼新資料會改變判斷。已查過仍無法確認的，記下查證範圍、等新資料再更新，不另外衍生搜尋；要持續追的數字列在「持續追蹤的數字」。</p>
+<ul>
+<li><strong>NVIDIA Rubin、Rubin Ultra、Feynman 用哪種封裝</strong>：本站已核對的 NVIDIA 技術文件都沒有寫封裝技術；Hot Chips 2026 的 Rubin 簡報要登入才能下載，本站沒有取得；也沒有找到公開拆解。媒體說法（CoWoS-L、SoIC、雙晶粒）見上表。→ 等 NVIDIA 產品技術文件、Hot Chips 簡報或拆解。</li>
+<li><strong>CoWoS 產能與 CoWoS-L 比重</strong>：台積電 2026 年兩次法說會沒有公布產能數字，Yole 2025 版報告的文字中也沒有找到。CoWoS-S 轉 CoWoS-L 的速度決定矽中介層與模封中介層的此消彼長。→ 等台積電年報或技術論壇揭露。</li>
+<li><strong>玻璃核心載板的商用</strong>：Yole 2025 版預期 2025 下半年出現第一個商用產品，原定期間已結束。截至 2026-10-06，本站尚未取得可確認玻璃核心載板（以玻璃取代有機載板核心，不含玻璃中介層或玻璃載具）商用出貨的公告；Tom's Hardware 2026 年 8 月也報導尚未用在任何商用產品，Intel 自己的導入時間轉向 2030 年前後，Absolics 目標 2026 年底量產（<a href="../04-Sources/2026-08-27-Toms-Hardware-Glass-Substrate-Roadmaps-Examined.html#TG1">TG1、TG3</a>，媒體整理）。這是「未找到」，不代表確定沒有商用產品。→ 等業者的商用出貨公告。</li>
+<li><strong>CoPoS 的量產年份</strong>：台積電只說「幾年後」；2028–2029 年是媒體說法。台積電路線圖的 CoWoS 2028 年到 14 倍光罩（TS2），Yole 估中介層越大、每片晶圓切得越少（HP21），台積電也說降低成本的替代方案與載板廠合作（TJ4）。<code>[推論]</code> 因此 CoPoS 何時量產，關係到 2027 年以後大封裝的產能能否跟上，以及載板廠在其中的角色。→ 等台積電法說會或技術論壇。</li>
+<li><strong>矽品模封中介層的角色</strong>：73% 市占是 Yole 推算，要看日月光投控揭露是否包含台積電外包的部分。→ 等日月光投控揭露。</li>
+<li><strong>CPO 進入運算封裝</strong>：Yole 在 2025 年中認為短期不會商用（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP26">HP26</a>）；交換器 CPO 的進度見 <a href="../03-Technologies/%E5%85%B1%E5%90%8C%E5%B0%81%E8%A3%9D%E5%85%89%E5%AD%B8.html">共同封裝光學</a>。</li>
+</ul>
+<h3 id="tracking">持續追蹤的數字</h3>
+<p>不是待解的問題，而是每次有新資料都要更新的數字；括號裡是本站目前的基準與出處。</p>
+<ul>
+<li><strong>CoWoS 產能</strong>：看台積電是否揭露（媒體流傳的月產能本站不採用）。</li>
+<li><strong>台積電資本支出中的先進封裝</strong>：看法說會（2026 年 600–640 億美元，其中 10–20% 用於先進封裝、測試、光罩與其他，<a href="../04-Sources/2026-07-16-%E5%8F%B0%E7%A9%8D%E9%9B%BB-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF%E6%91%98%E9%8C%84.html#TJ1">TJ1</a>）。</li>
+<li><strong>CoWoS-L 的比重</strong>：看台積電與 Yole 新版（Yole 估模封中介層 2024 年 1.3 億美元、2025 年跳到 14.67 億美元，見市場規模表）。</li>
+<li><strong>日月光投控的先進封裝營收</strong>：看日月光投控法說會。</li>
+</ul>
+<h2 id="sources-log">來源與更新紀錄</h2>
+<ul><li><a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html">Yole 高階封裝 2025</a>：平台分類、市場預測、市占、中介層比較、尺寸路線圖、HBM 供應鏈</li><li>台積電（公司說法）：<a href="../04-Sources/2026-04-22-%E5%8F%B0%E7%A9%8D%E9%9B%BB-2026%E5%8C%97%E7%BE%8E%E6%8A%80%E8%A1%93%E8%AB%96%E5%A3%87%E6%96%B0%E8%81%9E%E7%A8%BF.html">2026 北美技術論壇新聞稿</a>、<a href="../04-Sources/2026-10-06-%E5%8F%B0%E7%A9%8D%E9%9B%BB-SoIC%E6%8A%80%E8%A1%93%E9%A0%81.html">SoIC 技術頁</a>、法說會逐字稿 <a href="../04-Sources/2026-04-16-%E5%8F%B0%E7%A9%8D%E9%9B%BB-2026Q1%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF%E6%91%98%E9%8C%84.html">2026 年第一季</a>、<a href="../04-Sources/2026-07-16-%E5%8F%B0%E7%A9%8D%E9%9B%BB-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF%E6%91%98%E9%8C%84.html">2026 年第二季</a></li><li>NVIDIA（公司說法）：<a href="../04-Sources/2026-07-21-NVIDIA-Inside-Rubin-GPU-Architecture-Technical-Blog.html">Rubin GPU 架構</a>、<a href="../04-Sources/2026-03-16-NVIDIA-Vera-Rubin-POD-Technical-Blog.html">Vera Rubin POD</a>、<a href="../04-Sources/2026-03-16-NVIDIA-GTC-2026-Live-Updates-Blog.html">GTC 2026 官方紀錄</a>、<a href="../04-Sources/2025-03-18-NVIDIA-Spectrum-X-Photonics-Announcement-Press-Release.html">Spectrum-X Photonics 新聞稿</a></li><li>媒體：<a href="../04-Sources/2025-11-17-Toms-Hardware-Vera-Rubin-Platform-In-Depth.html">Tom's Hardware：Vera Rubin</a>、<a href="../04-Sources/2026-03-17-heise-Nvidia-Feynman-Stacked-GPU-Dies.html">heise：Feynman 堆疊</a>、<a href="../04-Sources/2026-03-18-TrendForce-Rubin-Ultra-Feynman-SoIC.html">TrendForce：SoIC 與 Feynman</a>、<a href="../04-Sources/2025-03-25-TrendForce-Rubin-SoIC-Orders.html">TrendForce：Rubin 與 SoIC（2025）</a>、<a href="../04-Sources/2026-04-01-TrendForce-Rubin-Ultra-Dual-Die-Design.html">TrendForce：Rubin Ultra 雙晶粒</a>、<a href="../04-Sources/2026-04-13-TrendForce-TSMC-CoPoS-Pilot-Line.html">TrendForce：CoPoS 試產線</a>、<a href="../04-Sources/2026-08-27-Toms-Hardware-Glass-Substrate-Roadmaps-Examined.html">Tom's Hardware：玻璃基板</a></li></ul><details class="ar-log"><summary>更新紀錄（6 筆，最近 2026-10-06）</summary><ul><li>2026-10-06：整理版面（只改寫法，未核對最新進度）—預測與估計標出報告版本；新增重點摘要、市場資料與技術路線、未解問題與持續追蹤的數字</li><li>2026-10-06：更正—「約再一年成熟」原文指的是試產線，不是替代方案；CoPoS 與載板廠的機會改標為推論並寫明依據</li><li>2026-10-06：更正—SoIC 疊好的晶片可再放進 CoWoS，「Rubin 用 SoIC」與「2.5D 並排」不互斥</li><li>2026-10-06：依新來源更新—玻璃核心載板未找到商用出貨公告；台積電法說會的先進封裝產能說法（沒有數字）與官方 CoWoS 尺寸路線圖；CoPoS 時程（媒體）；NVIDIA 各世代封裝說法；SoIC 的採用</li><li>2026-10-06：註明 Yole 的「ASE」與矽品同屬日月光投控、市占分開列</li><li>2026-10-05：建立</li></ul></details>
+  </div>
+  <p class="ar-back"><a href="../../../pages/domains.html#d1">← 回到運算晶片與封裝</a></p>
+</article>
+<aside class="ar-side"><nav class="ar-toc" aria-label="本頁章節"><p>本頁章節</p><ul><li><a href="#scope">研究問題與範圍</a></li><li><a href="#summary">重點摘要與證據範圍</a></li><li><a href="#how-it-works">原理與流程</a></li><li><a href="#tradeoffs">方案與取捨</a></li><li class="sub"><a href="#interposers">三種中介層</a></li><li class="sub"><a href="#larger-packages">封裝越做越大</a></li><li class="sub"><a href="#hybrid-bonding-3d">3D 與混合鍵合</a></li><li><a href="#supply-chain">產品與供應鏈</a></li><li class="sub"><a href="#capacity">產能</a></li><li class="sub"><a href="#nvidia-packaging">NVIDIA 用哪種封裝</a></li><li class="sub"><a href="#players">誰在做</a></li><li><a href="#market-roadmap">市場資料與技術路線</a></li><li class="sub"><a href="#market-size">市場規模（Yole 2025 版：2024 年為估計，之後為預測）</a></li><li class="sub"><a href="#size-timeline">尺寸與新平台的時程</a></li><li><a href="#open-questions">未解問題</a></li><li class="sub"><a href="#tracking">持續追蹤的數字</a></li><li><a href="#sources-log">來源與更新紀錄</a></li></ul></nav></aside>
+</div>
+</main>
+
+<footer id="site-footer"></footer>
+</body>
+</html>

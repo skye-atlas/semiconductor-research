@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════
    公司與供應鏈頁：找對公司的入口（讀深交給公司檔案頁）
-   上方篩選區、下方結果區（公司清單＝預設／角色概覽）；點一列在右側抽屜快速預覽，點公司名稱開公司檔案。
+   上方篩選區、下方結果區（公司清單＝預設/角色概覽）；點一列在右側抽屜快速預覽，點公司名稱開公司檔案。
    資料：generated/companies.js（tools/update_stats.py 由 content/01-Companies/ 轉出）
    用詞：settings/supply-chain.js；研究領域與主題：settings/landscape-frame.js（和研究領域頁共用）
    網址後面加 #d1（領域）或 #d1-sub（主題），打開時就會先套用那個條件；研究領域頁的「相關公司」就是這樣連過來的。
@@ -38,6 +38,10 @@ document.addEventListener('DOMContentLoaded', function () {
   var srcBy = {}, kindBy = byId(C.sourceKinds || []);
   (window.SOURCES || []).forEach(function (s) { srcBy[s.file] = s; });
   function companyUrl(c) { return '../generated/pages/01-Companies/' + encodeURIComponent(c.file) + '.html'; }
+  // 證據的來源筆記；有 ref（關鍵陳述編號）時直接連到那一條
+  function srcUrl(e) {
+    return '../generated/pages/04-Sources/' + encodeURI(e.source.replace(/\.md$/, '.html')) + (e.ref ? '#' + encodeURIComponent(e.ref[0]) : '');
+  }
 
   $('sc-intro').textContent = C.intro;
 
@@ -199,11 +203,16 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   function hitRoles(c) { return roleFiltered() ? c.roles.filter(matchRole) : c.roles; }
 
-  // ── 排序：最近更新（預設，依現況日期；沒寫就用最新證據日期）／公司名稱。不做「最成熟」這類評分排序 ──
+  // ── 排序：最近更新（預設，依現況日期；沒寫就用最新證據日期）/公司名稱。不做「最成熟」這類評分排序 ──
+  // 更新欄只顯示日期：現況的 as_of 可能寫成報告版本（例：Yole 2025 版報告），這時改看證據日期；取各角色裡最新的一個日期
+  var isDate = function (v) { return /^\d{4}(-\d{2}){0,2}$/.test(v || ''); };
   function updated(c) {
-    return c.roles.map(function (r) {
-      return (r.state && r.state.as_of) || r.evidence.map(function (e) { return e.date || ''; }).sort().pop() || '';
-    }).sort().pop() || '';
+    var ds = [];
+    c.roles.forEach(function (r) {
+      if (r.state && isDate(r.state.as_of)) ds.push(r.state.as_of);
+      r.evidence.forEach(function (e) { if (isDate(e.date)) ds.push(e.date); });
+    });
+    return ds.sort().pop() || '';
   }
   function sorted(list) {
     return list.slice().sort(state.sort === 'name'
@@ -245,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // 現況：公司檔裡研究者寫的 state（把證據綜合起來的一句話），和公司檔案頁的現況一致。
   //   沒寫 state 的舊資料才退回「最新一手證據」的公開進展
   function mainEvidence(r) {
-    var byDate = function (a, b) { return (b.date || '').localeCompare(a.date || ''); };
+    var byDate = function (a, b) { return (b.sort || b.date || '').localeCompare(a.sort || a.date || ''); };
     return r.evidence.filter(function (e) { return e.key; })[0] ||
       r.evidence.filter(function (e) { return !e.relay; }).sort(byDate)[0] || r.evidence.slice().sort(byDate)[0];
   }
@@ -275,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function () {
           '<span class="sc-meta">' + esc(label(roleBy, r.role)) + ' · ' + where(r) + '</span></div>' +
           '<div class="sc-c-state">' + stateHtml(r) + '</div></div>';
       }).join('') + '</div>' +
-      '<div class="sc-c-date">' + esc(updated(c)) + '</div>' +
+      '<div class="sc-c-date">' + (esc(updated(c)) || '—') + '</div>' +
       '<button type="button" class="sc-peek" data-file="' + esc(c.file) + '" aria-label="預覽 ' + esc(c.name) + '"></button>' +
     '</div>';
   }
@@ -304,7 +313,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }).join('');
   }
 
-  // ── 快速預覽（右側抽屜）：現況、進度、目前最大的未知、主要證據；讀深請開公司檔案 ──
+  // ── 快速預覽（右側抽屜）：現況、進度、最大的未知、主要證據；讀深請開公司檔案 ──
   var SHAPE = { fact: '●', said: '◐', plan: '○' };
   function preview(c) {
     var rels = c.relations.filter(function (r) { return r.type !== 'capital'; }).map(function (r) {
@@ -320,7 +329,8 @@ document.addEventListener('DOMContentLoaded', function () {
         var prog = r.progress || [];
         var last = -1;
         prog.forEach(function (p, i) { if (p.mark !== 'plan') last = i; });
-        var here = last >= 0 && prog[last].mark === 'fact' ? '目前' : '目前｜' + ((markBy.said || {}).tag || '公司說法');
+        var lastMark = last >= 0 ? prog[last].mark : 'said';
+        var here = lastMark === 'fact' ? '最新紀錄' : '最新紀錄｜' + ((markBy[lastMark] || markBy.said || {}).tag || '公司說法');
         var e = mainEvidence(r);
         var meta = e ? (srcBy[e.source] || {}) : {};
         var kind = kindBy[meta.kind] || { label: '來源筆記', voice: '' };
@@ -330,13 +340,15 @@ document.addEventListener('DOMContentLoaded', function () {
             (st.as_of ? '<span>截至 ' + esc(st.as_of) + '</span>' : '') + '</p>' : '') +
           (prog.length ? '<h4>進度</h4><ol class="pv-prog">' + prog.map(function (p, i) {
             return '<li class="pv-' + esc(p.mark) + '"><span>' + (SHAPE[p.mark] || SHAPE.said) + '</span><b>' + esc(p.step) + '</b>' +
-              '<small>' + esc(p.when) + '</small>' + (i === last ? '<em>' + esc(here) + '</em>' : '') + '</li>';
+              '<small>' + esc(p.when) + '</small>' + (i === last ? '<em>' + esc(here) + '</em>' : '') +
+              (p.lapsed ? '<i class="pv-lapsed">' + esc(p.lapsed) + '</i>' : '') + '</li>';
           }).join('') + '</ol>' : '') +
-          ((r.verify || []).length ? '<h4>目前最大的未知</h4><ul class="pv-list">' + r.verify.slice(0, 4).map(function (v) {
+          ((r.verify || []).length ? '<h4>最大的未知</h4><ul class="pv-list">' + r.verify.slice(0, 4).map(function (v) {
             return '<li>' + esc(v) + '</li>';
           }).join('') + '</ul>' : '') +
           (e ? '<h4>主要證據<small>共 ' + r.evidence.length + ' 筆</small></h4>' +
-            '<p class="pv-src"><b>' + esc(e.relay ? e.relay + '轉述' : kind.voice) + '</b> · ' + esc(kind.label) + ' · ' + esc(meta.date || e.date) + '</p>' +
+            '<p class="pv-src"><b>' + esc(e.relay ? e.relay + '轉述' : kind.voice) + '</b> · ' +
+              '<a href="' + srcUrl(e) + '">' + esc(kind.label) + (e.ref ? ' ' + esc(e.ref.join('、')) : '') + '</a> · ' + esc(meta.date || e.date) + '</p>' +
             '<p class="pv-claim">' + esc(e.claim) + '</p>' : '') +
           '</section>';
       }).join('') +

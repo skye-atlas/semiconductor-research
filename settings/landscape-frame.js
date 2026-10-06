@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════════════════════════
-   研究架構：層級、研究領域、每個領域裡的主要主題
+   研究架構：層級、研究領域、每個領域裡的研究分區
    研究領域頁（pages/domains.html）從這裡產生。
    文章（一項一項的技術）寫在 settings/landscape.js。
 
@@ -14,15 +14,15 @@
 
    layers 每一項：
      id       ：代號。d1–d5 要和 settings/supply-chain.js 的 domains 一致
-     band     ："top" 需求端／"domain" 技術系統／"cross" 共通支援（側欄與總覽依此分組，組名在下方 groups）
+     band     ："top" 需求端/"domain" 技術系統/"cross" 共通支援（側欄與總覽依此分組，組名在下方 groups）
      no       ：編號
      label    ：完整名稱（滑鼠移到標題上會顯示）
      short    ：短名稱（研究領域頁的標題與側欄）
      question ：這一層在回答的核心問題（一句口語的問句）
      intro    ：導讀，兩三句，說明這個領域研究什麼、怎麼比較；分類邊界與例外寫在各主題的 desc
      guide    ：（選填）有整合分析時，寫 content/05-Domains/ 裡的檔名；領域頁會在導讀後放「閱讀整合分析」
-     sections ：主要主題（分類骨架）。id 全站不重複；文章用 section 指到這裡
-                { id, label, desc, keys }：desc 一句範圍與邊界；keys（選填）代表關鍵字，只顯示、不做篩選
+     sections ：研究分區（分類骨架）。id 全站不重複；文章用 section 指到這裡
+                { id, label, desc, keys }：desc 一句範圍與邊界；keys（選填）搜尋用的關鍵字，畫面上不顯示
      related  ：（選填）延伸問題：{ to: 另一層 id, in: [那一層的主題 id], q: "問句" }
                 in 裡的主題有文章時，才會出現在頁尾「延伸問題與閱讀」，並連到那些文章
      axes     ：（選填）互相獨立的分類軸（收起顯示）
@@ -117,16 +117,16 @@ window.LANDSCAPE_FRAME = {
           keys: ["SerDes", "銅纜", "Retimer", "連接器"] },
         { id: "d3-optics",    label: "光互連產品與整合架構", desc: "可插拔光模組、近封裝光學、CPO 與光學 I/O；訊號處理方式、光電轉換位置與產品形態分開標示",
           keys: ["光模組", "LPO", "NPO", "CPO", "光學 I/O"] },
-        { id: "d3-photonics", label: "光電元件與整合製程",   desc: "雷射、調變器、光偵測器、PIC／EIC 與矽光子等平台，以及光源整合、光纖耦合與光學組裝",
+        { id: "d3-photonics", label: "光電元件與整合製程",   desc: "雷射、調變器、光偵測器、PIC/EIC 與矽光子等平台，以及光源整合、光纖耦合與光學組裝",
           keys: ["矽光子", "雷射光源", "光學引擎", "光纖耦合"] }
       ],
       axes: [
         { id: "scope",    label: "應用網域",     options: ["封裝內", "機櫃內（Scale-up）", "機櫃間（Scale-out）", "資料中心間"] },
         { id: "medium",   label: "傳輸媒介",     options: ["銅", "光"] },
         { id: "dsp",      label: "訊號處理位置", options: ["完整重定時（DSP）", "半重定時（LRO）", "線性驅動（LPO）"] },
-        { id: "conv",     label: "光電轉換位置", options: ["可插拔模組", "近封裝（NPO／OBO）", "共同封裝（CPO）"] },
+        { id: "conv",     label: "光電轉換位置", options: ["可插拔模組", "近封裝（NPO/OBO）", "共同封裝（CPO）"] },
         { id: "platform", label: "光電整合平台", options: ["矽光子", "磷化銦", "薄膜鈮酸鋰"] },
-        { id: "laser",    label: "光源",         options: ["VCSEL", "EML／DML", "外部連續波雷射"] }
+        { id: "laser",    label: "光源",         options: ["VCSEL", "EML/DML", "外部連續波雷射"] }
       ] },
 
     { id: "d4", band: "domain", no: "④", short: "供電與電力設施", label: "供電與電力基礎設施",
@@ -142,8 +142,8 @@ window.LANDSCAPE_FRAME = {
           keys: ["併網", "變電站", "購電協議"] },
         { id: "d4-facility", label: "設施配電",             desc: "變壓器、開關設備與機房配電；容量擴充、冗餘、交期與維護",
           keys: ["變壓器", "開關設備", "中壓配電"] },
-        { id: "d4-rack",     label: "機櫃配電與電源轉換",   desc: "電源架、PSU、匯流排與配電單元；AC／DC 架構、電壓與轉換級數",
-          keys: ["PSU", "電源架", "高壓直流", "GaN／SiC"] },
+        { id: "d4-rack",     label: "機櫃配電與電源轉換",   desc: "電源架、PSU、匯流排與配電單元；AC/DC 架構、電壓與轉換級數",
+          keys: ["PSU", "電源架", "高壓直流", "GaN/SiC"] },
         { id: "d4-board",    label: "板級與晶片供電",       desc: "中間匯流排轉換、穩壓與 POL；低壓大電流與瞬態負載",
           keys: ["VRM", "POL", "垂直供電"] },
         { id: "d4-backup",   label: "備援、儲能與電力品質", desc: "UPS、BBU、BESS 與備援發電：用途、位置與支撐時間；依架構接在設施或機櫃層級",
@@ -202,12 +202,15 @@ window.LANDSCAPE_FRAME = {
   },
 
   // ── 產業證據的種類：掛在文章 cases 的單筆個案旁，彼此不排順序、不合成進度 ──
+  //   production 是來源說「在生產／量產」、但沒有交付或出貨的陳述；說法是誰講的寫在案例的 what
   evidence: {
-    demo:     "技術展示",
-    customer: "客戶驗證",
-    shipping: "商業出貨",
-    revenue:  "相關收入",
-    profit:   "獲利與現金流"
+    demo:       "技術展示",
+    sampling:   "送樣",
+    customer:   "客戶驗證",
+    production: "生產／量產",
+    shipping:   "商業出貨",
+    revenue:    "相關收入",
+    profit:     "獲利與現金流"
   },
 
   // ── 研究方法（「所有領域」總覽最下方，預設收起）──

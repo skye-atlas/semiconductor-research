@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 由 tools/build_pages.py 自動產生，不要手改；要改內容請改 content/ 裡的 .md -->
+<title>資料中心電源供應器（PSU）與供電架構｜天空研究室</title>
+<link rel="stylesheet" href="../../../assets/css/1-tokens.css">
+<link rel="stylesheet" href="../../../assets/css/2-base.css">
+<link rel="stylesheet" href="../../../assets/css/6-article.css">
+<script src="../../../settings/site.js"></script>
+<script src="../../../generated/stats.js"></script>
+<script src="../../../assets/js/layout.js"></script>
+<script src="../../../assets/js/toc.js"></script>
+</head>
+<body data-page="domains" data-root="../../..">
+
+<header id="site-header"></header>
+
+<main class="wrap">
+<div class="ar-grid">
+<article class="page ar">
+  <div class="crumb"><a href="../../../index.html">首頁</a> · <a href="../../../pages/domains.html">研究領域</a> · <a href="../../../pages/domains.html#d4">供電與電力設施</a> · <a href="../../../pages/domains.html#d4-rack">機櫃配電與電源轉換</a> · 資料中心電源供應器（PSU）與供電架構</div>
+  <p class="ar-kind">技術</p>
+  <h1 class="serif">資料中心電源供應器（PSU）與供電架構</h1>
+  <p class="ar-meta">主要分區：<a href="../../../pages/domains.html#d4-rack">供電與電力設施・機櫃配電與電源轉換</a>　也列於：<a href="../../../pages/domains.html#d4-board">供電與電力設施・板級與晶片供電</a>、<a href="../../../pages/domains.html#d4-backup">供電與電力設施・備援、儲能與電力品質</a>、<a href="../../../pages/domains.html#d4-facility">供電與電力設施・設施配電</a></p><p class="ar-meta ar-updated">本頁更新：2026-10-06<small>（見文末更新紀錄；全站日期在頁尾）</small></p>
+  <div class="ar-body">
+<p>依 Yole 2025 版報告，AI 機櫃的功率由 15–30 kW 跳到 132 kW，下一代預期 600 kW。電源供應器（PSU）負責把交流電轉成伺服器用的 48 V 或 12 V 直流，是機櫃供電的核心。這篇回答：PSU 市場多大、架構怎麼改變、功率元件怎麼換代，以及台灣廠的位置。</p>
+<h2 id="scope">研究問題與範圍</h2>
+<ul>
+<li><strong>範圍</strong>：機櫃與伺服器的 PSU（電源架），以及它前後的配電與轉換：UPS、BBU、PDU、IBC、POL、固態變壓器（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html">Yole 電力電子 2025</a>）。</li>
+<li><strong>不在範圍內</strong>：電網併網與發電（見研究領域「電力取得與併網」）、散熱方案細節。AI 加速器本身見 <a href="../03-Technologies/AI%E5%8A%A0%E9%80%9F%E5%99%A8.html">AI 加速器</a>。</li>
+<li><strong>怎麼讀這篇</strong>：本頁多數數字是 Yole 電力電子 2025 版的估計與它整理的業界回饋；台達、光寶的現況另有公司法說會與新聞稿，NVIDIA 的 800 VDC 夥伴名單也已收錄。「重點摘要與證據範圍」列出主要判斷與依據的性質（公司公告、標準文件、研究機構估計、媒體轉述），研究機構的數字標明版本；完整比較在各節；說法對不齊或證據不足的放在「未解問題」，要持續追的數字放在「持續追蹤的數字」。查證過程記在各來源筆記與本站內部的收錄紀錄。</li>
+</ul>
+<h2 id="summary">重點摘要與證據範圍</h2>
+<p>本站整理至 2026-10-06（各項的日期寫在表內，不代表全篇數字都更新到這天）。每一項寫出由誰說、什麼性質；完整依據與比較見下方各節。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>目前能說到哪裡（誰說的）</th>
+<th>還不知道</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI 機櫃電源架</td>
+<td>Yole 2025 版整理：33 kW 電源架、132 kW 機櫃（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE15">PE15</a>）</td>
+<td>每一代 NVIDIA 平台的規格要求、誰供應</td>
+</tr>
+<tr>
+<td>800 VDC</td>
+<td>NVIDIA 稱 800 VDC 資料中心的全面量產隨 2027 年 Kyber 機櫃（<a href="../04-Sources/2025-05-20-NVIDIA-800VDC-Architecture-Technical-Blog.html#HV3">HV3</a>）；台達預期 HVDC 產品 2026 年第三季開始量產、今年出貨有限（<a href="../04-Sources/2026-07-30-%E5%8F%B0%E9%81%94-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF.html#DT2">DT2</a>）；光寶預期 800 VDC Power Rack 下半年完成驗證（<a href="../04-Sources/2026-07-31-%E5%85%89%E5%AF%B6-2026Q2%E8%B2%A1%E5%A0%B1%E6%96%B0%E8%81%9E%E7%A8%BF.html#LQ5">LQ5</a>）</td>
+<td>實際量產與出貨</td>
+</tr>
+<tr>
+<td>台灣 PSU 廠</td>
+<td>台達稱 2026 上半年資料中心相關業務占營收過半（<a href="../04-Sources/2026-07-30-%E5%8F%B0%E9%81%94-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF.html#DT1">DT1</a>）；光寶 2Q26 雲端及物聯網部門營收 289 億元、占 55%，IR 稱 110kW Power Shelf 第三季已量產出貨給 Vera Rubin 客戶群（<a href="../04-Sources/2026-07-31-%E5%85%89%E5%AF%B6-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E7%B0%A1%E5%A0%B1.html#LS2">LS2</a>、<a href="../04-Sources/2026-09-09-%E5%85%89%E5%AF%B6-%E5%88%B8%E5%95%86%E7%AC%AC%E4%B8%89%E5%AD%A3%E6%8A%95%E8%B3%87%E8%AB%96%E5%A3%87%E9%80%90%E5%AD%97%E7%A8%BF.html#LF2">LF2</a>，後者是券商論壇口頭說法）；光寶稱 2Q26 雲端相關業務年增逾七成（<a href="../04-Sources/2026-07-31-%E5%85%89%E5%AF%B6-2026Q2%E8%B2%A1%E5%A0%B1%E6%96%B0%E8%81%9E%E7%A8%BF.html#LQ2">LQ2</a>）；兩家都被 NVIDIA 列為 800 VDC 電源系統元件夥伴，沒有說供應哪一代平台（<a href="../04-Sources/2025-05-20-NVIDIA-800VDC-Architecture-Technical-Blog.html#HV2">HV2</a>、<a href="../04-Sources/2025-10-13-NVIDIA-OCP-Vera-Rubin-800VDC-Partners-Blog.html#OV2">OV2</a>）</td>
+<td>AI 電源的營收金額與客戶</td>
+</tr>
+<tr>
+<td>PSU 市占</td>
+<td>Yole 用各家總營收乘以估計比重推算；本站沒有公司揭露（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE7">PE7</a>）</td>
+<td>各家 AI 電源營收</td>
+</tr>
+<tr>
+<td>市場規模</td>
+<td>Yole 2025 版估計：資料中心 PSU 2024 年約 59 億美元，預測 2030 年 141 億美元，成長幾乎都來自 3 kW 以上的 AI 機櫃電源架（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE1">PE1</a>、<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE2">PE2</a>、<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE3">PE3</a>）</td>
+<td>實際值；各家 AI 電源營收</td>
+</tr>
+<tr>
+<td>瓶頸在哪</td>
+<td>Yole 認為 AI 資料中心用電的瓶頸在變電站與變壓器交期，不在 PSU 本身（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE6">PE6</a>、<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE8">PE8</a>）</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-it-works">原理與流程</h2>
+<p>一條典型的資料中心供電鏈（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE13">PE13</a>）：</p>
+<table>
+<thead>
+<tr>
+<th>級</th>
+<th>做什麼</th>
+<th>輸出</th>
+<th>位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>中壓/低壓變壓器</td>
+<td>把電網中壓降成低壓交流</td>
+<td>低壓交流</td>
+<td>設施</td>
+</tr>
+<tr>
+<td>UPS</td>
+<td>斷電時備援、穩壓</td>
+<td>交流</td>
+<td>設施</td>
+</tr>
+<tr>
+<td>PDU</td>
+<td>三相分成單相、監控</td>
+<td>交流</td>
+<td>機房到機櫃</td>
+</tr>
+<tr>
+<td>PSU</td>
+<td>交流轉直流，主流拓撲是 PFC 加 LLC</td>
+<td>48 V 或 12 V</td>
+<td>機櫃電源架或伺服器內</td>
+</tr>
+<tr>
+<td>IBC</td>
+<td>48 V 轉成中間電壓</td>
+<td>12 V、6 V 等</td>
+<td>伺服器內，靠近 xPU</td>
+</tr>
+<tr>
+<td>POL</td>
+<td>最後一級，給晶片穩定電壓</td>
+<td>0.8–2 V</td>
+<td>緊貼 CPU、GPU</td>
+</tr>
+</tbody>
+</table>
+<p>AI 機櫃的典型做法：一個 1U 電源架 33 kW，裝六顆 5.5 kW PSU，四個並聯為 132 kW（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE15">PE15</a>）。BBU 是放在機櫃內的電池模組，支撐 5–15 分鐘，逐漸取代上游 UPS（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE19">PE19</a>）。</p>
+<h2 id="tradeoffs">方案與取捨</h2>
+<h3 id="psu-form-factors">PSU 外型標準</h3>
+<table>
+<thead>
+<tr>
+<th>標準</th>
+<th>用在哪</th>
+<th>重點</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CRPS</td>
+<td>多數企業與雲端，最普及</td>
+<td>模組化、可熱插拔；要高功率密度</td>
+</tr>
+<tr>
+<td>OCP</td>
+<td>超大型業者</td>
+<td>規模與成本效率；要 97.5% 以上效率</td>
+</tr>
+<tr>
+<td>客製</td>
+<td>HPC、AI 機櫃</td>
+<td>標準規格不夠用</td>
+</tr>
+<tr>
+<td>ATX</td>
+<td>舊系統、低功率</td>
+<td>成長下滑</td>
+</tr>
+</tbody>
+</table>
+<p>依據：<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE14">PE14</a>。效率標準方面，80 PLUS Ruby 2025 年 1 月推出，50% 負載要 96.5%；Yole 2025 版稱多家廠商功率密度已達每立方英吋 100 W（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE16">PE16</a>）。</p>
+<h3 id="power-architecture">配電架構的四個階段</h3>
+<table>
+<thead>
+<tr>
+<th>階段</th>
+<th>做法</th>
+<th>上限或效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>傳統</td>
+<td>每台伺服器各自 AC/DC</td>
+<td>約 250 kW 到極限</td>
+</tr>
+<tr>
+<td>過渡</td>
+<td>整流移到獨立的電源機櫃，三相輸入；Yole 2025 版稱超大型業者已採用</td>
+<td>每櫃可到 600 kW</td>
+</tr>
+<tr>
+<td>中期</td>
+<td>資料中心前端用固態變壓器（SST）轉成 800 V</td>
+<td>配電損耗降為四分之一</td>
+</tr>
+<tr>
+<td>最終</td>
+<td>中壓直流（MVDC）微電網</td>
+<td>更容易接再生能源與儲能</td>
+</tr>
+</tbody>
+</table>
+<p>依據：<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE17">PE17</a>。Meta 與 Microsoft 2024 年透過 OCP 帶頭推 400 V 直流；現有 PSU 多數可直接吃 400 V，PFC 級可省略（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE18">PE18</a>）。</p>
+<h3 id="power-devices">功率元件：Si、SiC、GaN</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Si MOSFET</th>
+<th>SiC</th>
+<th>GaN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>優勢</td>
+<td>便宜、成熟</td>
+<td>供應鏈成熟、驅動與 Si 相近</td>
+<td>高頻（可到 400 kHz）、縮小被動元件</td>
+</tr>
+<tr>
+<td>弱點</td>
+<td>效率與密度不夠高功率 PSU</td>
+<td>頻率有限</td>
+<td>生態系較不成熟，需元件廠與 PSU 廠密切合作</td>
+</tr>
+<tr>
+<td>位置</td>
+<td>仍是數量主力</td>
+<td>PFC 級；Infineon 400 V SiC 專為 PSU</td>
+<td>DC/DC 級、IBC</td>
+</tr>
+<tr>
+<td>PSU 用量 2024 → 2030（百萬顆）</td>
+<td>521 → 770</td>
+<td>11 → 79</td>
+<td>11 → 137</td>
+</tr>
+</tbody>
+</table>
+<p>依據：<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE4">PE4</a>、<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE20">PE20</a>。主流做法是混合設計：PFC 用 SiC、DC/DC 用 GaN。Yole 2025 版預測寬能隙元件在 PSU 的滲透率由 2025 年約 10% 升到 2030 年約 24%（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE5">PE5</a>）。</p>
+<h3 id="near-chip-power">靠近晶片的供電</h3>
+<p>IBC 與 POL 要盡量靠近 GPU，規格嚴苛、生態系小，是 100 V 以下 GaN 的機會；垂直供電（從加速卡背面供電）正在興起（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE22">PE22</a>）。封裝廠也切入：日月光 powerSiP 把穩壓器放在 SoC 正下方，稱可把電源損耗由 12% 降到 6%（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE23">PE23</a>，公司說法）。</p>
+<h2 id="supply-chain">產品與供應鏈</h2>
+<h3 id="players">誰在做</h3>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>Yole 估 2025 年 PSU 市占</th>
+<th>寬能隙使用（Yole 2025 版整理的業界回饋）</th>
+<th>依據</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../01-Companies/%E5%8F%B0%E9%81%94.html">台達</a></td>
+<td>24%，第一</td>
+<td>現有產品已用 SiC 與 GaN；第一個在 OCP 外型達到 80 PLUS Ruby</td>
+<td><a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE7">PE7</a>、<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE9">PE9</a>、<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE10">PE10</a></td>
+</tr>
+<tr>
+<td><a href="../01-Companies/%E5%85%89%E5%AF%B6.html">光寶</a></td>
+<td>15%</td>
+<td>有 BBU 產品（1U 約 4.4 kW）</td>
+<td><a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE7">PE7</a>、<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE19">PE19</a></td>
+</tr>
+<tr>
+<td>華為</td>
+<td>11%</td>
+<td>—</td>
+<td><a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE7">PE7</a></td>
+</tr>
+<tr>
+<td>Advanced Energy</td>
+<td>6%</td>
+<td>現有產品用 SiC</td>
+<td><a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE10">PE10</a></td>
+</tr>
+<tr>
+<td>康舒、明緯</td>
+<td>3%、2%</td>
+<td>—</td>
+<td><a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE7">PE7</a></td>
+</tr>
+<tr>
+<td>全漢</td>
+<td>在「其他」35% 內</td>
+<td>3.3 kW 以上新產品用 GaN</td>
+<td><a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE10">PE10</a></td>
+</tr>
+</tbody>
+</table>
+<p>公司自己的揭露（2026 年）：台達稱上半年資料中心相關業務占合併營收過半、AI 相關產品今年預期逾營收 25%，在 GTC 2026 展示 800 VDC 660kW 電源機櫃（<a href="../04-Sources/2026-07-30-%E5%8F%B0%E9%81%94-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF.html#DT1">DT1、DT4</a>、<a href="../04-Sources/2026-04-%E5%8F%B0%E9%81%94-GTC2026-800VDC%E6%96%B9%E6%A1%88%E5%B1%95%E7%A4%BA.html#DG2">DG2</a>）；光寶稱 2Q26 雲端相關業務年增逾七成，並把 8.5kW PSU 與 BBU 量產、110kW Power Shelf 出貨列為第三季成長來源（<a href="../04-Sources/2026-07-31-%E5%85%89%E5%AF%B6-2026Q2%E8%B2%A1%E5%A0%B1%E6%96%B0%E8%81%9E%E7%A8%BF.html#LQ2">LQ2、LQ5</a>）。兩家都不具名客戶，也沒有揭露市占；台達法說會稱不評論市占（<a href="../04-Sources/2026-07-30-%E5%8F%B0%E9%81%94-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF.html#DT5">DT5</a>）。</p>
+<p>市占是 Yole 用各家總營收乘上估計的 PSU 比重，不是公司揭露。在這份估計中，台達、光寶、康舒合計 42%，計入明緯為 44%，全漢沒有個別數字。PSU 廠集中在美國與大中華區，沒有歐洲大廠（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE8">PE8</a>）。</p>
+<p>NVIDIA 的規格決定了這一輪升級：PSU 廠依 NVIDIA 的要求開發 5.5 kW PSU、33 kW 電源架與液冷機櫃（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE12">PE12</a>），但報告沒有說哪家供應 NVIDIA。</p>
+<h2 id="market-roadmap">市場資料與技術路線</h2>
+<h3 id="market-size">市場規模（Yole 2025 版：2024 年為估計，之後為預測）</h3>
+<table>
+<thead>
+<tr>
+<th>十億美元</th>
+<th>2024（估計）</th>
+<th>2025（預測）</th>
+<th>2030（預測）</th>
+<th>CAGR 24–30</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>資料中心 PSU</td>
+<td>5.9</td>
+<td>7.5</td>
+<td>14.1</td>
+<td>15.5%</td>
+</tr>
+<tr>
+<td>其中 3 kW 以上</td>
+<td>2.8</td>
+<td>4.5</td>
+<td>11.5</td>
+<td>26.7%</td>
+</tr>
+<tr>
+<td>其中 1–3 kW</td>
+<td>2.6</td>
+<td>2.5</td>
+<td>2.1</td>
+<td>-3.7%</td>
+</tr>
+<tr>
+<td>PSU 用功率元件（百萬美元）</td>
+<td>553</td>
+<td>720</td>
+<td>1,066</td>
+<td>11.6%</td>
+</tr>
+</tbody>
+</table>
+<p>依據：<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE1">PE1</a>、<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE2">PE2</a>、<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE3">PE3</a>。2025 年以後是 Yole 2025 版的預測。成長幾乎都來自 3 kW 以上的 AI 機櫃電源架。用電方面，Yole 估 2025 年出貨約 260 萬台 AI 伺服器、最多需要 18 GW（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE6">PE6</a>），Yole 認為瓶頸在變電站與變壓器交期（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE6">PE6</a>），而不是 PSU 本身（<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE8">PE8</a>）。</p>
+<h2 id="open-questions">未解問題</h2>
+<p>每一項寫出差異、缺什麼證據，以及什麼新資料會改變判斷。已查過仍無法確認的，記下查證範圍、等新資料再更新，不另外衍生搜尋；要持續追的數字列在「持續追蹤的數字」。</p>
+<ul>
+<li><strong>AI 機櫃功率與電源架規格</strong>：Yole 2025 版稱下一代機櫃預期 600 kW；NVIDIA 2026 年的技術文件把 Rubin Ultra NVL576 改為 8 個 72 GPU 機櫃（見 <a href="../03-Technologies/AI%E5%8A%A0%E9%80%9F%E5%99%A8.html">AI 加速器</a>），本站沒有收錄每櫃功率的公司說法。另一項是 PSU 移出機櫃的時程。→ 等 NVIDIA 機櫃規格或 PSU 廠的產品公告。</li>
+<li><strong>400 V/800 V 直流的導入</strong>：OCP Mt Diablo、Meta 與 Microsoft 的部署；固態變壓器的商用。NVIDIA 預期 800 VDC 隨 2027 年 Kyber 全面量產（HV3）；台達預期 HVDC 2026 年第三季開始量產、今年出貨有限（DT2），本站 2026-10-06 查證還沒有公司的量產公告。→ 等 OCP 規格與超大型業者部署公告。</li>
+<li><strong>台灣 PSU 廠的 AI 營收比重</strong>：台達只揭露資料中心相關業務過半、AI 產品預期逾 25%（DT1、DT4）；光寶揭露雲端及物聯網部門營收與第二季 AI 占比逾 25%（LS2、LT4）；全漢本站沒有來源。誰供應 NVIDIA 電源架：NVIDIA 只把台達、光寶列為 800 VDC 夥伴（HV2）；光寶 IR 稱 110kW Power Shelf 給 Vera Rubin 客戶群（LF2），NVIDIA 沒有確認。→ 等公司法說會。</li>
+<li><strong>GaN 的滲透速度</strong>：Yole 預期 GaN 在 PSU 的數量 CAGR 52%。→ 等 IBC 是否大量採用 GaN 的產品公告。</li>
+<li><strong>BBU 取代 UPS</strong>：OCP 規格與超大型業者的採購。→ 等規格定案與採購公告。</li>
+</ul>
+<h3 id="tracking">持續追蹤的數字</h3>
+<p>不是待解的問題，而是每次有新資料都要更新的數字；括號裡是本站目前的基準與出處。</p>
+<ul>
+<li><strong>AI 機櫃功率</strong>：看 NVIDIA 機櫃規格（Yole 2025 版整理的是 132 kW 機櫃，<a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html#PE15">PE15</a>）。</li>
+<li><strong>3 kW 以上 PSU 的營收</strong>：看 PSU 廠法說會（Yole 估 2024 年 28 億美元，見市場規模表）。</li>
+<li><strong>台達、光寶、全漢的 AI 電源營收比重</strong>：看公司法說會（台達預期 2026 年 AI 相關產品逾營收 25%，<a href="../04-Sources/2026-07-30-%E5%8F%B0%E9%81%94-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF.html#DT4">DT4</a>；光寶預期全年 AI 相關營收占比逾三成，<a href="../04-Sources/2026-07-31-%E5%85%89%E5%AF%B6-2026Q2%E8%B2%A1%E5%A0%B1%E6%96%B0%E8%81%9E%E7%A8%BF.html#LQ5">LQ5</a>）。</li>
+<li><strong>GaN 在 PSU 的採用</strong>：看產品公告（Yole 預期 GaN 在 PSU 的數量 CAGR 52%）。</li>
+</ul>
+<h2 id="sources-log">來源與更新紀錄</h2>
+<ul><li><a href="../04-Sources/2025-05-23-Yole-Power-Electronics-for-Data-Centers-2025.html">Yole 電力電子 2025</a>：PSU 市場與市占、架構演進、功率元件、BBU 與 400 V 直流</li></ul><details class="ar-log"><summary>更新紀錄（6 筆，最近 2026-10-06）</summary><ul><li>2026-10-06：補光寶 2Q26 法說會簡報、逐字稿與 9/9 券商論壇：部門營收、110kW Power Shelf 出貨說法</li><li>2026-10-06：補一手來源——台達 2Q26 法說會、光寶 2Q26 新聞稿、NVIDIA 兩篇 800 VDC 文章；摘要新增「800 VDC」「台灣 PSU 廠」兩列，「誰在做」補公司揭露，刪除「本站沒有收錄 PSU 廠或 NVIDIA 的公告」</li><li>2026-10-06：整理版面（只改寫法，未核對最新進度）—預測與估計標出報告版本；新增重點摘要、市場資料與技術路線、未解問題與持續追蹤的數字</li><li>2026-10-06：更正—「Rubin Ultra 的 600 kW 機櫃」改照 Yole 原意（只說下一代預期 600 kW），並補上 NVIDIA 把 Rubin Ultra NVL576 改為 8 個機櫃的說法</li><li>2026-10-06：更正—台灣廠合計市占改照 Yole 圓餅圖的算法，刪除「少數由台廠主導」的推論</li><li>2026-10-06：建立</li></ul></details>
+  </div>
+  <p class="ar-back"><a href="../../../pages/domains.html#d4">← 回到供電與電力設施</a></p>
+</article>
+<aside class="ar-side"><nav class="ar-toc" aria-label="本頁章節"><p>本頁章節</p><ul><li><a href="#scope">研究問題與範圍</a></li><li><a href="#summary">重點摘要與證據範圍</a></li><li><a href="#how-it-works">原理與流程</a></li><li><a href="#tradeoffs">方案與取捨</a></li><li class="sub"><a href="#psu-form-factors">PSU 外型標準</a></li><li class="sub"><a href="#power-architecture">配電架構的四個階段</a></li><li class="sub"><a href="#power-devices">功率元件：Si、SiC、GaN</a></li><li class="sub"><a href="#near-chip-power">靠近晶片的供電</a></li><li><a href="#supply-chain">產品與供應鏈</a></li><li class="sub"><a href="#players">誰在做</a></li><li><a href="#market-roadmap">市場資料與技術路線</a></li><li class="sub"><a href="#market-size">市場規模（Yole 2025 版：2024 年為估計，之後為預測）</a></li><li><a href="#open-questions">未解問題</a></li><li class="sub"><a href="#tracking">持續追蹤的數字</a></li><li><a href="#sources-log">來源與更新紀錄</a></li></ul></nav></aside>
+</div>
+</main>
+
+<footer id="site-footer"></footer>
+</body>
+</html>

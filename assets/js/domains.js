@@ -2,8 +2,10 @@
    研究領域頁：左側選領域，右側是「所有領域」總覽或單一領域
    網址後面的 #d3 這類 id 決定顯示哪個領域；沒有 id 就顯示總覽。
    單一領域：標題 → 核心問題 → 導讀 → 整合分析（有 guide 才出現）
-             → 主要主題（文章掛在底下）→ 分類軸（收起）→ 延伸問題與閱讀（目的地有文章才出現）
-   主要主題有公司資料時，旁邊出現「相關公司（N）」，連到公司與供應鏈頁並套用該主題。
+             → 研究分區（技術頁掛在底下）→ 分類軸（收起）→ 延伸問題與閱讀（目的地有文章才出現）
+   一篇技術頁只在它的主要分區（section）顯示完整卡片；also 列的其他分區只顯示一行「相關閱讀」，
+   寫了關係說明（why）就顯示，寫了 anchor 就直接跳到那一節。
+   研究分區有公司資料時，旁邊出現「相關公司（N）」，連到公司與供應鏈頁並套用該分區。
    架構改 settings/landscape-frame.js，文章改 settings/landscape.js，不用改這裡。
    ════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', function () {
@@ -35,18 +37,34 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   // content/ 的 .md 由 tools/update_stats.py 轉成 generated/pages/ 裡的網頁
   function pageUrl(folder, file) { return '../generated/pages/' + folder + '/' + encodeURI(file.replace(/\.md$/, '.html')); }
-  // 掛在某主題底下的文章：section 是它，或 also 寫了它且在同一個領域（跨領域的 also 改成「另見」連結）
-  function pagesIn(secId) {
-    return topics.filter(function (t) {
-      if (!t.page) return false;
-      if (t.section === secId) return true;
-      return (t.also || []).indexOf(secId) >= 0 && secOf[secId] && secOf[t.section] && secOf[secId].layer.id === secOf[t.section].layer.id;
+  // also 的每一項可以是分區 id，或 { id, why, anchor }
+  function alsoOf(t) {
+    return (t.also || []).map(function (a) { return typeof a === 'string' ? { id: a } : a; });
+  }
+  function sameLayer(a, b) { return secOf[a] && secOf[b] && secOf[a].layer.id === secOf[b].layer.id; }
+  // 主要分區是它的技術頁（顯示完整卡片）
+  function primaryIn(secId) {
+    return topics.filter(function (t) { return t.page && t.section === secId; });
+  }
+  // 交叉引用：同一個領域、also 寫了這個分區的技術頁（只顯示一行）；跨領域的 also 改成卡片上的「另見」
+  function xrefsIn(secId) {
+    var out = [];
+    topics.forEach(function (t) {
+      if (!t.page || t.section === secId || !sameLayer(secId, t.section)) return;
+      alsoOf(t).forEach(function (a) { if (a.id === secId) out.push({ t: t, rel: a }); });
     });
+    return out;
   }
+  function pagesIn(secId) {
+    return primaryIn(secId).concat(xrefsIn(secId).map(function (x) { return x.t; }));
+  }
+  // 領域的篇數：同一篇技術頁掛在幾個分區都只算一次
   function countLayer(L) {
-    return L.sections.reduce(function (n, s) { return n + pagesIn(s.id).length; }, 0);
+    var seen = {};
+    L.sections.forEach(function (s) { pagesIn(s.id).forEach(function (t) { seen[t.page] = 1; }); });
+    return Object.keys(seen).length;
   }
-  // 依 band 分組（需求端／技術系統／共通支援），保持設定裡的順序
+  // 依 band 分組（需求端/技術系統/共通支援），保持設定裡的順序
   var bands = [];
   F.layers.forEach(function (L) {
     var g = bands.filter(function (b) { return b.band === L.band; })[0];
@@ -72,39 +90,59 @@ document.addEventListener('DOMContentLoaded', function () {
   }).join('');
   sel.addEventListener('change', function () { location.hash = sel.value; });   // 空字串＝所有領域
 
-  // ── 一篇文章：標題連結＋一句用途 ──
-  function articleItem(t) {
-    var tags = (t.kind && F.kinds[t.kind] ? '<span class="tag">' + esc(F.kinds[t.kind]) + '</span>' : '') +
-      (t.axes ? Object.keys(t.axes).map(function (k) { return '<span class="tag">' + esc(t.axes[k]) + '</span>'; }).join('') : '');
-    // 另見：只連到已有文章的其他領域主題
-    var also = (t.also || []).filter(function (id) {
-      return secOf[id] && secOf[id].layer.id !== secOf[t.section].layer.id && pagesIn(id).length;
-    }).map(function (id) {
-      var o = secOf[id];
-      return '<a href="#' + o.layer.id + '">' + esc(o.layer.short + '・' + o.sec.label) + '</a>';
+  // ── 主要文章：標題、一句用途、一行產業證據分布（點開才看公司）──
+  // 研究領域頁第一眼只放「分區名稱 → 說明 → 主要文章 → 證據分布 → 延伸閱讀」五層（規格見 README「研究領域頁的資訊層級」）；
+  // 文章類型、分類軸、另見、公司名稱都不在第一層。
+  var EV_ORDER = Object.keys(F.evidence).reverse();          // 由高到低：獲利與現金流 → … → 技術展示
+  function evidenceLine(t) {
+    var all = t.cases || [];
+    if (!all.length) return '';
+    var n = {};
+    all.forEach(function (c) { n[c.evidence] = (n[c.evidence] || 0) + 1; });
+    var dist = EV_ORDER.filter(function (k) { return n[k]; }).map(function (k) { return esc(F.evidence[k]) + ' ' + n[k]; }).join('・');
+    // 依據是研究機構或券商報告的案例（report）另外標出筆數，避免和公司揭露混在一起看
+    var rep = all.filter(function (c) { return c.report; }).length;
+    if (rep) dist += '（含研究機構報告 ' + rep + '）';
+    // 展開後依證據等級由高到低；同一等級裡標了 key 的排前面
+    var sorted = all.slice().sort(function (x, y) {
+      return (EV_ORDER.indexOf(x.evidence) - EV_ORDER.indexOf(y.evidence)) || ((y.key ? 1 : 0) - (x.key ? 1 : 0));
     });
-    var cases = (t.cases || []).map(function (c) {
+    return '<details class="gd-ev"><summary>產業證據：' + dist + '</summary><ul>' + sorted.map(function (c) {
       return '<li><span class="tag">' + esc(F.evidence[c.evidence] || c.evidence) + '</span>' + esc(c.who) + '｜' + esc(c.what) + '</li>';
-    }).join('');
+    }).join('') + '</ul></details>';
+  }
+  function articleItem(t) {
     return '<li>' +
       '<a class="art" href="' + pageUrl('03-Technologies', t.page) + '">' + esc(t.label) + '</a>' +
-      (t.desc ? '<p>' + esc(t.desc) + '</p>' : '') +
-      (tags || also.length ? '<div class="gd-meta">' + tags + (also.length ? '<span>另見 ' + also.join('、') + '</span>' : '') + '</div>' : '') +
-      (cases ? '<ul class="gd-cases">' + cases + '</ul>' : '') +
+      (t.desc ? '<p>' + esc(t.desc) + '</p>' : '') + evidenceLine(t) +
     '</li>';
   }
 
-  // ── 主要主題：分類骨架正常顯示；有文章掛在底下，登記了但還沒寫的列「待補」 ──
+  // ── 延伸閱讀：別的分區文章裡與本分區相關的章節，合成一行淡色連結；關係說明放在滑鼠提示 ──
+  var HEAD = window.TECH_HEADINGS || {};
+  function xrefLine(xr) {
+    if (!xr.length) return '';
+    return '<p class="gd-xline">延伸閱讀：' + xr.map(function (x) {
+      var t = x.t, rel = x.rel;
+      var title = rel.anchor && HEAD[t.page] && HEAD[t.page][rel.anchor];
+      return '<a href="' + pageUrl('03-Technologies', t.page) + (title ? '#' + encodeURIComponent(rel.anchor) : '') + '"' +
+        (rel.why ? ' title="' + esc(rel.why) + '"' : '') + '>' + esc(t.label) + (title ? '・' + esc(title) : '') + '</a>';
+    }).join('、') + '</p>';
+  }
+
+  // ── 研究分區：分類骨架正常顯示；技術頁掛在底下，登記了但還沒寫的列「待補」 ──
   function sections(L) {
-    return '<h2 class="gd-h">主要主題</h2><div class="gd-secs">' + L.sections.map(function (s) {
-      var arts = pagesIn(s.id);
+    return '<h2 class="gd-h">研究分區</h2><div class="gd-secs">' + L.sections.map(function (s) {
+      var prim = primaryIn(s.id), xr = xrefsIn(s.id);
       var todo = topics.filter(function (t) { return t.section === s.id && !t.page; });
-      return '<div class="gd-sec">' +
+      return '<div class="gd-sec" id="sec-' + s.id + '">' +
         '<h3>' + esc(s.label) + '</h3><p>' + esc(s.desc) +
           (coCount[s.id] ? '<a class="gd-co" href="companies.html#' + s.id + '">相關公司（' + coCount[s.id] + '）</a>' : '') + '</p>' +
-        // 代表關鍵字：只是閱讀提示（沒寫就不顯示），不做篩選
-        ((s.keys || []).length ? '<p class="gd-keys">' + s.keys.map(function (k) { return '<span>' + esc(k) + '</span>'; }).join('') + '</p>' : '') +
-        (arts.length ? '<ul class="gd-arts">' + arts.map(articleItem).join('') + '</ul>' : '') +
+        // 一個分區第一眼只放一篇主要文章（landscape.js 裡排第一的）；其餘縮成一行標題
+        (prim.length ? '<ul class="gd-arts">' + articleItem(prim[0]) + '</ul>' : '') +
+        (prim.length > 1 ? '<p class="gd-same">同分區另有：' + prim.slice(1).map(function (t) {
+          return '<a href="' + pageUrl('03-Technologies', t.page) + '">' + esc(t.label) + '</a>'; }).join('、') + '</p>' : '') +
+        xrefLine(xr) +
         (todo.length ? '<p class="gd-todo">待補內容：' + todo.map(function (t) { return esc(t.label); }).join('、') + '</p>' : '') +
       '</div>';
     }).join('') + '</div>';
@@ -121,8 +159,10 @@ document.addEventListener('DOMContentLoaded', function () {
   // ── 延伸問題與閱讀：目的地主題有文章才出現，並直接連到那些文章 ──
   function further(L) {
     var items = (L.related || []).map(function (r) {
-      var arts = [];
-      (r.in || []).forEach(function (id) { arts = arts.concat(pagesIn(id)); });
+      var arts = [], seen = {};
+      (r.in || []).forEach(function (id) {
+        pagesIn(id).forEach(function (t) { if (!seen[t.page]) { seen[t.page] = 1; arts.push(t); } });
+      });
       if (!arts.length || !layerById[r.to]) return '';
       return '<li><p>' + esc(r.q) + '</p>' +
         arts.slice(0, 3).map(function (t) {
@@ -178,7 +218,10 @@ document.addEventListener('DOMContentLoaded', function () {
     crumb.innerHTML = L ? ' · ' + esc(L.short) : '';
     document.title = (L ? L.short + '｜' : '') + '研究領域｜天空研究室';
     main.innerHTML = L ? domain(L) : overview();
-    if (main.getBoundingClientRect().top < 0) window.scrollTo(0, 0);
+    // 網址是分區代號（例：#d1-pkg）時捲到那個分區，從技術頁點「主要分區」「也列於」回來會落在原處
+    var target = secOf[h] && document.getElementById('sec-' + h);
+    if (target) target.scrollIntoView();
+    else if (main.getBoundingClientRect().top < 0) window.scrollTo(0, 0);
   }
   window.addEventListener('hashchange', fromHash);
   fromHash();

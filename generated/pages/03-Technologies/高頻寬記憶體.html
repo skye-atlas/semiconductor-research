@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 由 tools/build_pages.py 自動產生，不要手改；要改內容請改 content/ 裡的 .md -->
+<title>高頻寬記憶體（HBM）｜天空研究室</title>
+<link rel="stylesheet" href="../../../assets/css/1-tokens.css">
+<link rel="stylesheet" href="../../../assets/css/2-base.css">
+<link rel="stylesheet" href="../../../assets/css/6-article.css">
+<script src="../../../settings/site.js"></script>
+<script src="../../../generated/stats.js"></script>
+<script src="../../../assets/js/layout.js"></script>
+<script src="../../../assets/js/toc.js"></script>
+</head>
+<body data-page="domains" data-root="../../..">
+
+<header id="site-header"></header>
+
+<main class="wrap">
+<div class="ar-grid">
+<article class="page ar">
+  <div class="crumb"><a href="../../../index.html">首頁</a> · <a href="../../../pages/domains.html">研究領域</a> · <a href="../../../pages/domains.html#d2">記憶體與儲存</a> · <a href="../../../pages/domains.html#d2-hbm">加速器記憶體與 HBM</a> · 高頻寬記憶體（HBM）</div>
+  <p class="ar-kind">技術</p>
+  <h1 class="serif">高頻寬記憶體（HBM）</h1>
+  <p class="ar-meta">主要分區：<a href="../../../pages/domains.html#d2-hbm">記憶體與儲存・加速器記憶體與 HBM</a>　也列於：<a href="../../../pages/domains.html#d1-pkg">運算晶片與封裝・封裝平台</a>、<a href="../../../pages/domains.html#d2-main">記憶體與儲存・主記憶體與 DRAM 技術</a></p><p class="ar-meta ar-updated">本頁更新：2026-10-06<small>（見文末更新紀錄；全站日期在頁尾）</small></p>
+  <div class="ar-body">
+<p>AI 加速器的記憶體頻寬幾乎都來自 HBM：把多顆 DRAM 晶粒用 TSV 疊起來，放在運算晶片旁邊。這篇回答：HBM 怎麼做、三家記憶體廠各走到哪裡、基底晶粒由誰設計與製造、怎麼疊，以及還不知道什麼。</p>
+<h2 id="scope">研究問題與範圍</h2>
+<ul>
+<li><strong>為什麼需要 HBM</strong>：一般 DDR5 介面只有 64 位元，HBM3E 一個堆疊就有 1,024 位元、HBM4 加倍到 2,048 位元（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR14">Yole DRAM 2025 DR14</a>）。代價是製造複雜、每 GB 售價可達一般 DRAM 的四倍（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR11">DR11</a>）。</li>
+<li><strong>範圍</strong>：本篇談 HBM 堆疊本身（晶粒、基底晶粒、鍵合、世代、供應）。HBM 怎麼和 GPU 放進同一個封裝（CoWoS 等中介層）見 <a href="../03-Technologies/%E9%AB%98%E9%9A%8E%E5%B0%81%E8%A3%9D%E5%B9%B3%E5%8F%B0.html">高階封裝平台</a>；鍵合設備的市場見 <a href="../03-Technologies/%E5%BE%8C%E6%AE%B5%E5%B0%81%E8%A3%9D%E8%A8%AD%E5%82%99.html">後段封裝設備</a>。</li>
+<li><strong>怎麼讀這篇</strong>：「重點摘要與證據範圍」列出主要判斷與依據的性質（公司公告、標準文件、研究機構估計、媒體轉述），研究機構的數字標明版本；完整比較在各節；說法對不齊或證據不足的放在「未解問題」，要持續追的數字放在「持續追蹤的數字」。查證過程記在各來源筆記與本站內部的收錄紀錄。</li>
+</ul>
+<h2 id="summary">重點摘要與證據範圍</h2>
+<p>本站整理至 2026-10-06（各項的日期寫在表內，不代表全篇數字都更新到這天）。每一項寫出由誰說、什麼性質；完整依據與比較見下方各節。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>目前能說到哪裡（誰說的）</th>
+<th>還不知道</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HBM4 出貨</td>
+<td>三家都已出貨：Samsung 2026 年 2 月宣布量產並出貨商用產品；Micron 稱 2026 年第一季開始量產出貨；SK hynix 稱 2026 年第二季開始大量出貨</td>
+<td>各家出貨量與客戶比重</td>
+</tr>
+<tr>
+<td>HBM4E</td>
+<td>Samsung 2026 年 5 月送樣、7 月稱樣品已送主要客戶；SK hynix 稱上半年完成送樣；Micron 申報文件寫 2027 年量產</td>
+<td>各家量產季別與客戶</td>
+</tr>
+<tr>
+<td>基底晶粒（HBM4）</td>
+<td>SK hynix 用台積電先進邏輯製程；Samsung 用自家 4 奈米；Micron 自製</td>
+<td>製程節點（SK hynix 官方沒寫）</td>
+</tr>
+<tr>
+<td>基底晶粒（HBM4E）</td>
+<td>Samsung 標準品用自家 4 奈米；Micron 執行長於 2025-09 法說會表示標準與客製都與台積電合作製造（依第三方逐字稿）</td>
+<td>SK hynix 的代工廠與製程；Samsung 客製品的製程</td>
+</tr>
+<tr>
+<td>客製 HBM</td>
+<td>NVIDIA 發表 NVHBM（記憶體控制器放進基底晶粒），稱由多家記憶體廠提供；Micron 稱與 NVIDIA 合作 NVHBM</td>
+<td>其他供應商、用在哪一代 GPU、基底晶粒代工</td>
+</tr>
+<tr>
+<td>Vera Rubin 的 HBM4</td>
+<td>NVIDIA 官方文件具名 SK hynix（SK Telecom 的部署）；Micron 稱其 HBM4 為 Vera Rubin 設計</td>
+<td>Samsung 是否供應（只有執行長口頭說法經媒體轉述）、各家比重</td>
+</tr>
+<tr>
+<td>市場規模</td>
+<td>Yole 2025 版估計：2024 年 HBM 營收 174 億美元、占 DRAM 營收 18%；市占 SK hynix 54%、Samsung 39%、Micron 7%（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR6">DR6</a>、<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR12">DR12</a>）</td>
+<td>HBM4 世代的市占</td>
+</tr>
+</tbody>
+</table>
+<p>公司說法的來源見下方各節；這些說法都沒有出貨數字，「已出貨」不代表已達特定比重。</p>
+<h2 id="product">產品與原理</h2>
+<p>一個 HBM 堆疊由下而上是：</p>
+<table>
+<thead>
+<tr>
+<th>組成</th>
+<th>做什麼</th>
+<th>誰做</th>
+<th>依據</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基底（邏輯）晶粒</td>
+<td>HBM 控制器、測試與介面；HBM4 起多數改用邏輯晶圓製程</td>
+<td>記憶體廠自製，或台積電、Samsung Foundry 代工；客製 HBM 可由客戶設計部分邏輯（見「基底晶粒與客製化」）</td>
+<td><a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR15">DR15</a>、<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR18">DR18</a></td>
+</tr>
+<tr>
+<td>DRAM 晶粒 8–16 層</td>
+<td>每顆 24 Gb（HBM4 起可能 32 Gb），薄化到 30–55 µm</td>
+<td>記憶體廠</td>
+<td><a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR14">DR14</a>、<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR17">DR17</a></td>
+</tr>
+<tr>
+<td>TSV 與微凸塊</td>
+<td>上下晶粒之間的垂直連線</td>
+<td>記憶體廠（部分組裝外包封測廠）</td>
+<td><a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR21">DR21</a>、<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR24">DR24</a></td>
+</tr>
+</tbody>
+</table>
+<p>做好的堆疊交給晶圓廠或封測廠，和 GPU 一起放上中介層、載板，做最終組裝（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR21">DR21</a>；分工細節見 <a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP29">高階封裝 HP29</a>）。</p>
+<p>各家已公布的 HBM4/HBM4E 規格（公司說法）：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HBM4</th>
+<th>HBM4E</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SK hynix</td>
+<td>2,048 個 I/O、速度超過 10 Gbps（<a href="../04-Sources/2025-09-12-SK-hynix-HBM4-Development-Mass-Production-Readiness-Press-Release.html#SH2">SH2</a>）；展示 16 層 48GB（<a href="../04-Sources/2026-04-23-SK-hynix-TSMC-Technology-Symposium-2026.html#SY2">SY2</a>）</td>
+<td>展示 12 層 48GB（2026-09 OIP 論壇，見 <a href="../04-Sources/2026-04-23-SK-hynix-TSMC-Technology-Symposium-2026.html">SY 筆記</a>開頭紀錄）</td>
+</tr>
+<tr>
+<td>Samsung</td>
+<td>11.7 Gbps、最高 13 Gbps，單堆疊最高 3.3 TB/s；12 層 24–36GB（<a href="../04-Sources/2026-02-12-Samsung-HBM4-Mass-Production-Shipment-Press-Release.html#SM3">SM3</a>）</td>
+<td>14 Gbps、最高 16 Gbps，最高 3.6 TB/s；12 層 48GB，之後推 8 層與 16 層（<a href="../04-Sources/2026-05-29-Samsung-HBM4E-Sample-Shipment-Press-Release.html#SE3">SE3</a>）</td>
+</tr>
+<tr>
+<td>Micron</td>
+<td>36GB 12 層，腳位超過 11 Gb/s、頻寬超過 2.8 TB/s；16 層 48GB 已送樣（<a href="../04-Sources/2026-03-16-Micron-HBM4-High-Volume-Production-Press-Release.html#MH2">MH2、MH3</a>）</td>
+<td>1-gamma DRAM（<a href="../04-Sources/2026-06-24-Micron-FQ3-2026-8-K-Press-Release.html#MK1">MK1</a>）</td>
+</tr>
+</tbody>
+</table>
+<p>單一加速器的用量持續增加：NVIDIA 稱 Rubin 最多 288 GB HBM4、12 層堆疊（<a href="../04-Sources/2026-07-21-NVIDIA-Inside-Rubin-GPU-Architecture-Technical-Blog.html#RG3">Rubin 技術文件 RG3</a>）；Yole 2025 版列 B200 192 GB、B300 288 GB、AMD MI400 預期 384 GB（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR20">DR20</a>，2025 年以後為預期規格）。</p>
+<h2 id="supplier-progress">供應商進度</h2>
+<h3 id="hbm4-hbm4e">HBM4 與 HBM4E</h3>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>HBM4</th>
+<th>HBM4E</th>
+<th>公開具名的客戶或平台</th>
+<th>依據</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SK hynix</td>
+<td>2025-09 完成開發、備妥量產體系；2026 年第二季開始大量出貨，下半年擴產</td>
+<td>2026 上半年完成送樣</td>
+<td>NVIDIA 官方文件：SK Telecom 將部署「搭載 SK hynix HBM4 的 Vera Rubin」；雙方簽長期記憶體合作</td>
+<td><a href="../04-Sources/2025-09-12-SK-hynix-HBM4-Development-Mass-Production-Readiness-Press-Release.html#SH1">SH1</a>、<a href="../04-Sources/2026-07-29-SK-hynix-2Q26-Financial-Results-Press-Release.html#SQ1">SQ1、SQ3</a>、<a href="../04-Sources/2026-07-24-NVIDIA-SK-Group-Strategic-Partnership-Press-Release.html#NK2">NK2、NK3</a></td>
+</tr>
+<tr>
+<td>Samsung</td>
+<td>2026-02 宣布量產並出貨商用產品；第二季銷售擴大</td>
+<td>2026-05 開始送樣，量產依客戶時程；7 月稱樣品已送主要客戶</td>
+<td>公告沒有點名客戶</td>
+<td><a href="../04-Sources/2026-02-12-Samsung-HBM4-Mass-Production-Shipment-Press-Release.html#SM1">SM1</a>、<a href="../04-Sources/2026-07-30-Samsung-2Q26-Financial-Results-Press-Release.html#SR1">SR1、SR3</a>、<a href="../04-Sources/2026-05-29-Samsung-HBM4E-Sample-Shipment-Press-Release.html#SE1">SE1、SE4</a></td>
+</tr>
+<tr>
+<td>Micron</td>
+<td>2026 年第一季開始量產出貨；6 月稱已對「主要客戶的平台」大量出貨</td>
+<td>申報文件：2027 年量產（未寫季別）</td>
+<td>Micron 稱 HBM4 為 NVIDIA Vera Rubin 設計；稱與 NVIDIA 合作客製 HBM4E「NVHBM」（NVIDIA 官方文件都沒有點名 Micron）。在本站已核對的 Micron 來源中，點名的 HBM4E 客戶只有 NVIDIA；這不代表 Micron 沒有其他客戶</td>
+<td><a href="../04-Sources/2026-03-16-Micron-HBM4-High-Volume-Production-Press-Release.html#MH1">MH1</a>、<a href="../04-Sources/2026-06-24-Micron-FQ3-2026-8-K-Press-Release.html#MK1">MK1、MK2</a>、<a href="../04-Sources/2026-09-30-Micron-FQ4-2026-Prepared-Remarks.html#MR1">MR1</a></td>
+</tr>
+<tr>
+<td>長鑫（中國）</td>
+<td>Yole 2025 版：HBM2 送樣、開發 HBM2E，上海封裝廠 2026 下半年每月 3 萬顆目標，估落後約 6 年</td>
+<td>—</td>
+<td>—</td>
+<td><a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR28">DR28</a>（轉述）</td>
+</tr>
+</tbody>
+</table>
+<p>三家都自稱領先，但定義不同：SK hynix 指第一個備妥量產體系，Samsung 指第一個量產並出貨商用產品，Micron 指第一季開始量產出貨；HBM4E 送樣 Samsung 與 SK hynix 也都說在上半年。本站不判定先後。</p>
+<p><strong>Vera Rubin 的 HBM4，四種程度要分開看</strong>：NVIDIA 官方文件<strong>具名部署</strong>的只有 SK hynix（NK2）；Micron <strong>自稱為 Vera Rubin 設計</strong>（MH1）；媒體轉述 Bloomberg，黃仁勳 2026-06-05 對記者說三家都<strong>通過認證</strong>（<a href="../04-Sources/2026-06-05-Investing-Nvidia-Certifies-Vera-Rubin-HBM4-Suppliers.html#IV1">IV1</a>，口頭說法、多手轉述）；各家<strong>出貨比重</strong> NVIDIA 沒有揭露，報導引述的分析師估計原始出處與方法不明，本站不採用（數字只記在來源筆記 IV2）。</p>
+<h3 id="market-share">市占（Yole 2025 版，2024 年營收）</h3>
+<p>SK hynix 54%、Samsung 39%、Micron 7%、長鑫等其他約 0.2%（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR12">DR12</a>）。這是研究機構估計；HBM4 世代的市占本站沒有來源。</p>
+<h2 id="base-die">基底晶粒與客製化</h2>
+<h3 id="standard-vs-custom">標準與客製</h3>
+<p>Yole 2025 版的說法：標準 HBM 的基底晶粒原本由記憶體廠以 28 或 14 奈米等舊製程製作；客製 HBM 讓 SoC 廠用 7 奈米以下自己設計邏輯晶粒，把加速器功能、電源管理或專有互連放進去（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR18">DR18</a>）。HBM4 起標準品也不一定由記憶體廠自己製造：SK hynix 改用台積電，Samsung 用自家晶圓代工，Micron HBM4 仍用自家 DRAM 製程（見下表）。Marvell 稱可增加 25% 運算面積、降低 70% 介面功耗，這是公司說法。</p>
+<h3 id="base-die-makers">各家基底晶粒由誰製造</h3>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>HBM4</th>
+<th>HBM4E 標準品</th>
+<th>客製 HBM</th>
+<th>依據與證據形式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SK hynix</td>
+<td>台積電先進邏輯製程（官方：「從 HBM4 起」）</td>
+<td>官方沒有寫</td>
+<td>官方說要從標準品走向客製 HBM，沒有寫製程</td>
+<td>公司新聞室（<a href="../04-Sources/2026-04-23-SK-hynix-TSMC-Technology-Symposium-2026.html#SY1">SY1–SY3</a>）</td>
+</tr>
+<tr>
+<td>Samsung</td>
+<td>Samsung Foundry 4 奈米</td>
+<td>Samsung Foundry 4 奈米（與 HBM4 同組合）</td>
+<td>官方沒有寫製程；1 月法說會（媒體轉述）稱下半年依客戶時程開始首批晶圓出貨，2 月新聞稿稱客製樣品 2027 年送出</td>
+<td>公司新聞稿（<a href="../04-Sources/2026-02-12-Samsung-HBM4-Mass-Production-Shipment-Press-Release.html#SM2">SM2</a>、<a href="../04-Sources/2026-05-29-Samsung-HBM4E-Sample-Shipment-Press-Release.html#SE2">SE2</a>、<a href="../04-Sources/2026-02-12-Samsung-HBM4-Mass-Production-Shipment-Press-Release.html#SM4">SM4</a>）；法說會報導（<a href="../04-Sources/2026-01-29-Asiae-Samsung-4Q25-Earnings-Call.html#SC1">SC1</a>）</td>
+</tr>
+<tr>
+<td>Micron</td>
+<td>自製（Yole：1b DRAM 製程，<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR15">DR15</a>）</td>
+<td>與台積電合作製造</td>
+<td>與台積電合作製造；與 NVIDIA 合作 NVHBM</td>
+<td>法說會（依第三方逐字稿，<a href="../04-Sources/2025-09-23-Micron-FQ4-2025-Earnings-Call-Transcript.html#MC1">MC1、MC2</a>；<a href="../04-Sources/2024-12-18-Micron-FQ1-2025-Earnings-Call-Transcript.html#MF1">MF1</a>）；官方講稿（<a href="../04-Sources/2026-09-30-Micron-FQ4-2026-Prepared-Remarks.html#MR1">MR1</a>，沒有提台積電）</td>
+</tr>
+</tbody>
+</table>
+<p>台積電端：媒體轉述其 2025 年 11 月 OIP 簡報，HBM4 基底晶粒用 N12，客製 HBM4E（C-HBM4E）用 N3P 並把記憶體控制器整合進基底晶粒（<a href="../04-Sources/2025-12-01-TrendForce-TSMC-C-HBM4E-N3P-Base-Die.html#TH1">TH1</a>），沒有提 NVIDIA。<code>[推論]</code> TH1 說 C-HBM4E 把記憶體控制器整合進基底晶粒，NVIDIA 說 NVHBM 把自家記憶體控制器放進基底晶粒（<a href="../04-Sources/2026-08-26-NVIDIA-NVHBM-NVLink-Fusion-Blog.html#NH1">NH1</a>），兩者是同一種做法；但 TH1 沒有提 NVIDIA，不能據此認定 NVHBM 由台積電代工。製程節點的媒體說法另列在「未解問題」。Samsung 7 月財報也稱晶圓代工下半年擴大 4 奈米基底晶粒產品銷售（<a href="../04-Sources/2026-07-30-Samsung-2Q26-Financial-Results-Press-Release.html#SR3">SR3</a>）。</p>
+<h3 id="nvhbm">NVIDIA 的 NVHBM</h3>
+<p>NVIDIA 2026 年 8 月發表 NVHBM：把 NVIDIA 自家的記憶體控制器放進 HBM 基底晶粒，稱基底晶粒技術與主要記憶體廠共同設計與驗證、由多家記憶體廠提供，並說這是 NVIDIA 未來 GPU 會用的同一套技術；先提供給 NVLink Fusion 客戶，Amazon Annapurna Labs 是第一個合作者（<a href="../04-Sources/2026-08-26-NVIDIA-NVHBM-NVLink-Fusion-Blog.html#NH1">NH1–NH4</a>）。NVIDIA 沒有點名記憶體廠、基底晶粒代工廠或哪一代 GPU。在本站已核對的來源中，記憶體廠只有 Micron 自己說參與 NVHBM：稱正與 NVIDIA 合作「業界第一個客製 HBM4E 實作 NVHBM」，將用於下一代 GPU 與 NVLink Fusion（MR1）；SK hynix 與 NVIDIA 有共同開發下一代記憶體的長期合作（NK3），但沒有提 NVHBM。</p>
+<p><code>[推論]</code> 客製化讓台積電、創意這類代工與設計服務廠，以及 NVIDIA 這類客戶，進入原本由記憶體廠主導的基底晶粒；記憶體廠的角色更集中在 DRAM 晶粒與堆疊。</p>
+<h2 id="manufacturing">製造與鍵合</h2>
+<h3 id="stacking">怎麼疊：微凸塊對混合鍵合</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>TC-NCF</th>
+<th>MR-MUF（進階版）</th>
+<th>混合鍵合</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>做法</td>
+<td>每疊一層貼一層非導電膜再熱壓</td>
+<td>一次回焊後整體灌模填膠</td>
+<td>銅對銅、氧化層對氧化層直接接合，沒有凸塊</td>
+</tr>
+<tr>
+<td>使用者（Yole 2025 版）</td>
+<td>Samsung、Micron</td>
+<td>SK hynix（HBM4 也用，<a href="../04-Sources/2025-09-12-SK-hynix-HBM4-Development-Mass-Production-Readiness-Press-Release.html#SH3">SH3</a>）</td>
+<td>三家都在研發</td>
+</tr>
+<tr>
+<td>取捨</td>
+<td>對翹曲較不敏感，產能較低</td>
+<td>產能高、散熱好，對翹曲敏感</td>
+<td>頻寬、散熱、厚度最好，但良率與產能低、貴</td>
+</tr>
+<tr>
+<td>依據</td>
+<td><a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR15">DR15</a></td>
+<td>同左</td>
+<td><a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR16">DR16</a></td>
+</tr>
+</tbody>
+</table>
+<p>關鍵限制是總厚度：JEDEC 2024 年把 HBM4 上限放寬到 775 µm，16 層還能用微凸塊；20–24 層要把晶粒薄到約 20 µm 並用無間隙的混合鍵合（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR17">DR17</a>）。</p>
+<p><strong>混合鍵合何時導入</strong>：Yole 2025 版預期 D2W 混合鍵合到 HBM5 20 層（約 2029 年），HBM4E 先用 W2W 疊第一層 DRAM 與邏輯晶粒（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR16">DR16</a>、<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP22">HP22</a>）。Samsung 1 月法說會（媒體轉述）稱以 HBM4 為基礎的混合鍵合樣品已送主要客戶、HBM4E 階段部分商用化，並認為 16 層 HBM3E 或 HBM4 不需要量產（<a href="../04-Sources/2026-01-29-Asiae-Samsung-4Q25-Earnings-Call.html#SC2">SC2、SC3</a>）。設備面的比較見 <a href="../03-Technologies/%E5%BE%8C%E6%AE%B5%E5%B0%81%E8%A3%9D%E8%A8%AD%E5%82%99.html">後段封裝設備</a>。</p>
+<h3 id="equipment-taiwan">設備、材料與台灣廠</h3>
+<p>鍵合設備：TCB 有 Hanmi、Hanwha、ASMPT、K&amp;S、Shinkawa、Toray、SEMES、Shibaura；混合鍵合有 Besi（與 AMAT 合作）、ASMPT、EVG、TEL、SUSS、SET、Shibaura（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR22">DR22</a>）。</p>
+<table>
+<thead>
+<tr>
+<th>台灣廠</th>
+<th>在哪一段</th>
+<th>本站來源怎麼說</th>
+<th>證據性質</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../01-Companies/%E5%8F%B0%E7%A9%8D%E9%9B%BB.html">台積電</a></td>
+<td>基底晶粒代工、CoWoS 組裝、HBM IP</td>
+<td>SK hynix 官方：HBM4 基底晶粒用台積電（雙方 2024 年 4 月簽 HBM4 合作備忘錄，Yole 轉述，<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR26">DR26</a>）；Micron 執行長於 2025-09 法說會：HBM4E 基底晶粒與台積電合作製造（依第三方逐字稿）；Yole 另列與 Samsung 合作無緩衝 HBM4</td>
+<td>公司說法（<a href="../04-Sources/2026-04-23-SK-hynix-TSMC-Technology-Symposium-2026.html#SY1">SY1</a>、<a href="../04-Sources/2025-09-23-Micron-FQ4-2025-Earnings-Call-Transcript.html#MC1">MC1</a>）；Yole 整理（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR19">DR19</a>）</td>
+</tr>
+<tr>
+<td>力成</td>
+<td>HBM 外包組裝</td>
+<td>2024 年資本支出 150 億元的六成用於 HBM 封裝，承接 HBM2E/HBM3 組裝</td>
+<td>Yole 轉述新聞，待公司揭露核實（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR24">DR24</a>）</td>
+</tr>
+<tr>
+<td><a href="../01-Companies/%E6%97%A5%E6%9C%88%E5%85%89%E6%8A%95%E6%8E%A7.html">日月光</a>、<a href="../01-Companies/%E7%9F%BD%E5%93%81.html">矽品</a></td>
+<td>HBM 上中介層與最終組裝</td>
+<td>列在記憶體封測與 HBM 組裝名單</td>
+<td>產業整理（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR23">DR23</a>、<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP29">HP29</a>）</td>
+</tr>
+<tr>
+<td><a href="../01-Companies/%E5%89%B5%E6%84%8F.html">創意</a></td>
+<td>HBM IP</td>
+<td>列在 HBM IP 名單</td>
+<td>產業整理（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR22">DR22</a>）</td>
+</tr>
+<tr>
+<td>環球晶</td>
+<td>矽晶圓</td>
+<td>列在 HBM 晶圓供應商</td>
+<td>產業整理（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR22">DR22</a>）</td>
+</tr>
+<tr>
+<td>南茂、京元電、矽格等</td>
+<td>記憶體封測</td>
+<td>列在記憶體封測名單，沒有說是否做 HBM</td>
+<td>產業整理（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR23">DR23</a>）</td>
+</tr>
+<tr>
+<td>華邦、力積電</td>
+<td>非標準的堆疊 DRAM</td>
+<td>華邦 CUBE 做邊緣 AI 用的 TSV 記憶體；力積電做邏輯加 DRAM 晶圓堆疊</td>
+<td>公司發表轉述（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR32">DR32</a>）</td>
+</tr>
+</tbody>
+</table>
+<p>Micron 台中廠是它的 HBM 先進封裝中心（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR25">DR25</a>），在台灣但屬於 Micron 自己；Micron 另稱新加坡 HBM 先進封裝廠預計 2027 年初開始產出（<a href="../04-Sources/2026-09-30-Micron-FQ4-2026-Prepared-Remarks.html#MR3">MR3</a>）。南亞、華邦、力積電合計只占 DRAM 營收約 2%（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR2">DR2</a>），報告沒有提到它們生產標準 HBM。</p>
+<h2 id="market-roadmap">市場資料與技術路線</h2>
+<h3 id="market-size">市場規模（Yole 2025 版：2024 年為估計，之後為預測）</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>2024（估計）</th>
+<th>2025（預測）</th>
+<th>2026（預測）</th>
+<th>2030（預測）</th>
+<th>依據</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HBM 營收（十億美元）</td>
+<td>17.4</td>
+<td>34.1</td>
+<td>46.4</td>
+<td>98.1</td>
+<td><a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR6">DR6</a></td>
+</tr>
+<tr>
+<td>占 DRAM 營收</td>
+<td>18%</td>
+<td></td>
+<td></td>
+<td>50%</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>位元出貨（百萬 GB）</td>
+<td>1,489</td>
+<td></td>
+<td>3,703</td>
+<td>7,556</td>
+<td><a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR7">DR7</a></td>
+</tr>
+<tr>
+<td>晶圓投片（千片/月）</td>
+<td>216</td>
+<td>350</td>
+<td>410</td>
+<td>590</td>
+<td><a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR8">DR8</a></td>
+</tr>
+<tr>
+<td>每顆 ASP（美元）</td>
+<td>236</td>
+<td></td>
+<td></td>
+<td>839</td>
+<td><a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR11">DR11</a></td>
+</tr>
+</tbody>
+</table>
+<p>2025 年以後是 Yole 2025 版的預測，2025 年的實際值本站尚未核對。每 GB 價格大致持平，營收成長幾乎都來自容量（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR11">DR11</a>）。注意口徑：這裡是 HBM 產品營收；高階封裝報告的「HBM 封裝」2024 年只有 10.5 億美元，只算封裝價值（<a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html#HP7">HP7</a>）。</p>
+<h3 id="generations">世代路線圖（Yole 2025 版）</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>HBM3E</th>
+<th>HBM4</th>
+<th>HBM4E</th>
+<th>HBM5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>首批產品（Yole 預期）</td>
+<td>2024 年</td>
+<td>2026 年</td>
+<td>2027–2028 年</td>
+<td>2029 年</td>
+</tr>
+<tr>
+<td>層數</td>
+<td>8–12（16）</td>
+<td>12–16</td>
+<td>12–16</td>
+<td>16–20</td>
+</tr>
+<tr>
+<td>每堆疊容量</td>
+<td>24–36 GB（48 GB）</td>
+<td>36–48 GB</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>匯流排</td>
+<td>1,024 位元</td>
+<td>2,048 位元</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>每堆疊頻寬</td>
+<td>1.2 TB/s</td>
+<td>2 TB/s 以上</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>依據</td>
+<td><a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR14">DR14</a></td>
+<td>同左</td>
+<td><a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR15">DR15</a></td>
+<td>同左</td>
+</tr>
+</tbody>
+</table>
+<p>對照之後的公司公告：HBM4 三家都在 2026 年出貨（見「供應商進度」），年份落在 Yole 預期的 2026 年；HBM4E 已有送樣，Micron 申報寫 2027 年量產，落在 Yole 的 2027–2028 年。Yole 的「首批產品」沒有界定階段，本站只做年份對照，不判定提前或延誤。</p>
+<p>Yole 2025 版報告時各家的進度（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR26">DR26</a>，轉述公司公告與媒體）：SK hynix 2024 年 9 月量產 12 層 HBM3E、2025 年 3 月送樣 12 層 HBM4，預計 2025 下半年量產；Samsung HBM3E 遇良率與散熱問題、HBM4 邏輯晶粒以 4 奈米試產，可自己做 CoW 與最終組裝；Micron 跳過 HBM3、HBM3E 用於 H200，HBM4 預計 2026 年量產。這些時程沒有界定階段，SK hynix 的「2025 下半年」不拿來判斷是否延誤；Micron 2026 年第一季開始量產出貨，落在同一年。</p>
+<p>更遠的選項還有無緩衝 HBM、直接疊在處理器上不經中介層、以及光連接的 HBM（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR19">DR19</a>），都還在研發。</p>
+<h2 id="open-questions">未解問題</h2>
+<p>每一項寫出差異、缺什麼證據，以及什麼新資料會改變判斷。已查過仍無法確認的，記下查證範圍、等新資料再更新，不另外衍生搜尋；要持續追的數字列在「持續追蹤的數字」。</p>
+<ul>
+<li><strong>SK hynix HBM4E 基底晶粒的代工廠與製程</strong>：官方只說「從 HBM4 起」用台積電。韓媒 2026-03 稱 HBM4E 傾向台積電 3 奈米、供 NVIDIA 的 HBM4 用 12 奈米（<a href="../04-Sources/2026-03-20-TrendForce-SK-hynix-TSMC-3nm-HBM4E-Logic-Die.html#SN1">SN1、SN2</a>）；2026-08 稱考慮把部分交給 Intel 以分散成本與供應，SK hynix 回應「部分報導不實」但沒說哪部分（<a href="../04-Sources/2026-08-31-TrendForce-SK-hynix-Intel-HBM4E-Base-Die.html#SI1">SI1、SI3</a>）。HBM4 的節點官方沒寫：Yole 2025 版寫台積電 3/5 奈米（DR15，沒有區分產品），韓媒寫供 NVIDIA 的 HBM4 用 12 奈米（SN2），兩者範圍不同，不判定矛盾。→ 等 SK hynix 的 HBM4E 量產公告或法說會。</li>
+<li><strong>Samsung 客製 HBM 的製程與時程</strong>：官方只寫標準 HBM4E 用 4 奈米。ZDNet 稱客製 HBM 用 2 奈米（<a href="../04-Sources/2026-01-23-TrendForce-Samsung-Custom-HBM4E-2nm.html#SG3">SG3</a>）；ETNews 轉述 Samsung 主管說 HBM4E 用 4 奈米、HBM5 才用 2 奈米（<a href="../04-Sources/2026-03-20-TrendForce-SK-hynix-TSMC-3nm-HBM4E-Logic-Die.html">TrendForce 2026-03-20</a>），這則沒有區分標準與客製，和 ZDNet 談的可能不是同一產品，不判定矛盾。時程上，「下半年首批晶圓」（SC1）與「客製樣品 2027 年」（SM4）兩個說法的關係公司沒有說明，也沒有公告首批晶圓已出貨。→ 等 Samsung 的客製 HBM 公告或法說會。</li>
+<li><strong>NVHBM 用在哪一代 GPU、由哪幾家供應、基底晶粒在哪裡代工</strong>：NVIDIA 只說「未來 GPU」與「多家記憶體廠」。Micron 說「下一代 GPU」，也沒有點名。Feynman 會用客製 HBM 是媒體依主題演講的報導（<a href="../04-Sources/2026-03-17-heise-Nvidia-Feynman-Stacked-GPU-Dies.html#HS3">HS3</a>），「Feynman 就是 NVHBM」是媒體推論；另有報紙稱 HBM4E（不一定是 NVHBM）用於 Vera Rubin Ultra（<a href="../04-Sources/2026-03-20-TrendForce-SK-hynix-TSMC-3nm-HBM4E-Logic-Die.html#SN3">SN3</a>），NVIDIA 沒有寫。Micron 的官方講稿沒有提基底晶粒由誰製造。→ 等 NVIDIA 產品技術文件或記憶體廠具名公告。</li>
+<li><strong>Vera Rubin 各家 HBM4 的比重</strong>：只有官方具名 SK hynix、Micron 自稱、Samsung 只有口頭說法轉述（見「供應商進度」）。→ 等 NVIDIA 或記憶體廠揭露、拆解。</li>
+<li><strong>HBM4E 的量產季別與客戶</strong>：Samsung、SK hynix 只說依客戶時程；Micron 寫 2027 年。→ 等量產公告。</li>
+<li><strong>客製 HBM 的採用</strong>：除了 NVIDIA 的 NVHBM（首個合作者是 Amazon Annapurna Labs），Yole 2025 版稱 AMD、Marvell、Broadcom 與雲端業者也自己設計邏輯晶粒（DR18）；Google、AWS 是否在 HBM4E 改用自己的邏輯晶粒，以及台積電、創意在其中的角色，本站沒有一手來源。→ 等客戶或設計服務廠具名公告。</li>
+<li><strong>混合鍵合何時導入</strong>：Yole 預期 HBM5（約 2029 年），Samsung 稱 HBM4E 階段部分商用化（見「製造與鍵合」）。<code>[推論]</code> TC 鍵合與混合鍵合的設備商不同（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR22">DR22</a>），導入時間會改變兩類設備的需求（見 <a href="../03-Technologies/%E5%BE%8C%E6%AE%B5%E5%B0%81%E8%A3%9D%E8%A8%AD%E5%82%99.html">後段封裝設備</a>）。→ 等三家的 HBM4E 與 16 層產品量產公告。</li>
+<li><strong>台灣封測廠的 HBM 業務</strong>：力成承接的客戶與世代、日月光與矽品的 HBM 組裝量，本站只有 Yole 名單。→ 等公司法說會。</li>
+<li><strong>中國追趕</strong>：長鑫的 HBM 進度、2026 年封裝產能（Yole 轉述的目標是上海封裝廠 2026 下半年每月 3 萬顆）與美國出口管制，本站只有 Yole 2025 版的轉述。→ 等長鑫或中國媒體的量產報導、美國管制公告。</li>
+</ul>
+<h3 id="tracking">持續追蹤的數字</h3>
+<p>不是待解的問題，而是每次有新資料都要更新的數字；括號裡是本站目前的基準與出處。</p>
+<ul>
+<li><strong>三家的 HBM 營收或出貨描述</strong>：看 SK hynix、Samsung、Micron 季報與法說會（目前都沒有揭露出貨量）。</li>
+<li><strong>HBM 占 DRAM 營收的比重</strong>：看 Yole 新版或記憶體廠揭露（Yole 估 2024 年 18%，<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR6">DR6</a>）。</li>
+<li><strong>HBM 每 GB 價格</strong>：Yole 認為大致持平、營收成長來自容量（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR11">DR11</a>）；看記憶體廠說法。</li>
+<li><strong>長鑫的 HBM 封裝產能</strong>：Yole 轉述上海封裝廠 2026 下半年每月 3 萬顆的目標（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR28">DR28</a>）。</li>
+</ul>
+<h2 id="sources-log">來源與更新紀錄</h2>
+<ul><li><a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html">Yole DRAM 2025</a>：HBM 市場預測、世代規格、鍵合路線、客製 HBM、供應鏈、中國</li><li><a href="../04-Sources/2025-05-20-Yole-High-End-Performance-Packaging-2025.html">Yole 高階封裝 2025</a>：HBM 封裝價值、HBM 供應鏈分工、混合鍵合時程</li><li>SK hynix：<a href="../04-Sources/2025-09-12-SK-hynix-HBM4-Development-Mass-Production-Readiness-Press-Release.html">HBM4 量產準備</a>、<a href="../04-Sources/2026-07-29-SK-hynix-2Q26-Financial-Results-Press-Release.html">2026 年第二季財報</a>、<a href="../04-Sources/2026-04-23-SK-hynix-TSMC-Technology-Symposium-2026.html">台積電技術論壇</a>（公司說法）；<a href="../04-Sources/2026-03-20-TrendForce-SK-hynix-TSMC-3nm-HBM4E-Logic-Die.html">台積電 3 奈米</a>、<a href="../04-Sources/2026-08-31-TrendForce-SK-hynix-Intel-HBM4E-Base-Die.html">考慮 Intel</a>（媒體轉述）</li><li>Samsung：<a href="../04-Sources/2026-02-12-Samsung-HBM4-Mass-Production-Shipment-Press-Release.html">HBM4 量產</a>、<a href="../04-Sources/2026-05-29-Samsung-HBM4E-Sample-Shipment-Press-Release.html">HBM4E 送樣</a>、<a href="../04-Sources/2026-07-30-Samsung-2Q26-Financial-Results-Press-Release.html">2026 年第二季財報</a>（公司說法）；<a href="../04-Sources/2026-01-29-Asiae-Samsung-4Q25-Earnings-Call.html">法說會報導</a>、<a href="../04-Sources/2026-01-23-TrendForce-Samsung-Custom-HBM4E-2nm.html">2 奈米報導</a>（媒體轉述）</li><li>Micron：<a href="../04-Sources/2026-03-16-Micron-HBM4-High-Volume-Production-Press-Release.html">HBM4 量產</a>、<a href="../04-Sources/2026-06-24-Micron-FQ3-2026-8-K-Press-Release.html">2026-06 申報</a>、<a href="../04-Sources/2026-09-30-Micron-FQ4-2026-Prepared-Remarks.html">2026-09 講稿</a>（公司說法）；法說會 <a href="../04-Sources/2024-12-18-Micron-FQ1-2025-Earnings-Call-Transcript.html">2024-12</a>、<a href="../04-Sources/2025-09-23-Micron-FQ4-2025-Earnings-Call-Transcript.html">2025-09</a>（第三方逐字稿）；<a href="../04-Sources/2025-09-24-TrendForce-Micron-Custom-HBM4E-TSMC.html">客製 HBM4E 與台積電</a>（媒體轉述）</li><li>NVIDIA：<a href="../04-Sources/2026-08-26-NVIDIA-NVHBM-NVLink-Fusion-Blog.html">NVHBM</a>、<a href="../04-Sources/2026-07-24-NVIDIA-SK-Group-Strategic-Partnership-Press-Release.html">與 SK 集團合作</a>、<a href="../04-Sources/2026-07-21-NVIDIA-Inside-Rubin-GPU-Architecture-Technical-Blog.html">Rubin GPU 架構</a>（公司說法）；<a href="../04-Sources/2026-06-05-Investing-Nvidia-Certifies-Vera-Rubin-HBM4-Suppliers.html">三家通過認證</a>、<a href="../04-Sources/2026-03-17-heise-Nvidia-Feynman-Stacked-GPU-Dies.html">Feynman 客製 HBM</a>（媒體轉述）</li><li>台積電：<a href="../04-Sources/2025-12-01-TrendForce-TSMC-C-HBM4E-N3P-Base-Die.html">C-HBM4E</a>（媒體轉述 OIP 簡報）</li></ul><details class="ar-log"><summary>更新紀錄（6 筆，最近 2026-10-06）</summary><ul><li>2026-10-06：整理版面（只改寫法，未核對最新進度）—預測與估計標出報告版本；新增重點摘要、市場資料與技術路線、未解問題與持續追蹤的數字</li><li>2026-10-06：更正—HBM4 基底晶粒不一定由記憶體廠自製；NVHBM 是否用於 Rubin Ultra 改照原文；刪除沒有來源的「AMD MI500、Google TPU 用 HBM4E」與其他沒有依據的推論</li><li>2026-10-06：更正—刪除「SK hynix 比 Yole 預期晚」；Samsung 4 奈米與 2 奈米分屬標準與客製，不是說法不一</li><li>2026-10-06：依新來源更新—三家 HBM4 出貨、HBM4E 送樣與量產時程、Vera Rubin 的 HBM4 供應商、NVHBM、各家基底晶粒的製造</li><li>2026-10-06：更正—力成的 HBM 角色標為「Yole 轉述新聞，待公司揭露核實」；兩份 Yole 報告的同一組市占不算兩次獨立確認</li><li>2026-10-05：建立</li></ul></details>
+  </div>
+  <p class="ar-back"><a href="../../../pages/domains.html#d2">← 回到記憶體與儲存</a></p>
+</article>
+<aside class="ar-side"><nav class="ar-toc" aria-label="本頁章節"><p>本頁章節</p><ul><li><a href="#scope">研究問題與範圍</a></li><li><a href="#summary">重點摘要與證據範圍</a></li><li><a href="#product">產品與原理</a></li><li><a href="#supplier-progress">供應商進度</a></li><li class="sub"><a href="#hbm4-hbm4e">HBM4 與 HBM4E</a></li><li class="sub"><a href="#market-share">市占（Yole 2025 版，2024 年營收）</a></li><li><a href="#base-die">基底晶粒與客製化</a></li><li class="sub"><a href="#standard-vs-custom">標準與客製</a></li><li class="sub"><a href="#base-die-makers">各家基底晶粒由誰製造</a></li><li class="sub"><a href="#nvhbm">NVIDIA 的 NVHBM</a></li><li><a href="#manufacturing">製造與鍵合</a></li><li class="sub"><a href="#stacking">怎麼疊：微凸塊對混合鍵合</a></li><li class="sub"><a href="#equipment-taiwan">設備、材料與台灣廠</a></li><li><a href="#market-roadmap">市場資料與技術路線</a></li><li class="sub"><a href="#market-size">市場規模（Yole 2025 版：2024 年為估計，之後為預測）</a></li><li class="sub"><a href="#generations">世代路線圖（Yole 2025 版）</a></li><li><a href="#open-questions">未解問題</a></li><li class="sub"><a href="#tracking">持續追蹤的數字</a></li><li><a href="#sources-log">來源與更新紀錄</a></li></ul></nav></aside>
+</div>
+</main>
+
+<footer id="site-footer"></footer>
+</body>
+</html>

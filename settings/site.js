@@ -27,13 +27,13 @@ window.SITE = {
     // 可以用 <b>…</b> 加粗
     note: "<b>這是一份個人研究筆記，不是投資建議。</b>內容整理自公司公告、財報、專利、學術論文與產業媒體；" +
           "每一頁下方都列出它依據的資料，並標明<b>那份資料是什麼性質</b>、是一手還是轉述。",
-    // 來源標籤圖例：style 決定樣式（acad／ind 是灰字、vendor 是橘底、inf 是虛線框）
+    // 來源標籤圖例：style 決定樣式（acad/ind 是灰字、vendor 是橘底、inf 是虛線框）
     legend: [
       { tag: "學術",     style: "acad",   text: "同儕審查論文" },
       { tag: "產業",     style: "ind",    text: "多方可驗證的產業現況" },
       { tag: "廠商宣稱", style: "vendor", text: "未經獨立驗證" },
       { tag: "推論",     style: "inf",    text: "研究者的推導" }
     ],
-    stampLabel: "資料整理至"   // 後面接的日期由 tools/update_stats.py 自動填
+    stampLabel: "全站內容更新至"   // 後面接的日期由 tools/update_stats.py 自動填：來源收錄日與技術頁更新紀錄中最新的一天（各技術頁自己的更新日寫在標題下）
   }
 };

@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 由 tools/build_pages.py 自動產生，不要手改；要改內容請改 content/ 裡的 .md -->
+<title>後段封裝設備（切割、薄化與鍵合）｜天空研究室</title>
+<link rel="stylesheet" href="../../../assets/css/1-tokens.css">
+<link rel="stylesheet" href="../../../assets/css/2-base.css">
+<link rel="stylesheet" href="../../../assets/css/6-article.css">
+<script src="../../../settings/site.js"></script>
+<script src="../../../generated/stats.js"></script>
+<script src="../../../assets/js/layout.js"></script>
+<script src="../../../assets/js/toc.js"></script>
+</head>
+<body data-page="domains" data-root="../../..">
+
+<header id="site-header"></header>
+
+<main class="wrap">
+<div class="ar-grid">
+<article class="page ar">
+  <div class="crumb"><a href="../../../index.html">首頁</a> · <a href="../../../pages/domains.html">研究領域</a> · <a href="../../../pages/domains.html#x">材料、製造與驗證</a> · <a href="../../../pages/domains.html#x-equip">製程與組裝設備</a> · 後段封裝設備（切割、薄化與鍵合）</div>
+  <p class="ar-kind">技術</p>
+  <h1 class="serif">後段封裝設備（切割、薄化與鍵合）</h1>
+  <p class="ar-meta">主要分區：<a href="../../../pages/domains.html#x-equip">材料、製造與驗證・製程與組裝設備</a>　也列於：<a href="../../../pages/domains.html#x-inspect">材料、製造與驗證・缺陷檢測與量測</a>、<a href="../../../pages/domains.html#d1-pkg">運算晶片與封裝・封裝平台</a>、<a href="../../../pages/domains.html#d2-hbm">記憶體與儲存・加速器記憶體與 HBM</a></p><p class="ar-meta ar-updated">本頁更新：2026-10-06<small>（見文末更新紀錄；全站日期在頁尾）</small></p>
+  <div class="ar-body">
+<p>晶圓做完之後，要經過薄化、切割、把晶粒接到其他晶粒或載板上，才能變成封裝。AI 晶片與 HBM 讓這段最需要精度的設備（TCB、混合鍵合）快速成長。這篇回答：後段設備有哪些、市場多大、誰在做，以及台灣廠在哪裡。</p>
+<h2 id="scope">研究問題與範圍</h2>
+<ul>
+<li><strong>範圍</strong>：晶粒層級的組裝設備，主要分四類（另有一類「其他後段設備」，2025 年約 1.5 億美元）：晶圓與晶粒前處理（薄化、貼片、切割、打印）、互連（固晶、覆晶、TCB、混合鍵合、打線、植球、底部填膠）、封裝（模封、導線架、回焊爐）、晶粒層級的量測檢測（<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html">Yole 後段設備 2025</a>）。</li>
+<li><strong>不在範圍內</strong>：測試設備；W2W 混合鍵合、微影、沉積、蝕刻等晶圓層級設備（Yole 歸在前段設備）。這些設備用在哪些封裝平台，見 <a href="../03-Technologies/%E9%AB%98%E9%9A%8E%E5%B0%81%E8%A3%9D%E5%B9%B3%E5%8F%B0.html">高階封裝平台</a>；HBM 怎麼疊，見 <a href="../03-Technologies/%E9%AB%98%E9%A0%BB%E5%AF%AC%E8%A8%98%E6%86%B6%E9%AB%94.html">高頻寬記憶體</a>。</li>
+<li><strong>怎麼讀這篇</strong>：本頁多數數字是 Yole 後段設備 2025 版的估計。「重點摘要與證據範圍」列出主要判斷與依據的性質（公司公告、標準文件、研究機構估計、媒體轉述），研究機構的數字標明版本；完整比較在各節；說法對不齊或證據不足的放在「未解問題」，要持續追的數字放在「持續追蹤的數字」。查證過程記在各來源筆記與本站內部的收錄紀錄。</li>
+</ul>
+<h2 id="summary">重點摘要與證據範圍</h2>
+<p>本站整理至 2026-10-06（各項的日期寫在表內，不代表全篇數字都更新到這天）。每一項寫出由誰說、什麼性質；完整依據與比較見下方各節。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>目前能說到哪裡（誰說的）</th>
+<th>還不知道</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HBM 混合鍵合</td>
+<td>Samsung 2026 年 1 月法說會（媒體轉述）：以 HBM4 為基礎的混合鍵合樣品已送主要客戶、HBM4E 階段部分商用化（<a href="../04-Sources/2026-01-29-Asiae-Samsung-4Q25-Earnings-Call.html#SC2">SC2</a>）</td>
+<td>量產時間；SK hynix、Micron 的做法</td>
+</tr>
+<tr>
+<td>中國設備商</td>
+<td>華封科技稱混合鍵合機已在台積電、日月光、矽品通過驗證（<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE20">BE20</a>，廠商說法，沒有客戶確認）</td>
+<td>客戶確認</td>
+</tr>
+<tr>
+<td>台灣設備廠</td>
+<td>本站沒有收錄公司揭露；只有 Yole 在單一設備類別的營收估計</td>
+<td>CoWoS 擴產訂單</td>
+</tr>
+<tr>
+<td>市場規模</td>
+<td>Yole 2025 版估計：後段設備 2024 年約 59.8 億美元；TCB 在 2024 年翻倍，由 HBM3E 擴產帶動（<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE1">BE1</a>、<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE6">BE6</a>）</td>
+<td>2025 年起的實際值</td>
+</tr>
+<tr>
+<td>價值移往前段</td>
+<td>Yole 估 2024 年先進封裝用的前段設備（微影、沉積、蝕刻）70 億美元，首次超過後段組裝設備 59 億美元（<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE5">BE5</a>）</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>市場規模、市占都是 Yole 估計，見「市場資料與技術路線」與「誰在做」。</p>
+<h2 id="how-it-works">原理與流程</h2>
+<table>
+<thead>
+<tr>
+<th>步驟</th>
+<th>做什麼</th>
+<th>主要設備商</th>
+<th>依據</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>薄化</td>
+<td>研磨與拋光到 50 µm 以下，HBM 晶粒要 30–55 µm，未來約 20 µm</td>
+<td>DISCO（逾 75%）、Accretech、均豪</td>
+<td><a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE10">BE10</a>、<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR17">DR17</a></td>
+</tr>
+<tr>
+<td>切割</td>
+<td>刀片、雷射或電漿把晶圓切成晶粒；超薄 HBM 晶粒與混合鍵合晶粒適合雷射或電漿</td>
+<td>DISCO、Accretech、Plasma-Therm、KLA-SPTS</td>
+<td><a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE21">BE21</a></td>
+</tr>
+<tr>
+<td>固晶與覆晶</td>
+<td>把晶粒貼到載板；覆晶以凸塊連接</td>
+<td>BESI、SEMES、ASMPT、K&amp;S</td>
+<td><a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE10">BE10</a></td>
+</tr>
+<tr>
+<td>TCB</td>
+<td>加熱加壓把微凸塊接起來，HBM 疊層與 CoWoS 都用</td>
+<td>Hanmi、ASMPT、K&amp;S、Hanwha</td>
+<td><a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE8">BE8</a></td>
+</tr>
+<tr>
+<td>混合鍵合</td>
+<td>銅對銅、氧化層對氧化層直接接合，沒有凸塊</td>
+<td>D2W：BESI（與 AMAT 合作）、SET、ASMPT；W2W：EVG、SUSS、TEL</td>
+<td><a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE9">BE9</a></td>
+</tr>
+<tr>
+<td>底部填膠、模封</td>
+<td>補強接點、保護晶粒；MR-MUF 要靠模封機</td>
+<td>PROTEC、ASMPT、萬潤；TOWA</td>
+<td><a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE10">BE10</a></td>
+</tr>
+<tr>
+<td>量測檢測</td>
+<td>凸塊高度、空洞、翹曲；AOI、X-ray、聲學掃描</td>
+<td>KLA、Nova、ASMPT、ZEISS、均豪</td>
+<td><a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE10">BE10</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="tradeoffs">方案與取捨</h2>
+<h3 id="bonding">晶粒怎麼接：由凸塊到混合鍵合</h3>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>間距</th>
+<th>用在哪</th>
+<th>取捨</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>覆晶（回焊）</td>
+<td>粗</td>
+<td>主流封裝</td>
+<td>便宜、產能高，I/O 密度有限</td>
+</tr>
+<tr>
+<td>有助焊劑 TCB（TC-NCF、MR-MUF）</td>
+<td>HBM3 約 32–45 µm</td>
+<td>HBM、CoWoS</td>
+<td>Yole 2025 版時是 HBM 主力；要清助焊劑、有空洞風險</td>
+</tr>
+<tr>
+<td>無助焊劑 TCB</td>
+<td>量產約 35 µm，試產小於 20 µm</td>
+<td>下一代 HBM、晶粒間橋接</td>
+<td>比混合鍵合便宜，比有助焊劑乾淨</td>
+</tr>
+<tr>
+<td>銅對銅 TCB</td>
+<td>約 10 µm</td>
+<td>晶粒間互連</td>
+<td>沒有焊料；仍在早期</td>
+</tr>
+<tr>
+<td>混合鍵合</td>
+<td>次微米</td>
+<td>台積電 SoIC、AMD MI300、3D NAND、CMOS 影像感測器</td>
+<td>密度最高，但對對準、潔淨、平坦度最嚴格，貴</td>
+</tr>
+</tbody>
+</table>
+<p>依據：<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE13">BE13</a>、<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE14">BE14</a>、<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE19">BE19</a>。</p>
+<h3 id="hbm-hybrid-bonding">HBM 什麼時候換成混合鍵合</h3>
+<p>這是後段設備最大的變數。SK hynix 一路用 MR-MUF，Samsung、Micron 用 TC-NCF；Yole 後段設備報告的表格把 Samsung HBM4 16 層標為混合鍵合試產、Micron HBM4E 以後轉混合鍵合（<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE15">BE15</a>）。但 Yole DRAM 報告預期 D2W 混合鍵合要到 HBM5（約 2029 年）才量產（<a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html#DR16">DR16</a>）。兩份報告描述的階段可能不同：前者是 Samsung HBM4 16 層的試產，後者是業界 HBM5 20 層的量產導入。<code>[待釐清]</code> 廠商、世代與層數都還沒對齊，兩者是否相容待廠商資料確認。2026 年 1 月 Samsung 法說會（媒體轉述）稱：以 HBM4 為基礎的混合鍵合樣品已送主要客戶，HBM4E 階段部分商用化；16 層 HBM3E 或 HBM4 需求有限、不需要量產（<a href="../04-Sources/2026-01-29-Asiae-Samsung-4Q25-Earnings-Call.html#SC2">SC2、SC3</a>）。可以確定的是，Yole 兩份報告都把 2024–2025 年 HBM 擴產的鍵合設備需求歸給 TCB（<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE6">BE6</a>、<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE8">BE8</a>）。</p>
+<h2 id="supply-chain">產品與供應鏈</h2>
+<h3 id="players">誰在做</h3>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>強項</th>
+<th>Yole 估 2024 年</th>
+<th>證據性質</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DISCO</td>
+<td>切割、薄化、貼片</td>
+<td>後段設備市占 20.7%，第一</td>
+<td>研究機構估計（<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE7">BE7</a>）</td>
+</tr>
+<tr>
+<td>BESI</td>
+<td>固晶、D2W 混合鍵合（AMAT 入股約 9%）</td>
+<td>市占 9.0%；混合鍵合約七成</td>
+<td>研究機構估計（<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE7">BE7</a>、<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE9">BE9</a>、<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE17">BE17</a>）</td>
+</tr>
+<tr>
+<td>K&amp;S</td>
+<td>打線、TCB、銅對銅</td>
+<td>市占 8.7%</td>
+<td>研究機構估計</td>
+</tr>
+<tr>
+<td>ASMPT</td>
+<td>全線設備；TCB 第二</td>
+<td>市占 8.0%</td>
+<td>研究機構估計</td>
+</tr>
+<tr>
+<td>Hanmi</td>
+<td>HBM 用 TCB，客戶 SK hynix、Micron</td>
+<td>市占 5.4%；TCB 約 43%</td>
+<td>研究機構估計（<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE8">BE8</a>）</td>
+</tr>
+<tr>
+<td>Hanwha Semitech</td>
+<td>HBM 用 TCB，2025 年初開始出貨 SK hynix</td>
+<td>TCB 約 1%</td>
+<td>轉述</td>
+</tr>
+</tbody>
+</table>
+<p>TCB 設備商和客戶的對應（Yole 整理的非完整名單，<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE16">BE16</a>）：台積電用 ASMPT、K&amp;S、BESI、Shinkawa；日月光用 ASMPT、K&amp;S；SK hynix 用 ASMPT、Hanwha、Hanmi。</p>
+<h3 id="taiwan">台灣廠</h3>
+<p>台灣是封裝產能最集中的地方：Yole 2025 版轉述的新聞包括台積電 AP8 改建 CoWoS 廠、日月光 K27/K28、矽品二林擴充 CoWoS（<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE24">BE24</a>）；這些是報告當時的計畫，本站尚未核對後續進度。Yole 列出的後段設備主要廠商多在日本、韓國、新加坡與歐洲；切割、覆晶、TCB 的廠商地圖都未列出台灣業者（<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE12">BE12</a>）。</p>
+<table>
+<thead>
+<tr>
+<th>台灣設備廠</th>
+<th>Yole 列在哪</th>
+<th>該類別 2024 年營收估計（百萬美元，Yole 估）</th>
+<th>依據</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>均豪（Gallant Precision）</td>
+<td>薄化、晶圓與晶粒前處理、後段量測檢測</td>
+<td>25、25、21</td>
+<td><a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE11">BE11</a></td>
+</tr>
+<tr>
+<td>鈦昇（E&amp;R Engineering）</td>
+<td>晶圓與晶粒前處理</td>
+<td>15</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>萬潤（Allring）</td>
+<td>晶圓貼片、底部填膠、後段量測檢測</td>
+<td>7、8、約 6</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>牧德（MACHVISION）</td>
+<td>後段量測檢測</td>
+<td>約 3</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>YoungTek</td>
+<td>固晶、後段量測檢測</td>
+<td>約 5、約 3</td>
+<td>同上</td>
+</tr>
+</tbody>
+</table>
+<p>這些數字是 Yole 在單一設備類別的營收估計，不是公司合併營收；同一家公司也可能出現在其他類別（<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE11">BE11</a>），所以不能加總，也不能用來判斷公司規模。報告的 TCB 與混合鍵合市占圖未列出台灣業者，但「未列出」不等於沒有相關能力；它們在 CoWoS 擴產中的角色，報告沒有分析，要看各公司揭露。中國設備商華封科技稱其混合鍵合機已在台積電、日月光、矽品通過驗證（<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE20">BE20</a>），這是廠商說法，沒有客戶確認。</p>
+<h2 id="market-roadmap">市場資料與技術路線</h2>
+<h3 id="market-size">市場規模（Yole 2025 版：2024 年為估計，之後為預測）</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>2024（估計）</th>
+<th>2025（預測）</th>
+<th>2030（預測）</th>
+<th>CAGR 2025–30</th>
+<th>依據</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>後段設備合計（百萬美元）</td>
+<td>5,982</td>
+<td>6,918</td>
+<td>9,179</td>
+<td>5.8%</td>
+<td><a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE1">BE1</a></td>
+</tr>
+<tr>
+<td>TCB</td>
+<td>441</td>
+<td>542</td>
+<td>936</td>
+<td>11.6%</td>
+<td><a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE4">BE3、BE4</a></td>
+</tr>
+<tr>
+<td>D2W 混合鍵合</td>
+<td>107</td>
+<td>152</td>
+<td>397</td>
+<td>21.1%</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>切割</td>
+<td></td>
+<td>1,390</td>
+<td>1,850</td>
+<td>5.9%</td>
+<td><a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE3">BE3</a></td>
+</tr>
+<tr>
+<td>薄化</td>
+<td>494</td>
+<td>582</td>
+<td>846</td>
+<td>7.8%</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>量測檢測</td>
+<td>446</td>
+<td>529</td>
+<td>784</td>
+<td>8.2%</td>
+<td><a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE2">BE2</a></td>
+</tr>
+</tbody>
+</table>
+<p>2025 年以後是 Yole 2025 版的預測。TCB 在 2024 年翻倍，是 HBM3E 擴產帶動；傳統固晶、打線因消費電子疲弱而衰退（<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE6">BE6</a>）。另一個重點：2024 年用於先進封裝的前段設備（微影、沉積、蝕刻）70 億美元，首次超過後段組裝設備 59 億美元（<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE5">BE5</a>），封裝設備的價值正往晶圓層級移動。</p>
+<h2 id="open-questions">未解問題</h2>
+<p>每一項寫出差異、缺什麼證據，以及什麼新資料會改變判斷。已查過仍無法確認的，記下查證範圍、等新資料再更新，不另外衍生搜尋；要持續追的數字列在「持續追蹤的數字」。</p>
+<ul>
+<li><strong>HBM 何時換成混合鍵合</strong>：Yole 後段設備報告的表格與 DRAM 報告的時程描述不同階段（見「HBM 什麼時候換成混合鍵合」）；Samsung 稱 HBM4E 階段部分商用化（SC2）。決定 TCB 與混合鍵合設備的此消彼長。→ 等 Samsung、SK hynix、Micron 的 HBM4E 與 16 層產品量產公告。</li>
+<li><strong>Hanmi 與 Hanwha 的 SK hynix 分配</strong>：Yole 2025 版稱 SK hynix 已雙軌採購，Hanmi 的高市占可能下滑。→ 等設備商或 SK hynix 揭露。</li>
+<li><strong>前段設備進入封裝</strong>：Yole 估 2024 年先進封裝用的微影、沉積、蝕刻已大於後段設備；面板級封裝與玻璃基板會帶來新設備需求（時程見 <a href="../03-Technologies/%E9%AB%98%E9%9A%8E%E5%B0%81%E8%A3%9D%E5%B9%B3%E5%8F%B0.html">高階封裝平台</a>）。→ 等設備商財報的產品別營收。</li>
+<li><strong>台灣設備廠的 CoWoS 訂單</strong>：均豪、鈦昇、萬潤、牧德在 CoWoS 擴產中的角色，Yole 沒有分析。→ 等各公司法說會與年報。</li>
+<li><strong>關稅與出口管制</strong>：美國 2025 年的設備與零組件關稅、中國的稀土與磁鐵出口限制，影響設備成本與交期（<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE23">BE23</a>）。→ 等政策與設備商說明。</li>
+</ul>
+<h3 id="tracking">持續追蹤的數字</h3>
+<p>不是待解的問題，而是每次有新資料都要更新的數字；括號裡是本站目前的基準與出處。</p>
+<ul>
+<li><strong>TCB 與混合鍵合設備的營收或訂單</strong>：看 Besi、Hanmi、ASMPT 等財報（Yole 估 2024 年 TCB 4.41 億美元、D2W 混合鍵合 1.07 億美元，<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE4">BE3、BE4</a>）。</li>
+<li><strong>先進封裝用的前段設備金額</strong>：看 Yole 新版與設備商產品別營收（2024 年基準見上方摘要，<a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html#BE5">BE5</a>）。</li>
+<li><strong>台灣設備廠的 CoWoS 相關營收</strong>：看均豪、鈦昇、萬潤、牧德法說會與年報。</li>
+</ul>
+<h2 id="sources-log">來源與更新紀錄</h2>
+<ul><li><a href="../04-Sources/2025-07-15-Yole-Status-of-the-Back-End-Equipment-Industry-2025.html">Yole 後段設備 2025</a>：市場預測、廠商市占、鍵合技術比較、HBM 鍵合路線、產業新聞</li><li><a href="../04-Sources/2025-04-01-Yole-Next-Generation-DRAM-2025.html">Yole DRAM 2025</a>：HBM 晶粒厚度與混合鍵合時程</li></ul><details class="ar-log"><summary>更新紀錄（4 筆，最近 2026-10-06）</summary><ul><li>2026-10-06：整理版面（只改寫法，未核對最新進度）—預測與估計標出報告版本；新增重點摘要、市場資料與技術路線、未解問題與持續追蹤的數字</li><li>2026-10-06：依新來源更新—Samsung 法說會（媒體轉述）：HBM4E 階段部分商用化混合鍵合</li><li>2026-10-06：更正—Allring 是萬潤不是均華；台灣設備廠的數字改標為單一類別營收估計；廠商地圖改寫為「未列出台灣業者」</li><li>2026-10-06：建立</li></ul></details>
+  </div>
+  <p class="ar-back"><a href="../../../pages/domains.html#x">← 回到材料、製造與驗證</a></p>
+</article>
+<aside class="ar-side"><nav class="ar-toc" aria-label="本頁章節"><p>本頁章節</p><ul><li><a href="#scope">研究問題與範圍</a></li><li><a href="#summary">重點摘要與證據範圍</a></li><li><a href="#how-it-works">原理與流程</a></li><li><a href="#tradeoffs">方案與取捨</a></li><li class="sub"><a href="#bonding">晶粒怎麼接：由凸塊到混合鍵合</a></li><li class="sub"><a href="#hbm-hybrid-bonding">HBM 什麼時候換成混合鍵合</a></li><li><a href="#supply-chain">產品與供應鏈</a></li><li class="sub"><a href="#players">誰在做</a></li><li class="sub"><a href="#taiwan">台灣廠</a></li><li><a href="#market-roadmap">市場資料與技術路線</a></li><li class="sub"><a href="#market-size">市場規模（Yole 2025 版：2024 年為估計，之後為預測）</a></li><li><a href="#open-questions">未解問題</a></li><li class="sub"><a href="#tracking">持續追蹤的數字</a></li><li><a href="#sources-log">來源與更新紀錄</a></li></ul></nav></aside>
+</div>
+</main>
+
+<footer id="site-footer"></footer>
+</body>
+</html>

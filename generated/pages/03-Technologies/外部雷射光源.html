@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 由 tools/build_pages.py 自動產生，不要手改；要改內容請改 content/ 裡的 .md -->
+<title>外部雷射光源（ELS）｜天空研究室</title>
+<link rel="stylesheet" href="../../../assets/css/1-tokens.css">
+<link rel="stylesheet" href="../../../assets/css/2-base.css">
+<link rel="stylesheet" href="../../../assets/css/6-article.css">
+<script src="../../../settings/site.js"></script>
+<script src="../../../generated/stats.js"></script>
+<script src="../../../assets/js/layout.js"></script>
+<script src="../../../assets/js/toc.js"></script>
+</head>
+<body data-page="domains" data-root="../../..">
+
+<header id="site-header"></header>
+
+<main class="wrap">
+<div class="ar-grid">
+<article class="page ar">
+  <div class="crumb"><a href="../../../index.html">首頁</a> · <a href="../../../pages/domains.html">研究領域</a> · <a href="../../../pages/domains.html#d3">高速互連與網路</a> · <a href="../../../pages/domains.html#d3-photonics">光電元件與整合製程</a> · 外部雷射光源（ELS）</div>
+  <p class="ar-kind">技術</p>
+  <h1 class="serif">外部雷射光源（ELS）</h1>
+  <p class="ar-meta">主要分區：<a href="../../../pages/domains.html#d3-photonics">高速互連與網路・光電元件與整合製程</a>　也列於：<a href="../../../pages/domains.html#d3-optics">高速互連與網路・光互連產品與整合架構</a></p><p class="ar-meta ar-updated">本頁更新：2026-10-06<small>（見文末更新紀錄；全站日期在頁尾）</small></p>
+  <div class="ar-body">
+<p>CPO 把光學引擎移進晶片封裝後，最怕熱、最常壞的雷射被移到前面板的可插拔模組，用光纖把連續光送進去。這個模組就是外部雷射光源（External Laser Source，ELS）。這篇回答：ELS 由什麼組成、規格怎麼定、一台交換器要幾個、誰在做，以及台灣雷射封裝廠可能落在哪一段。</p>
+<h2 id="scope">研究問題與範圍</h2>
+<ul>
+<li><strong>為什麼要外部光源</strong>：雷射靠近 ASIC 會更熱、效率和壽命都變差；放到前面板吹最冷的風，壞了可以直接換，不必停機（<a href="../04-Sources/2022-02-03-OIF-Co-Packaging-Framework-Document.html#O5">OIF 框架 O5</a>、<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y42">Yole CPO 2025 Y42</a>）。</li>
+<li><strong>代價</strong>：光要經過連接器和光纖才進到引擎，損耗較高，所以雷射功率要更大；ELS 本身也增加系統功耗（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y28">Yole Y28</a>）。</li>
+<li><strong>範圍</strong>：本篇只談 CPO/NPO 用的外部光源模組與它的雷射。CPO 整體架構見 <a href="../03-Technologies/%E5%85%B1%E5%90%8C%E5%B0%81%E8%A3%9D%E5%85%89%E5%AD%B8.html">共同封裝光學（CPO）</a>；可插拔模組裡的雷射見 <a href="../03-Technologies/%E5%8F%AF%E6%8F%92%E6%8B%94%E5%85%89%E6%A8%A1%E7%B5%84.html">可插拔光模組</a>。</li>
+<li><strong>怎麼讀這篇</strong>：「重點摘要與證據範圍」列出主要判斷與依據的性質（公司公告、標準文件、研究機構估計、媒體轉述），研究機構的數字標明版本；完整比較在各節；說法對不齊或證據不足的放在「未解問題」，要持續追的數字放在「持續追蹤的數字」。查證過程記在各來源筆記與本站內部的收錄紀錄。</li>
+</ul>
+<h2 id="summary">重點摘要與證據範圍</h2>
+<p>本站整理至 2026-10-06（各項的日期寫在表內，不代表全篇數字都更新到這天）。每一項寫出由誰說、什麼性質；完整依據與比較見下方各節。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>目前能說到哪裡（誰說的）</th>
+<th>還不知道</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>規格</td>
+<td>OIF 2023 年的 ELSFP 實作協議：前面板可插拔、光功率分六級、兩種波長配置（<a href="../04-Sources/2023-08-08-OIF-ELSFP-Implementation-Agreement.html#E7">E6、E7</a>）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Broadcom</td>
+<td>51.2T CPO 交換器用 16 個雷射模組，每個 8 顆雷射（<a href="../04-Sources/2024-04-29-Broadcom-BCM78909-51.2T-CPO-Switch-Product-Brief.html#C3">C3</a>）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Coherent</td>
+<td>2025 年 9 月送樣 400 mW CW 雷射（<a href="../04-Sources/2025-09-25-Coherent-400mW-CW-Lasers-Sampling-Press-Release.html#CL2">CL1、CL2</a>）；2026 年 3 月稱 CW 雷射全面量產、供應 400 mW 雷射給 ELSFP 應用（<a href="../04-Sources/2026-03-17-Coherent-OFC-2026-Technology-Innovation-Briefing.html#CD9">CD7、CD9</a>）；2026 年 9 月稱 ELS 用超高功率 CW 雷射第四季開始放量（<a href="../04-Sources/2026-09-21-Coherent-ECOC-2026-Presentation-Transcript.html#CE3">CE3</a>）</td>
+<td>400 mW 是否已量產（見未解問題）</td>
+</tr>
+<tr>
+<td>台灣廠</td>
+<td>聯鈞 2026 年 8 月稱 ELSFP 進入工程樣品小量生產（<a href="../04-Sources/2026-08-18-%E8%81%AF%E9%88%9E-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF.html#L13">L13、L15</a>）；GIS-KY 2026 年 9 月稱 CW 雷射封測產線小量測試中（<a href="../04-Sources/2026-09-24-GIS-KY-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF.html#T14">T13、T14</a>）；光寶 2026 年 7 月投資新加坡 InP 雷射廠 DenseLight 約 21%，稱自身營收要到 2027 年（<a href="../04-Sources/2026-07-31-%E5%85%89%E5%AF%B6-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E7%B0%A1%E5%A0%B1.html#LS9">LS9</a>、<a href="../04-Sources/2026-07-31-%E5%85%89%E5%AF%B6-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF.html#LT15">LT15</a>）</td>
+<td>客戶與量產時間</td>
+</tr>
+<tr>
+<td>NVIDIA</td>
+<td>用 OSFP 外型 ELS（<a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html#NB5">NB5</a>）</td>
+<td>每台交換器幾個 ELS（只有 Yole 推算）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-it-works">原理與流程</h2>
+<p>一個 ELS 模組由內而外是：</p>
+<table>
+<thead>
+<tr>
+<th>組成</th>
+<th>做什麼</th>
+<th>依據</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>高功率 CW 雷射晶片</td>
+<td>InP DFB 雷射，只發不調變的連續光；每顆供 4 個通道（Broadcom 為 1:4 分光）</td>
+<td><a href="../04-Sources/2024-11-07-Broadcom-ARLM-96F8DMZ-Pluggable-Laser-Module-Product-Brief.html#A1">Broadcom ARLM A1</a>、<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y51">Yole Y51</a></td>
+</tr>
+<tr>
+<td>雷射封裝</td>
+<td>晶片貼到載具（chip-on-carrier），加隔離器、致冷器（TEC）、耦合透鏡</td>
+<td><a href="../04-Sources/2025-09-25-Coherent-400mW-CW-Lasers-Sampling-Press-Release.html#CL2">Coherent CL2</a>、<a href="../04-Sources/2026-03-17-Coherent-OFC-2026-Technology-Innovation-Briefing.html#CD4">Coherent 說明會 CD4</a></td>
+</tr>
+<tr>
+<td>保偏光纖（PMF）</td>
+<td>把光送到光學引擎，必須保持偏振</td>
+<td><a href="../04-Sources/2023-08-08-OIF-ELSFP-Implementation-Agreement.html#E8">OIF ELSFP E8</a>、<a href="../04-Sources/2024-11-07-Broadcom-ARLM-96F8DMZ-Pluggable-Laser-Module-Product-Brief.html#A4">ARLM A4</a></td>
+</tr>
+<tr>
+<td>模組外殼與盲插連接器</td>
+<td>插在前面板、可熱插拔；光在模組插好前不會射出，符合眼睛安全</td>
+<td><a href="../04-Sources/2023-08-08-OIF-ELSFP-Implementation-Agreement.html#E1">OIF ELSFP E1、E4</a></td>
+</tr>
+</tbody>
+</table>
+<p><strong>規格怎麼定</strong>：OIF 的 ELSFP 實作協議把前面板可插拔光源標準化，光功率分六級，每根光纖 11 dBm 到 26 dBm，定義 1311 nm（DR）與 CWDM4（FR）兩種波長配置（<a href="../04-Sources/2023-08-08-OIF-ELSFP-Implementation-Agreement.html#E7">E6、E7</a>）。實際產品：Broadcom 的雷射模組是 QSFP-DD 外型、8 通道 CWDM、每通道 100 mW、全模組 800 mW、耗電 10 W（<a href="../04-Sources/2024-11-07-Broadcom-ARLM-96F8DMZ-Pluggable-Laser-Module-Product-Brief.html#A3">ARLM A2–A6</a>）；NVIDIA 用 OSFP 外型（<a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html#NB5">NVIDIA 技術部落格 NB5</a>）。</p>
+<p><strong>雷射要多強</strong>：學界試算 WDM 架構下每顆雷射晶片約 286 mW，可插拔模組用的 CW 雷射一般低於 100 mW（<a href="../04-Sources/2023-03-20-Frontiers-of-Optoelectronics-Co-packaged-Optics-Status-Challenges-and-Solutions.html#F7">Frontiers 綜述 F7</a>）。Coherent 2025 年 9 月稱已送樣 55°C 下 400 mW 的 1311 nm CW 雷射（<a href="../04-Sources/2025-09-25-Coherent-400mW-CW-Lasers-Sampling-Press-Release.html#CL2">CL1、CL2</a>）。業界估計每一代交換器（約兩年）要多 1.5–2 dB 光功率，而雷射驗證週期超過兩年，所以希望一個驗證過的雷射封裝能用兩代以上（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y44">Yole Y44</a>）。</p>
+<h2 id="tradeoffs">方案與取捨</h2>
+<h3 id="els-per-switch">一台交換器要幾個 ELS</h3>
+<table>
+<thead>
+<tr>
+<th>系統</th>
+<th>ELS 數</th>
+<th>每個 ELS 的雷射</th>
+<th>全系統雷射</th>
+<th>依據</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Broadcom TH5 Bailly（51.2T）</td>
+<td>16</td>
+<td>8</td>
+<td>128</td>
+<td><a href="../04-Sources/2024-04-29-Broadcom-BCM78909-51.2T-CPO-Switch-Product-Brief.html#C3">BCM78909 C3</a>、<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y51">Yole Y51</a></td>
+</tr>
+<tr>
+<td>NVIDIA Quantum-X Q3450-LD（115.2T）</td>
+<td>18（Yole 推算）</td>
+<td>8</td>
+<td>144</td>
+<td><a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y47">Yole Y47</a></td>
+</tr>
+<tr>
+<td>NVIDIA Spectrum-X SN6810（102.4T）</td>
+<td>32（Yole 推算）</td>
+<td>8</td>
+<td>256</td>
+<td><a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y48">Yole Y48</a></td>
+</tr>
+<tr>
+<td>NVIDIA Spectrum-X SN6800（409.6T）</td>
+<td>64（Yole 推算）</td>
+<td>8</td>
+<td>512</td>
+<td><a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y48">Yole Y48</a></td>
+</tr>
+<tr>
+<td>學界試算（102.4T）</td>
+<td>16</td>
+<td>8</td>
+<td>128</td>
+<td><a href="../04-Sources/2023-03-20-Frontiers-of-Optoelectronics-Co-packaged-Optics-Status-Challenges-and-Solutions.html#F8">Frontiers F8</a></td>
+</tr>
+</tbody>
+</table>
+<p>只有 Broadcom 的數字是官方產品規格；NVIDIA 的是 Yole 依公開資料推算，適用條件是 Yole 假設的系統配置：Quantum-X Q3450-LD 為 4 顆 28.8T 交換晶片、24 個 4.8T 光學引擎、每個 ELS 8 顆雷射、1 顆雷射供 4 根光纖（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y47">Y47</a>）；SN6800 的光學引擎數 Yole 寫「32 或 64 個」（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y48">Y48</a>）。報告沒有說明這些數字是否包含備援的 ELS，所以不能寫成「NVIDIA 交換器需要 18 個 ELS」。聯鈞在法說會轉述「一個 scale-up 的 CPO 模組需要 18 顆外部光源」（<a href="../04-Sources/2026-08-18-%E8%81%AF%E9%88%9E-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF.html#L14">聯鈞逐字稿 L14</a>），和 Yole 對 Quantum-X 的推算數字相同，但描述的對象（scale-up 模組或 scale-out 交換器）不一致，來源也不明。</p>
+<h3 id="els-form-factor">ELS 的外型</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>板上（OBO）</th>
+<th>可插拔加尾纖</th>
+<th>可插拔盲插（ELSFP）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>維修</td>
+<td>要整台關機</td>
+<td>可單獨換</td>
+<td>可單獨換</td>
+</tr>
+<tr>
+<td>眼睛安全</td>
+<td>容易</td>
+<td>需要特殊快門</td>
+<td>容易：插好前不出光</td>
+</tr>
+<tr>
+<td>散熱</td>
+<td>容易</td>
+<td>較難</td>
+<td>較難</td>
+</tr>
+<tr>
+<td>依據</td>
+<td><a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y43">Yole Y43</a></td>
+<td>同左</td>
+<td>同左；<a href="../04-Sources/2023-08-08-OIF-ELSFP-Implementation-Agreement.html#E1">OIF E1</a></td>
+</tr>
+</tbody>
+</table>
+<p>業界主流走向前面板可插拔盲插，也就是 ELSFP。</p>
+<h3 id="external-vs-integrated">外部光源對內建光源</h3>
+<p>內建光源（Intel OCI 把雷射做在矽光子晶片上）省掉保偏光纖、損耗低，但雷射靠近 ASIC、壞了要換整個引擎（<a href="../04-Sources/2026-10-01-Intel-Silicon-Photonics-Product-Page.html#I1">Intel I1、I3</a>）。Arista 的比較認為「插座式 CPO 加內建光源」功耗與成本最低（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT39">光收發器 2026 OT39</a>）；可插拔模組也在由混合整合轉向異質整合雷射（<a href="../04-Sources/2026-03-13-Yole-Photonics-Packaging-2026.html#PP12">光子封裝 2026 PP12</a>）。<code>[推論]</code> 依本站收錄的來源，外部光源是 Broadcom、NVIDIA 的選擇，但不是唯一路線；若插座式 CPO 改用內建光源，ELS 的需求會被分走。</p>
+<h2 id="supply-chain">產品與供應鏈</h2>
+<p>一個 ELS 的價值鏈大致是：InP 雷射晶片 → 雷射封裝與測試（貼片、燒機、耦合）→ 保偏光纖與連接器 → ELS 模組組裝與測試。Yole 認為 ELS 正成為獨立的市場類別（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT25">OT25</a>），但三份 Yole 報告都沒有估它的市場規模。</p>
+<table>
+<thead>
+<tr>
+<th>公司</th>
+<th>在哪一段</th>
+<th>進度</th>
+<th>證據性質</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../01-Companies/Coherent.html">Coherent</a></td>
+<td>從 InP 雷射晶片到 ELS 模組都做；自有 ELS 模組，也供 400 mW 雷射給 ELSFP 應用</td>
+<td>NVIDIA 2025 年 3 月點名的 ELS 夥伴（<a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html#NB9">NB9</a>）；公司 2026 年 9 月稱 ELS 用超高功率 CW 雷射第四季開始放量（<a href="../04-Sources/2026-09-21-Coherent-ECOC-2026-Presentation-Transcript.html#CE3">CE3</a>）；公司 2026 年 3 月稱 CW 雷射已全面量產（<a href="../04-Sources/2026-03-17-Coherent-OFC-2026-Technology-Innovation-Briefing.html#CD9">CD7、CD9</a>）</td>
+<td>客戶具名、公司說法</td>
+</tr>
+<tr>
+<td>Lumentum</td>
+<td>高功率 InP 雷射、ELS</td>
+<td>NVIDIA 點名（<a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html#NB9">NB9</a>）；Yole 列為 Spectrum-X 雷射供應商（<a href="../04-Sources/2026-03-13-Yole-Photonics-Packaging-2026.html#PP19">PP19</a>）</td>
+<td>客戶具名、產業分析</td>
+</tr>
+<tr>
+<td>Sumitomo</td>
+<td>ELS 雷射與子組件</td>
+<td>NVIDIA 點名（<a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html#NB9">NB9</a>）</td>
+<td>客戶具名</td>
+</tr>
+<tr>
+<td>Broadcom</td>
+<td>自有雷射與雷射模組（ARLM）</td>
+<td>公司 2024 年 3 月宣布 Bailly 交換器已交付客戶，參考系統設計支援可現場更換的遠端雷射模組（<a href="../04-Sources/2024-03-14-Broadcom-Bailly-51.2T-CPO-Switch-Delivery-Press-Release.html#BD7">BD1、BD7</a>）；遠端雷射模組的型號、是否隨交付一起供應，來源沒有寫</td>
+<td>公司說法、產品規格</td>
+</tr>
+<tr>
+<td>波若威（Browave）、Corning</td>
+<td>光纖陣列、保偏光纖與連接器</td>
+<td>NVIDIA 點名為光纖與連接器夥伴（<a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html#NB10">NB10</a>）；Yole 把兩家放在外部光源一格（<a href="../04-Sources/2026-03-13-Yole-Photonics-Packaging-2026.html#PP20">PP20</a>）</td>
+<td>客戶具名、產業分析</td>
+</tr>
+<tr>
+<td><a href="../01-Companies/%E8%81%AF%E9%88%9E.html">聯鈞</a></td>
+<td>ELSFP 模組</td>
+<td>公司 2026 年 8 月稱與雷射晶片大廠共同開發，已進入工程樣品小量生產；量產時程看 CPO 導入，無法預估（<a href="../04-Sources/2026-08-18-%E8%81%AF%E9%88%9E-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF.html#L13">L13、L15</a>）</td>
+<td>公司說法</td>
+</tr>
+<tr>
+<td><a href="../01-Companies/GIS-KY.html">GIS-KY</a></td>
+<td>CW 雷射光源封裝與測試</td>
+<td>公司 2026 年 9 月稱約十億元產線已投入、小量測試中；公司沒有說是否用在 ELS（<a href="../04-Sources/2026-09-24-GIS-KY-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF.html#T14">T13、T14</a>）；券商指向客戶為 Coherent</td>
+<td>公司說法、券商轉述</td>
+</tr>
+<tr>
+<td><a href="../01-Companies/%E5%85%89%E5%AF%B6.html">光寶</a></td>
+<td>持股上游 InP 雷射廠 DenseLight（約 21%），自己做光學封裝模組</td>
+<td>2026 年 7 月取得股權；DenseLight 專注 CW DFB 雷射與 ELS 外部光源模組（<a href="../04-Sources/2026-07-31-%E5%85%89%E5%AF%B6-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E7%B0%A1%E5%A0%B1.html#LS9">LS9</a>），目前量產 100 mW CW 雷射（<a href="../04-Sources/2026-07-31-%E5%85%89%E5%AF%B6-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF.html#LT14">LT14</a>）；光寶稱自身營收要到 2027 年，以 CPO 架構要到 2027 下半年或 2028 上半年（<a href="../04-Sources/2026-07-31-%E5%85%89%E5%AF%B6-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF.html#LT15">LT15</a>）</td>
+<td>公司說法</td>
+</tr>
+</tbody>
+</table>
+<p>CW-DFB 雷射晶片的主要供應商是 Coherent、Lumentum、Sumitomo、仕佳，多波長陣列 DFB 由 Lumentum、Coherent、Sumitomo、NTT 領先（<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html#OT23">OT23、OT25</a>）。</p>
+<p><code>[推論]</code> 依兩家 2026 年 8、9 月的法說會，台灣廠的兩種切入點不同：聯鈞做的是 ELSFP 模組，GIS-KY 做的是雷射晶粒的封裝與測試，兩者在價值鏈上是上下游，不是同一件事。兩家都還沒有具名客戶確認、也沒有量產，Yole 的三份報告都沒有列入。光寶是第三種：持股上游 InP 雷射廠、自己做模組（LS9、LT13），營收時間比前兩家說的更晚。</p>
+<h2 id="open-questions">未解問題</h2>
+<p>每一項寫出差異、缺什麼證據，以及什麼新資料會改變判斷。已查過仍無法確認的，記下查證範圍、等新資料再更新，不另外衍生搜尋；要持續追的數字列在「持續追蹤的數字」。</p>
+<ul>
+<li><strong>NVIDIA 每台交換器用幾個 ELS</strong>：本站來源只有 Yole 依其假設配置推算，未說明是否含備援。→ 等 NVIDIA 規格書或拆解。這決定每台交換器的雷射需求。</li>
+<li><strong>Coherent 400 mW 是否量產</strong>：2025 年 9 月稱 2026 年第三季量產與全面供貨（<a href="../04-Sources/2025-09-25-Coherent-400mW-CW-Lasers-Sampling-Press-Release.html#CL4">CL4</a>），原定期間已結束；本站 2026-10-06 查證未找到量產或全面供貨的公告，結果未明。2026 年 3 月稱已供應 400 mW 雷射給 ELSFP 應用，沒說是否量產（<a href="../04-Sources/2026-03-17-Coherent-OFC-2026-Technology-Innovation-Briefing.html#CD7">CD7</a>）；2026 年 9 月稱 ELS 用的超高功率 CW 雷射日曆年第四季開始放量，沒說是否就是這款產品（<a href="../04-Sources/2026-09-21-Coherent-ECOC-2026-Presentation-Transcript.html#CE3">CE3</a>，第三方整理的逐字稿）。400 mW 以上雷射的良率與可靠度，本站收錄的來源中沒有公司揭露。→ 等 Coherent 2027 會計年度第一季財報與法說會（公司檔預定 2026-12-31 再查）。</li>
+<li><strong>CPO 交換器出貨量</strong>：ELS 需求直接跟著 CPO 交換器走；Yole 預測 scale-out CPO 交換器 2030 年約 20.7 萬台（<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y12">Y12</a>），這是預測。→ 等 NVIDIA、Broadcom 出貨揭露。</li>
+<li><strong>內建光源會不會分走需求</strong>：Intel OCI、插座式 CPO 加內建光源若成熟，會分走 ELS 需求。→ 等這些方案的量產公告。</li>
+<li><strong>台灣廠的客戶</strong>：聯鈞 ELSFP 的量產時程、GIS-KY 封裝的雷射是否用在 ELS。→ 等客戶具名或法說會。</li>
+</ul>
+<h3 id="tracking">持續追蹤的數字</h3>
+<p>不是待解的問題，而是每次有新資料都要更新的數字；括號裡是本站目前的基準與出處。</p>
+<ul>
+<li><strong>CPO 交換器出貨量</strong>：ELS 需求跟著 CPO 交換器走；看 NVIDIA、Broadcom 揭露（Yole 預測 scale-out CPO 交換器 2030 年約 20.7 萬台，<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html#Y12">Y12</a>）。</li>
+<li><strong>高功率雷射的量產與供貨</strong>：看 Coherent、Lumentum 的量產公告（400 mW 的現況見上方未解問題）。</li>
+<li><strong>台灣廠的 ELS 與雷射封測業務</strong>：看聯鈞、GIS-KY、光寶法說會（聯鈞工程樣品小量生產、GIS-KY 小量測試；光寶稱 2027 年才有營收）。</li>
+</ul>
+<h2 id="sources-log">來源與更新紀錄</h2>
+<ul><li><a href="../04-Sources/2022-02-03-OIF-Co-Packaging-Framework-Document.html">OIF Co-Packaging 框架</a>、<a href="../04-Sources/2023-08-08-OIF-ELSFP-Implementation-Agreement.html">OIF ELSFP 實作協議</a>：定義與規格</li><li><a href="../04-Sources/2023-03-20-Frontiers-of-Optoelectronics-Co-packaged-Optics-Status-Challenges-and-Solutions.html">Frontiers 綜述</a>：功率與數量試算</li><li>Broadcom：<a href="../04-Sources/2024-03-14-Broadcom-Bailly-51.2T-CPO-Switch-Delivery-Press-Release.html">Bailly 交付新聞稿</a>、<a href="../04-Sources/2024-04-29-Broadcom-BCM78909-51.2T-CPO-Switch-Product-Brief.html">BCM78909</a>、<a href="../04-Sources/2024-11-07-Broadcom-ARLM-96F8DMZ-Pluggable-Laser-Module-Product-Brief.html">ARLM 雷射模組</a></li><li>NVIDIA：<a href="../04-Sources/2025-03-27-NVIDIA-Silicon-Photonics-Network-Switching-Technical-Blog.html">技術部落格</a></li><li>Coherent：<a href="../04-Sources/2026-09-21-Coherent-ECOC-2026-Presentation-Transcript.html">ECOC 2026 簡報逐字稿</a>、<a href="../04-Sources/2025-09-25-Coherent-400mW-CW-Lasers-Sampling-Press-Release.html">400 mW 雷射送樣</a>、<a href="../04-Sources/2026-03-17-Coherent-OFC-2026-Technology-Innovation-Briefing.html">OFC 2026 說明會</a></li><li>Yole：<a href="../04-Sources/2025-06-03-Yole-Co-packaged-Optics-for-Data-Centers-2025.html">CPO 2025</a>、<a href="../04-Sources/2026-05-11-Yole-Optical-Transceivers-for-Datacom-and-Telecom-2026.html">光收發器 2026</a>、<a href="../04-Sources/2026-03-13-Yole-Photonics-Packaging-2026.html">光子封裝 2026</a></li><li><a href="../04-Sources/2026-10-01-Intel-Silicon-Photonics-Product-Page.html">Intel 矽光子產品頁</a></li><li>公司：<a href="../04-Sources/2026-08-18-%E8%81%AF%E9%88%9E-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF.html">聯鈞 2026Q2 逐字稿</a>、<a href="../04-Sources/2026-09-24-GIS-KY-2026Q2%E6%B3%95%E4%BA%BA%E8%AA%AA%E6%98%8E%E6%9C%83%E9%80%90%E5%AD%97%E7%A8%BF.html">GIS-KY 2026Q2 逐字稿</a></li></ul><details class="ar-log"><summary>更新紀錄（5 筆，最近 2026-10-06）</summary><ul><li>2026-10-06：補光寶——2Q26 法說會揭露投資 InP 雷射廠 DenseLight（約 21%），列入產品與供應鏈與台灣廠摘要</li><li>2026-10-06：整理版面（只改寫法，未核對最新進度）—預測與估計標出報告版本；新增重點摘要、市場資料與技術路線、未解問題與持續追蹤的數字</li><li>2026-10-06：依新來源更新—Coherent 400 mW 原定 2026 第三季量產，未找到量產公告；補上公司 9 月「第四季開始放量」的說法（未說是否同一產品）</li><li>2026-10-06：更正—NVIDIA 交換器的 ELS 數補上 Yole 推算的系統配置，並註明未說明是否含備援</li><li>2026-10-05：建立</li></ul></details>
+  </div>
+  <p class="ar-back"><a href="../../../pages/domains.html#d3">← 回到高速互連與網路</a></p>
+</article>
+<aside class="ar-side"><nav class="ar-toc" aria-label="本頁章節"><p>本頁章節</p><ul><li><a href="#scope">研究問題與範圍</a></li><li><a href="#summary">重點摘要與證據範圍</a></li><li><a href="#how-it-works">原理與流程</a></li><li><a href="#tradeoffs">方案與取捨</a></li><li class="sub"><a href="#els-per-switch">一台交換器要幾個 ELS</a></li><li class="sub"><a href="#els-form-factor">ELS 的外型</a></li><li class="sub"><a href="#external-vs-integrated">外部光源對內建光源</a></li><li><a href="#supply-chain">產品與供應鏈</a></li><li><a href="#open-questions">未解問題</a></li><li class="sub"><a href="#tracking">持續追蹤的數字</a></li><li><a href="#sources-log">來源與更新紀錄</a></li></ul></nav></aside>
+</div>
+</main>
+
+<footer id="site-footer"></footer>
+</body>
+</html>

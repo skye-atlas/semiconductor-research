@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var hits = S.filter(function (s) {
       if (state.voice && voice(s) !== state.voice) return false;
       return !q || [s.title, s.summary, s.publisher, s.event, s.file].concat(s.speakers).join(' ').toLowerCase().indexOf(q) >= 0;
-    }).sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
+    }).sort(function (a, b) { return (b.sort || b.date || '').localeCompare(a.sort || a.date || ''); });   // sort：發布日，沒有就用內部排序日期
     if (!hits.length) {
       list.innerHTML = '<div class="so-empty"><p><b>沒有符合條件的來源。</b></p></div>';
       return;

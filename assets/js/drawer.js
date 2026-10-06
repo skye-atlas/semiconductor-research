@@ -1,14 +1,15 @@
 /* ════════════════════════════════════════════════════════════
    來源抽屜（公司檔案頁、公司與供應鏈頁共用）
-   點出處時從右邊滑出，不離開頁面：你點的這一筆 → 這份來源 → 它能證明／不能證明什麼 → 本頁其他引用
+   點出處時從右邊滑出，不離開頁面：你點的這一筆 → 這份來源 → 它能證明/不能證明什麼 → 本頁其他引用
 
    用法一（來源）：SourceDrawer.toggle(被點的連結, { file, voice, card, others })
      file   ：來源筆記檔名（content/04-Sources/ 裡的 .md）
+     ref    ：（選填）關鍵陳述編號清單，例：["T13"]；「來源筆記 →」直接連到第一條
      voice  ：（選填）這一筆的「誰說的」；轉述時會和來源本身不同
      card   ：（選填）{ kind: "角色證據", fields: [[欄位名, 文字], …] }
      others ：（選填）[{ kind, text, go: function }]，點了執行 go()
    用法二（其他內容，例：公司與供應鏈頁的公司預覽）：SourceDrawer.panel(被點的元素, 已組好的 HTML, 抽屜名稱)
-   來源的標題、類型、發言人、能證明／不能證明，取自 generated/sources.js（window.SOURCES）。
+   來源的標題、類型、發言人、能證明/不能證明，取自 generated/sources.js（window.SOURCES）。
    關閉：右上角 ×、Esc、或再點同一個出處（或同一個被點的元素）。樣式在 assets/css/2-base.css 的「來源抽屜」。
    ════════════════════════════════════════════════════════════ */
 (function () {
@@ -81,11 +82,13 @@
     if (!s) return false;               // 找不到來源資料：讓連結照常打開來源筆記
     if (!drawer) build();
     others = opt.others || [];
+    var ref = opt.ref || [];
     drawer.setAttribute('aria-label', '來源');
     body.innerHTML =
       '<p class="dr-prov"><b>' + esc(opt.voice || s.voice) + '</b> · ' + esc(s.kind) + (s.date ? ' · ' + esc(s.date) : '') + '</p>' +
       '<h2 class="dr-title">' + esc(s.title) + '</h2>' +
-      '<p class="dr-go"><a class="art" href="' + s.url + '">來源筆記 →</a></p>' +
+      '<p class="dr-go"><a class="art" href="' + s.url + (ref.length ? '#' + encodeURIComponent(ref[0]) : '') + '">' +
+        (ref.length ? '來源筆記的 ' + esc(ref.join('、')) + ' →' : '來源筆記 →') + '</a></p>' +
       (opt.card ? '<section><h3>你點的這一筆<span class="tag">' + esc(opt.card.kind) + '</span></h3>' + fields(opt.card.fields) + '</section>' : '') +
       '<section><h3>這份來源</h3>' + fields([
         ['誰說的', s.voice], ['來源類型', s.kind], ['場合', s.event], ['發布者', s.publisher],

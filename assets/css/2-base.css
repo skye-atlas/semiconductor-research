@@ -13,12 +13,13 @@ a{color:var(--accent)}
 
 /* ── 頂欄 ── */
 .top{position:sticky;top:0;z-index:30;background:var(--bg);border-top:4px solid var(--topbar);border-bottom:1px solid var(--line)}
+[id]{scroll-margin-top:96px}   /* 頂欄固定在上方：跳到錨點（章節、目錄、see 連結）時，目標停在頂欄下方而不是被蓋住 */
 .top .wrap{display:flex;align-items:center;gap:6px 18px;min-height:60px;padding-block:8px}
 .brand{text-decoration:none;color:var(--ink);line-height:1.25}
 .brand b{display:block;font-family:"Noto Serif TC",serif;font-size:var(--fs-xl);font-weight:700}
 .brand small{display:block;font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;font-size:var(--fs-mono);letter-spacing:.12em;color:var(--muted)}
 .top nav{display:flex;gap:4px;margin-left:auto}
-.top nav a{font-size:var(--fs-nav);text-decoration:none;padding:6px 11px;color:var(--muted)}
+.top nav a{font-size:var(--fs-nav);text-decoration:none;padding:6px 11px;color:var(--muted);white-space:nowrap}
 .top nav a:hover{color:var(--ink)}
 .top nav a.on{color:var(--ink);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}   /* 目前所在的頁 */
 .hsearch{display:flex;align-items:center;margin-left:18px;border:1px solid var(--line);border-radius:20px;background:var(--panel);padding:2px 4px 2px 14px}
@@ -55,7 +56,7 @@ a{color:var(--accent)}
 /* 靜態標籤：低對比、沒有外框，不可點 */
 .tag{display:inline-block;font-size:var(--fs-pill);line-height:1.6;color:var(--muted);background:var(--unkbg);border-radius:var(--r);padding:0 6px;white-space:nowrap}
 /* 證據標記：全站用同一套語意，靠文字＋形狀區分，不只靠顏色
-   fact 已確認（實心深綠）／said 公司說法（橘底）／plan 計畫中（虛線框）／unknown 未知（灰）／inf 研究者推論（虛線灰框） */
+   fact 已確認（實心深綠）/said 公司說法（橘底）/plan 計畫中（虛線框）/unknown 未知（灰）/inf 研究者推論（虛線灰框） */
 .ev{display:inline-flex;align-items:center;font-size:var(--fs-pill);line-height:1.6;border-radius:var(--r);padding:0 6px;white-space:nowrap;border:1px solid transparent}
 .ev b{font-weight:700}
 .ev-fact{background:var(--accent);color:var(--panel)}
@@ -110,6 +111,12 @@ a{color:var(--accent)}
 .mk-acad,.mk-ind{background:none;color:var(--muted);font-weight:500;padding:0;border-radius:0;letter-spacing:.02em}
 .mk-vendor{background:var(--warnbg);color:var(--warn)}
 .mk-inf{background:var(--unkbg);color:var(--muted);border:1px dashed var(--unk)}
+
+/* ── 窄桌面與平板橫向（861–1140px）：導覽不斷行，搜尋框縮窄，副標太長時平均成兩行 ── */
+@media (min-width:861px) and (max-width:1140px){
+  .hsearch input{width:130px}
+  .brand small{text-wrap:balance}
+}
 
 /* ── 手機 ── */
 @media (max-width:860px){

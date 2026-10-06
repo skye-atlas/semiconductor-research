@@ -3,7 +3,7 @@
    1. 側欄「本頁章節」跟著捲動標出目前所在的段落
    2. 點任何出處（.cp-srcbtn）→ 開來源抽屜（assets/js/drawer.js）
       每個出處的「你點的這一筆」資料在頁面裡的 <script id="cp-data">（tools/company_page.py 轉檔時寫入）。
-      按住 Ctrl／⌘ 點擊則照常在新分頁開來源筆記。
+      按住 Ctrl/⌘ 點擊則照常在新分頁開來源筆記。
    ════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', function () {
   // ── 1. 本頁章節 ──
@@ -20,10 +20,10 @@ document.addEventListener('DOMContentLoaded', function () {
     spy();
   }
 
-  // 側欄的章節連結或「看清單 →」點到預設收起的段落（其他早期方向、來源）時，順便把它打開
+  // 側欄的章節連結或「看清單 →」點到預設收起的段落（其他方向、來源）時，順便把它打開
   document.addEventListener('click', function (ev) {
     var a = ev.target.closest('.cp-side a[href^="#"]');
-    var fold = a && document.querySelector(a.getAttribute('href') + ' > .cp-srcfold');   // 其他早期方向、來源
+    var fold = a && document.querySelector(a.getAttribute('href') + ' > .cp-srcfold');   // 其他方向、來源
     if (fold) fold.open = true;
   });
 
@@ -43,13 +43,14 @@ document.addEventListener('DOMContentLoaded', function () {
         return { kind: x.c.kind, text: (x.c.fields[0] || ['', ''])[1], go: function () {
           var target = document.querySelector('.cp-srcbtn[data-card="' + x.i + '"]');
           if (!target) return;
-          // 目標可能在收起的段落裡（而且可能有兩層），一路往外把它們都打開
+          // 目標可能在別的分頁或收起的段落裡（而且可能有兩層），先切分頁、再一路往外把它們都打開
+          if (window.cpReveal) window.cpReveal(target);
           for (var d = target.closest('details'); d; d = d.parentElement.closest('details')) d.open = true;
           target.scrollIntoView({ block: 'center' });
           show(target);
         } };
       });
-    return SourceDrawer.toggle(link, { file: link.dataset.src, voice: card && card.voice, card: card, others: others });
+    return SourceDrawer.toggle(link, { file: link.dataset.src, ref: card && card.ref, voice: card && card.voice, card: card, others: others });
   }
   document.addEventListener('click', function (ev) {
     var link = ev.target.closest('.cp-srcbtn');
@@ -57,3 +58,38 @@ document.addEventListener('DOMContentLoaded', function () {
     if (show(link)) ev.preventDefault();
   });
 });
+
+// 分頁（有「公司與能力」的公司頁）：.cp-tabs 的標籤對應 .cp-tab 容器；錨點不變，連到哪一段就切到它所在的分頁
+//   沒有 JavaScript 時沒有 cp-tabbed，全部分頁照順序排下來
+window.cpReveal = function (el) {
+  var panel = el && el.closest && el.closest('.cp-tab');
+  if (!panel || panel.classList.contains('is-on')) return;
+  document.querySelectorAll('.cp-tab').forEach(function (p) { p.classList.toggle('is-on', p === panel); });
+  document.querySelectorAll('.cp-tabs a').forEach(function (a) {
+    a.setAttribute('aria-selected', a.dataset.panel === panel.id ? 'true' : 'false');
+  });
+};
+
+// 目錄或頁內連結跳到別的分頁或收起的 <details> 裡（或它本身）時，先切分頁、展開，再捲過去
+(function () {
+  function openHash() {
+    var id = decodeURIComponent(location.hash.slice(1));
+    var el = id && document.getElementById(id);
+    if (!el) return;
+    window.cpReveal(el);
+    // 點的是分頁標籤本身：捲到標籤列，讓讀者從這一頁的開頭讀
+    var tab = document.querySelector('.cp-tabs a[href="#' + CSS.escape(id) + '"]');
+    if (tab) { tab.parentElement.scrollIntoView(); return; }
+    if (el.tagName === 'DETAILS') el.open = true;
+    for (var d = el.parentElement && el.parentElement.closest('details'); d; d = d.parentElement && d.parentElement.closest('details')) d.open = true;
+    el.scrollIntoView();
+  }
+  window.addEventListener('hashchange', openHash);
+  document.addEventListener('DOMContentLoaded', function () {
+    openHash();
+    document.addEventListener('click', function (ev) {
+      var a = ev.target.closest && ev.target.closest('a[href^="#"]');
+      if (a && a.getAttribute('href') === location.hash) setTimeout(openHash, 0);
+    });
+  });
+})();

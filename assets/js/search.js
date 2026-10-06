@@ -1,6 +1,6 @@
 /* ════════════════════════════════════════════════════════════
    搜尋頁：在瀏覽器裡直接比對，不需要伺服器
-   搜尋範圍：研究領域與主要主題（settings/landscape-frame.js）、文章（settings/landscape.js）、
+   搜尋範圍：研究領域與研究分區（settings/landscape-frame.js）、文章（settings/landscape.js）、
             公司（generated/companies.js）、轉成網頁的文章與來源筆記全文（generated/pages-index.js）
    多個關鍵字用空白隔開時，每個都要找得到才算符合。
    ════════════════════════════════════════════════════════════ */
