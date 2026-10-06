@@ -288,8 +288,11 @@
 .cp-pc{border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;background:var(--panel)}
 .cp-pc p{margin:0}
 .cp-pc-name{font-weight:700}
-.cp-pc-use{font-size:var(--fs-xs);color:var(--muted);line-height:1.6;margin:2px 0 8px !important}
-.cp-pc-status{font-size:var(--fs-sm);line-height:1.7;margin:4px 0 6px !important}
+.cp-pc-use{font-size:var(--fs-sm);line-height:1.65;margin:2px 0 8px !important}
+.cp-pc-status{font-size:var(--fs-sm);line-height:1.7;color:var(--muted);margin:4px 0 6px !important}
+.cp-pc-more{margin:8px 0 0;font-size:var(--fs-xs);color:var(--muted)}
+.cp-pc-more summary{cursor:pointer;color:var(--accent)}
+.cp-pc-more p{margin:4px 0 0 !important;line-height:1.6}
 .cp-pc-basis .cp-inv-basis{margin:0 4px 0 0}
 .cp-ov-stage{display:inline-block;margin:0 0 4px;padding:0 8px;border-radius:999px;font-size:var(--fs-xs);font-weight:600;border:1px solid var(--line)}
 .cp-ov-shipped{background:var(--accbg);color:var(--accent);border-color:transparent}
@@ -302,7 +305,8 @@
   .cp-pcards{grid-template-columns:1fr}
 }
 /* 分頁：概覽｜企業條件｜產品與證據｜投資研究（本機）；cp-tabbed 由頁面裡的一行程式加上，沒有 JavaScript 時全部照順序排 */
-.cp-tabs{display:flex;gap:4px;margin:18px 0 0;border-bottom:1px solid var(--line);overflow-x:auto;overflow-y:hidden;scroll-margin-top:84px}
+.cp-tabs{display:flex;gap:4px;margin:18px 0 0;border-bottom:1px solid var(--line);overflow-x:auto;overflow-y:hidden;scroll-margin-top:84px;scrollbar-width:none}
+.cp-tabs.has-more{-webkit-mask-image:linear-gradient(to right,#000 80%,transparent);mask-image:linear-gradient(to right,#000 80%,transparent)}
 .cp-tabs a{flex:none;padding:10px 14px;color:var(--muted);text-decoration:none;font-weight:600;border-bottom:3px solid transparent}
 .cp-tabs a:hover{color:var(--ink)}
 .cp-tabs a[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
@@ -312,10 +316,19 @@
 /* 概覽：目前怎麼看、接下來看什麼 */
 .cp-digest-links{display:flex;flex-wrap:wrap;gap:6px 18px;margin:6px 0 0;font-size:var(--fs-sm)}
 .cp-next-k{display:block;font-size:var(--fs-xs);color:var(--muted)}
+.cp-digest-price{margin:16px 0 0;padding:10px 14px;border:1px dashed var(--line);border-radius:var(--r);max-width:46em}
+.cp-digest-price p{margin:0 0 4px;font-size:var(--fs-sm);line-height:1.7}
+.cp-digest-price .cp-inv-k2 small{margin-left:8px;font-weight:400;font-size:var(--fs-xs)}
+/* 有分頁的公司頁：不用右側欄，主欄用完整寬度；統計放在頁尾 */
+.cp.cp-full{grid-template-columns:minmax(0,1fr)}
+.cp-full .cp-main{max-width:960px}
+.cp-pagefoot{display:flex;flex-wrap:wrap;gap:12px 40px;margin:28px 0 0;font-size:var(--fs-sm)}
+.cp-pagefoot>*{min-width:180px}
+.cp-pagefoot p{margin:0}
 /* 企業條件（enterprise）：一句判斷＋最大的研究缺口 → 研究缺口 → 支持／不支持；出處收成編號連結（點了開抽屜） */
 .cp-ent-sum{font-size:var(--fs-lede);line-height:1.7;font-weight:600;margin:0 0 4px;max-width:46em}
-.cp-ent-gap1{font-size:var(--fs-md);line-height:1.7;margin:0 0 14px;max-width:46em;color:var(--warn)}
-.cp-ent-gaps{border-left:4px solid var(--warn);background:var(--warnbg);border-radius:0 var(--r) var(--r) 0;padding:10px 16px 4px;margin:0 0 16px}
+.cp-ent-gap1{font-size:var(--fs-md);line-height:1.7;margin:0 0 14px;max-width:46em;color:var(--muted)}
+.cp-ent-gaps{border:1px solid var(--line);border-radius:var(--r);padding:10px 16px 4px;margin:8px 0 16px}
 .cp-ent-gaps-k{font-weight:700;margin:0 0 4px}
 .cp-ent-gaps-k small{margin-left:8px;font-weight:400;font-size:var(--fs-xs);color:var(--muted)}
 .cp-ent-where{display:block;font-size:var(--fs-xs);color:var(--muted)}

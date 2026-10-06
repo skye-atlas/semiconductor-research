@@ -66,9 +66,26 @@ window.cpReveal = function (el) {
   if (!panel || panel.classList.contains('is-on')) return;
   document.querySelectorAll('.cp-tab').forEach(function (p) { p.classList.toggle('is-on', p === panel); });
   document.querySelectorAll('.cp-tabs a').forEach(function (a) {
-    a.setAttribute('aria-selected', a.dataset.panel === panel.id ? 'true' : 'false');
+    var on = a.dataset.panel === panel.id;
+    a.setAttribute('aria-selected', on ? 'true' : 'false');
+    // 手機上標籤列會橫向捲動：把選中的標籤捲進可見範圍（只動標籤列，不動頁面）
+    if (on) {
+      var bar = a.parentElement;
+      bar.scrollLeft = Math.max(0, a.offsetLeft - bar.offsetLeft - 16);
+      bar.dispatchEvent(new Event('scroll'));     // 更新右緣淡出提示
+    }
   });
 };
+
+// 標籤列右側還有看不到的標籤時，加 has-more 讓右緣淡出
+document.addEventListener('DOMContentLoaded', function () {
+  var bar = document.querySelector('.cp-tabs');
+  if (!bar) return;
+  var mark = function () { bar.classList.toggle('has-more', bar.scrollLeft + bar.clientWidth < bar.scrollWidth - 4); };
+  bar.addEventListener('scroll', mark, { passive: true });
+  window.addEventListener('resize', mark);
+  mark();
+});
 
 // 目錄或頁內連結跳到別的分頁或收起的 <details> 裡（或它本身）時，先切分頁、展開，再捲過去
 (function () {
